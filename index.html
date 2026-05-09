@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>짱오락실 정답지</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 15px; background: #f0f0f0; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        /* 짱오락실 로고 스타일 텍스트 */
+        .logo-text { 
+            text-align: center; 
+            font-size: 2.2rem; 
+            font-weight: 900; 
+            color: #ffcc00; 
+            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 4px 4px 5px rgba(0,0,0,0.3);
+            margin-bottom: 20px; 
+            cursor: pointer;
+            letter-spacing: -1px;
+        }
+
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .header-row h2 { margin: 0; font-size: 1.1rem; }
+        select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
+
+        /* 레이아웃 */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .grid-1 { display: flex; flex-direction: column; gap: 8px; }
+
+        /* 아이템 공통 */
+        .item-wrapper { position: relative; margin-bottom: 8px; }
+        .item { background: #fff; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; position: relative; min-height: 50px; justify-content: center; }
+        .item:active { background: #f9f9f9; }
+        .list-mode { flex-direction: row !important; align-items: center; padding: 12px; gap: 12px; }
+
+        /* 폴더 전용 스타일 (타일 모드일 때) */
+        .folder-tile { padding: 20px 10px; text-align: center; }
+        .folder-tile b { font-size: 13px; word-break: break-all; }
+
+        /* 설정 아이콘 (반투명) */
+        .settings-btn { position: absolute; top: 2px; right: 2px; padding: 6px; font-size: 16px; cursor: pointer; border-radius: 50%; z-index: 10; background: rgba(255,255,255,0.7); opacity: 0.1; transition: opacity 0.2s; }
+        .settings-btn:hover { opacity: 0.8; }
+        .list-mode .settings-btn { position: static; margin-left: auto; background: none; }
+        
+        .admin-menu { display: none; background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; margin-top: 4px; padding: 5px; gap: 5px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
+        .admin-menu.active { display: flex; }
+        
+        .btn-mini { padding: 5px 12px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; background: #fff; cursor: pointer; white-space: nowrap; }
+        .btn-mini.del { color: #ff4757; border-color: #ff4757; }
+
+        /* 썸네일 박스 */
+        .thumb-box { position: relative; width: 100%; padding-top: 130%; background: #fafafa; flex-shrink: 0; }
+        .list-mode .thumb-box { width: 50px; height: 65px; padding-top: 0; }
+        .thumb-box img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; }
+        
+        .info-box { padding: 8px; flex-grow: 1; min-width: 0; }
+        .list-mode .info-box { padding: 0; }
+        .info-box b { font-size: 14px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .info-box p { font-size: 12px; color: #777; margin: 4px 0 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .no-photo .thumb-box { display: none; }
+        .no-photo.item { padding: 15px; justify-content: center; align-items: center; text-align: center; }
+        .no-photo.list-mode { justify-content: flex-start; text-align: left; }
+
+        /* 버튼 */
+        button { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; font-size: 15px; }
+        .btn-add { background: #4CAF50; color: white; }
+        .btn-back { background: #888; color: white; margin-top: 20px; }
+        .btn-save { background: #2196F3; color: white; }
+        .btn-del-mini { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; z-index: 5; }
+
+        /* 상세페이지 */
+        .main-img { width: 100%; border-radius: 8px; border: 1px solid #ddd; background: #f9f9f9; cursor: pointer; min-height: 200px; object-fit: contain; }
+        textarea { width: 100%; height: 100px; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; resize: none; font-size: 14px; }
+        .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+
+        #modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 9999; }
+        #modal img { max-width: 95%; max-height: 90%; object-fit: contain; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-text" onclick="location.reload()">짱오락실</div>
+        <div id="content">로딩 중...</div>
+    </div>
+    <div id="modal" onclick="this.style.display='none'"><img id="modal-img" src=""></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCvsQDOECCgFEa9luzFzqMeoAv9aOlPxOA",
+            authDomain: "jjang-yongsan.firebaseapp.com",
+            projectId: "jjang-yongsan",
+            storageBucket: "jjang-yongsan.firebasestorage.app",
+            messagingSenderId: "428220772419",
+            appId: "1:428220772419:web:b39c68cdaa993fbe04e4f6",
+            databaseURL: "https://jjang-yongsan-default-rtdb.firebaseio.com"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+        
+        let data = { genres: [], machines: {}, genreLayout: 'list', machineLayout: 'thumb-tile' };
+        let currentView = 'genres', currentGenre = null, currentMachine = null, dragIdx = null;
+
+        window.addEventListener('popstate', (e) => {
+            if (e.state) { currentView = e.state.view; currentGenre = e.state.genre; currentMachine = e.state.machine; render(false); }
+            else { currentView = 'genres'; render(false); }
+        });
+
+        signInAnonymously(auth).then(() => {
+            onValue(ref(database, 'dollCraneData'), (snap) => {
+                if (snap.exists()) data = { ...data, ...snap.val() };
+                if (!window.history.state) history.replaceState({view: 'genres'}, '');
+                render(false);
+            });
+        });
+
+        function saveData(cb) { set(ref(database, 'dollCraneData'), data).then(() => cb && cb()); }
+
+        function render(push = true) {
+            if (push) history.pushState({view: currentView, genre: currentGenre, machine: currentMachine}, '');
+            const root = document.getElementById('content');
+            root.innerHTML = '';
+
+            if (currentView === 'genres') {
+                root.innerHTML = `
+                    <div class="header-row">
+                        <h2>📁 폴더 목록</h2>
+                        <select id="g-sel">
+                            <option value="list">일렬</option>
+                            <option value="tile">타일(3열)</option>
+                        </select>
+                    </div>`;
+                const sel = document.getElementById('g-sel'); sel.value = data.genreLayout || 'list';
+                sel.onchange = (e) => { data.genreLayout = e.target.value; saveData(() => render(false)); };
+
+                const isTile = data.genreLayout === 'tile';
+                const container = document.createElement('div');
+                container.className = isTile ? 'grid-3' : 'grid-1';
+                
+                data.genres.forEach((g, i) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'item-wrapper';
+                    const itemClass = `item ${!isTile ? 'list-mode' : 'folder-tile'}`;
+                    
+                    wrapper.innerHTML = `
+                        <div class="${itemClass}" draggable="true" id="folder-${i}">
+                            <div class="folder-info" onclick="window.toMachines('${g}')" style="flex-grow:1; display:flex; flex-direction:${isTile?'column':'row'}; align-items:center; gap:8px;">
+                                <span style="font-size:${isTile?'24px':'16px'}">📁</span>
+                                <b>${g}</b>
+                            </div>
+                            <div class="settings-btn" onclick="window.toggleMenu(event, 'folder-${i}')">⚙️</div>
+                        </div>
+                        <div class="admin-menu" id="menu-folder-${i}">
+                            <button class="btn-mini" onclick="window.editGenre(${i})">이름 수정</button>
+                            <button class="btn-mini del" onclick="window.delGenre(${i})">폴더 삭제</button>
+                        </div>
+                    `;
+                    
+                    const item = wrapper.querySelector('.item');
+                    item.ondragstart = () => dragIdx = i;
+                    item.ondragover = (e) => e.preventDefault();
+                    item.ondrop = () => {
+                        const moved = data.genres.splice(dragIdx, 1)[0];
+                        data.genres.splice(i, 0, moved);
+                        saveData(() => render(false));
+                    };
+                    container.appendChild(wrapper);
+                });
+                root.appendChild(container);
+                
+                const add = document.createElement('button'); add.className='btn-add'; add.innerText='+ 새 폴더 추가';
+                add.onclick=()=>{ const n=prompt('폴더 이름:'); if(n){data.genres.push(n); data.machines[n]={}; saveData();} };
+                root.appendChild(add);
+
+            } else if (currentView === 'machines') {
+                root.innerHTML = `
+                    <div class="header-row">
+                        <h2 style="flex-shrink:0; max-width:50%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📂 ${currentGenre}</h2>
+                        <select id="l-sel">
+                            <option value="list">일렬(숫자만)</option>
+                            <option value="tile">타일(숫자만)</option>
+                            <option value="thumb-list">썸네일 일렬</option>
+                            <option value="thumb-tile">썸네일 타일(3열)</option>
+                            <option value="memo-list">메모 일렬</option>
+                            <option value="memo-tile">메모 타일(3열)</option>
+                        </select>
+                    </div>`;
+                const sel = document.getElementById('l-sel'); sel.value = data.machineLayout;
+                sel.onchange = (e) => { data.machineLayout = e.target.value; saveData(() => render(false)); };
+
+                const layout = data.machineLayout;
+                const isTile = layout.includes('tile');
+                const showPhoto = layout.includes('thumb') || layout.includes('memo');
+                const showMemo = layout.includes('memo');
+
+                const container = document.createElement('div');
+                container.className = isTile ? 'grid-3' : 'grid-1';
+
+                const mObj = data.machines[currentGenre] || {};
+                Object.keys(mObj).sort((a,b)=>parseInt(a)-parseInt(b)).forEach((m, i) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'item-wrapper';
+                    
+                    const itemClass = `item ${!isTile ? 'list-mode' : ''} ${!showPhoto ? 'no-photo' : ''}`;
+                    
+                    wrapper.innerHTML = `
+                        <div class="${itemClass}" onclick="window.toPhoto('${m}')">
+                            <div class="thumb-box"><img src="${mObj[m].photo || ''}"></div>
+                            <div class="info-box">
+                                <b>${m}</b>
+                                ${showMemo ? `<p>${mObj[m].memo || '메모 없음'}</p>` : ''}
+                            </div>
+                            <div class="settings-btn" onclick="window.toggleMenu(event, 'machine-${i}')">⚙️</div>
+                        </div>
+                        <div class="admin-menu" id="menu-machine-${i}">
+                            <button class="btn-mini" onclick="window.editMachineName('${m}')">이름 수정</button>
+                            <button class="btn-mini del" onclick="window.delMachine('${m}')">삭제</button>
+                        </div>
+                    `;
+                    container.appendChild(wrapper);
+                });
+                root.appendChild(container);
+
+                const add = document.createElement('button'); add.className='btn-add'; add.innerText='+ 추가';
+                add.onclick=()=>{ const n=prompt('번호:'); if(n){data.machines[currentGenre][n]={photo:null,memo:'',evidencePhotos:[]}; saveData();} };
+                root.appendChild(add);
+                const back = document.createElement('button'); back.className='btn-back'; back.innerText='뒤로가기';
+                back.onclick=()=>history.back();
+                root.appendChild(back);
+
+            } else if (currentView === 'photo') {
+                const m = data.machines[currentGenre][currentMachine];
+                root.innerHTML = `
+                    <h2 style="margin:0 0 15px 0">🤖 ${currentMachine} 상세</h2>
+                    <img src="${m.photo || ''}" class="main-img" onclick="openM('${m.photo}')">
+                    <button class="btn-save" onclick="up(0)">📸 메인 정답지 수정</button>
+                    <textarea id="memo" placeholder="공략법이나 특징을 입력하세요...">${m.memo || ''}</textarea>
+                    <button class="btn-add" onclick="saveM()">💾 메모 저장</button>
+                    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+                        <span style="font-weight:bold; font-size:13px; color:#666;">📸 추가 사진</span>
+                        <div class="evidence-grid">
+                            ${(m.evidencePhotos || []).map((p, i) => `
+                                <div class="item" style="padding-top:100%; position:relative;">
+                                    <img src="${p.photo}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain;" onclick="openM('${p.photo}')">
+                                    <button class="btn-del-mini" onclick="delE(${i})">×</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="btn-save" style="margin-top:10px; font-size:13px;" onclick="up(1)">+ 추가 사진 등록</button>
+                    </div>
+                    <button class="btn-back" onclick="history.back()">뒤로가기</button>
+                `;
+            }
+        }
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.admin-menu').forEach(m => m.classList.remove('active'));
+        });
+
+        window.toggleMenu = (e, id) => {
+            e.stopPropagation();
+            const menu = document.getElementById(`menu-${id}`);
+            const isActive = menu.classList.contains('active');
+            document.querySelectorAll('.admin-menu').forEach(m => m.classList.remove('active'));
+            if (!isActive) menu.classList.add('active');
+        };
+
+        window.toMachines = (g) => { currentGenre = g; currentView = 'machines'; render(); };
+        window.toPhoto = (m) => { currentMachine = m; currentView = 'photo'; render(); };
+
+        window.editGenre = (i) => {
+            const oldName = data.genres[i];
+            const newName = prompt('수정할 폴더 이름을 입력하세요:', oldName);
+            if(newName && newName !== oldName) {
+                data.genres[i] = newName;
+                data.machines[newName] = data.machines[oldName];
+                delete data.machines[oldName];
+                saveData(() => render(false));
+            }
+        };
+
+        window.editMachineName = (oldName) => {
+            const newName = prompt('수정할 이름을 입력하세요:', oldName);
+            if(newName && newName !== oldName) {
+                data.machines[currentGenre][newName] = data.machines[currentGenre][oldName];
+                delete data.machines[currentGenre][oldName];
+                saveData(() => render(false));
+            }
+        };
+
+        window.delGenre = (i) => {
+            if(confirm(`'${data.genres[i]}' 폴더와 안의 정보를 모두 삭제하시겠습니까?`)) {
+                const name = data.genres[i];
+                data.genres.splice(i, 1);
+                delete data.machines[name];
+                saveData(() => render(false));
+            }
+        };
+
+        window.delMachine = (m) => {
+            if(confirm(`${m}를 삭제할까요?`)) {
+                delete data.machines[currentGenre][m];
+                saveData(() => render(false));
+            }
+        }
+
+        window.openM = (s) => { if(s){document.getElementById('modal-img').src=s; document.getElementById('modal').style.display='flex';} };
+        window.saveM = () => { data.machines[currentGenre][currentMachine].memo = document.getElementById('memo').value; saveData(()=>alert('공략이 저장되었습니다.')); };
+        window.delE = (i) => { if(confirm('이 사진을 삭제하시겠습니까?')) { data.machines[currentGenre][currentMachine].evidencePhotos.splice(i,1); saveData(() => render(false)); } };
+        window.up = (type) => {
+            const i = document.createElement('input'); i.type='file'; i.accept='image/*';
+            i.onchange = e => {
+                const f = e.target.files[0]; const r = new FileReader();
+                r.onload = ev => {
+                    if(type === 0) data.machines[currentGenre][currentMachine].photo = ev.target.result;
+                    else {
+                        if(!data.machines[currentGenre][currentMachine].evidencePhotos) data.machines[currentGenre][currentMachine].evidencePhotos=[];
+                        data.machines[currentGenre][currentMachine].evidencePhotos.push({photo: ev.target.result});
+                    }
+                    saveData(() => render(false));
+                };
+                r.readAsDataURL(f);
+            };
+            i.click();
+        };
+    </script>
+</body>
+</html>
