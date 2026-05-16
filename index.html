@@ -344,6 +344,84 @@ select{
     display:flex;
 }
 
+.folder-modal{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    background:rgba(0,0,0,0.45);
+    z-index:36000;
+}
+
+.folder-panel{
+    width:100%;
+    max-width:420px;
+    max-height:88vh;
+    overflow-y:auto;
+    padding:16px;
+    border-radius:12px;
+    background:white;
+    box-shadow:0 8px 24px rgba(0,0,0,0.22);
+}
+
+.folder-panel h3{
+    margin:0 0 12px;
+    font-size:17px;
+}
+
+.folder-panel input[type="text"]{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.folder-checks{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-top:12px;
+}
+
+.folder-checks label{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:8px;
+    border:1px solid #eee;
+    border-radius:8px;
+    background:#fafafa;
+    font-size:13px;
+}
+
+.folder-checks input{
+    width:16px;
+    height:16px;
+    flex:0 0 16px;
+    margin:0;
+}
+
+.color-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:10px;
+}
+
+.color-swatch{
+    height:42px;
+    border:2px solid transparent;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.color-swatch.active{
+    border-color:#222;
+}
+
 .btn-mini{
     width:auto;
     margin-top:0;
@@ -393,6 +471,36 @@ button{
     cursor:pointer;
 }
 
+.main-photo-frame{
+    position:relative;
+}
+
+.main-photo-frame .main-img{
+    display:block;
+}
+
+.action-time{
+    display:inline-block;
+    padding:4px 7px;
+    border-radius:7px;
+    background:rgba(80,80,80,0.58);
+    color:white;
+    font-size:11px;
+    line-height:1.35;
+    pointer-events:none;
+}
+
+.floating-time{
+    position:absolute;
+    top:8px;
+    left:8px;
+    z-index:4;
+}
+
+.memo-time{
+    margin:0 0 7px;
+}
+
 textarea{
     width:100%;
     min-height:150px;
@@ -413,7 +521,7 @@ textarea:focus{
 }
 
 textarea[readonly]{
-    pointer-events:none;
+    cursor:default;
 }
 
 textarea.expanded-mode{
@@ -437,14 +545,20 @@ textarea.scroll-mode{
 
 .evidence-item{
     position:relative;
-    padding-top:100%;
     border:1px solid #ddd;
     border-radius:12px;
     overflow:hidden;
     background:#fafafa;
 }
 
-.evidence-item img{
+.evidence-photo-box{
+    position:relative;
+    width:100%;
+    padding-top:100%;
+    background:#fafafa;
+}
+
+.evidence-photo-box img{
     position:absolute;
     top:0;
     left:0;
@@ -466,6 +580,28 @@ textarea.scroll-mode{
     color:white;
     border-radius:50%;
     line-height:28px;
+}
+
+.evidence-memo{
+    width:100%;
+    min-height:58px;
+    border:0;
+    border-top:1px solid #eee;
+    border-radius:0;
+    padding:8px;
+    background:white;
+    font-size:12px;
+    line-height:1.45;
+    resize:vertical;
+}
+
+.evidence-memo-time{
+    margin:7px 8px 0;
+}
+
+.evidence-memo[readonly]{
+    background:#fafafa;
+    pointer-events:none;
 }
 
 .modal{
@@ -1134,6 +1270,7 @@ let data = {
 let currentStoreId = localStorage.getItem("currentStoreId") || DEFAULT_STORE_ID;
 let currentView = "genres";
 let currentGenre = null;
+let currentGenreGroup = null;
 let currentMachine = null;
 let saving = false;
 let saveQueued = false;
@@ -2146,6 +2283,7 @@ async function manageUserRole(){
 
     currentView = "accounts";
     currentGenre = null;
+    currentGenreGroup = null;
     currentMachine = null;
     render();
     toggleMenu(false);
@@ -2249,6 +2387,7 @@ function addStore(){
     data = appData.stores[currentStoreId];
     currentView = "genres";
     currentGenre = null;
+    currentGenreGroup = null;
     currentMachine = null;
 
     saveData(()=>{
@@ -2282,6 +2421,7 @@ function switchStore(storeId){
     initializeData();
     currentView = "genres";
     currentGenre = null;
+    currentGenreGroup = null;
     currentMachine = null;
     loadLogo();
     renderStoreSelector();
@@ -2362,6 +2502,7 @@ function deleteCurrentStore(){
     data = appData.stores[currentStoreId] || createEmptyStore();
     currentView = "genres";
     currentGenre = null;
+    currentGenreGroup = null;
     currentMachine = null;
 
     saveData(()=>{
@@ -2421,6 +2562,7 @@ function restoreDeletedStore(){
     data = appData.stores[currentStoreId];
     currentView = "genres";
     currentGenre = null;
+    currentGenreGroup = null;
     currentMachine = null;
 
     saveData(()=>{
@@ -2449,6 +2591,14 @@ function initializeData(){
         data.trash = [];
     }
 
+    if(!Array.isArray(data.genreGroups)){
+        data.genreGroups = [];
+    }
+
+    if(!data.genreColors || typeof data.genreColors !== "object" || Array.isArray(data.genreColors)){
+        data.genreColors = {};
+    }
+
     if(typeof data.siteLogo !== "string"){
         data.siteLogo = null;
     }
@@ -2456,6 +2606,30 @@ function initializeData(){
     if(typeof data.storageUsageBytes !== "number" || !Number.isFinite(data.storageUsageBytes)){
         data.storageUsageBytes = 0;
     }
+
+    data.genreGroups = data.genreGroups
+    .filter((group)=>group && typeof group === "object")
+    .map((group, index)=>{
+        if(typeof group.id !== "string" || !group.id){
+            group.id = "group_" + Date.now() + "_" + index;
+        }
+
+        if(typeof group.name !== "string" || !group.name){
+            group.name = "대폴더";
+        }
+
+        if(!Array.isArray(group.genres)){
+            group.genres = [];
+        }
+
+        group.genres = group.genres.filter((genre)=>data.genres.includes(genre));
+
+        if(typeof group.color !== "string"){
+            group.color = "";
+        }
+
+        return group;
+    });
 
     data.genres.forEach((genre)=>{
         if(!data.machines[genre] || typeof data.machines[genre] !== "object"){
@@ -2482,9 +2656,57 @@ function initializeData(){
                 machineData.memo = "";
             }
 
+            if(typeof machineData.photoUpdatedAt !== "string"){
+                machineData.photoUpdatedAt = "";
+            }
+
+            if(typeof machineData.memoUpdatedAt !== "string"){
+                machineData.memoUpdatedAt = "";
+            }
+
             if(!Array.isArray(machineData.evidencePhotos)){
                 machineData.evidencePhotos = [];
             }
+
+            machineData.evidencePhotos = machineData.evidencePhotos
+            .filter((photoItem)=>photoItem)
+            .map((photoItem)=>{
+                if(typeof photoItem === "string"){
+                    return {
+                        photo:photoItem,
+                        memo:"",
+                        createdAt:"",
+                        memoUpdatedAt:""
+                    };
+                }
+
+                if(typeof photoItem !== "object"){
+                    return {
+                        photo:"",
+                        memo:"",
+                        createdAt:"",
+                        memoUpdatedAt:""
+                    };
+                }
+
+                if(typeof photoItem.photo !== "string"){
+                    photoItem.photo = "";
+                }
+
+                if(typeof photoItem.memo !== "string"){
+                    photoItem.memo = "";
+                }
+
+                if(typeof photoItem.createdAt !== "string"){
+                    photoItem.createdAt = "";
+                }
+
+                if(typeof photoItem.memoUpdatedAt !== "string"){
+                    photoItem.memoUpdatedAt = "";
+                }
+
+                return photoItem;
+            });
         });
     });
 }
@@ -3517,6 +3739,7 @@ function pushHistory(){
     history.pushState({
         view:currentView,
         genre:currentGenre,
+        group:currentGenreGroup,
         machine:currentMachine,
         store:currentStoreId
     }, "");
@@ -3541,7 +3764,7 @@ function render(push = true){
         const root = document.getElementById("content");
         root.innerHTML = "";
 
-        if(currentView === "genres"){
+        if(currentView === "genres" || currentView === "genreGroup"){
             renderGenres(root);
         }else if(currentView === "machines"){
             renderMachines(root);
@@ -3570,6 +3793,41 @@ function createButton(className, text, onClick){
 
 function createAdminButton(text, onClick){
     return createButton("btn-mini", text, onClick);
+}
+
+function formatActionTime(value){
+    if(!value){
+        return "";
+    }
+
+    const date = new Date(value);
+
+    if(!Number.isFinite(date.getTime())){
+        return "";
+    }
+
+    const pad = (number)=>String(number).padStart(2, "0");
+
+    return date.getFullYear() + "." +
+        pad(date.getMonth() + 1) + "." +
+        pad(date.getDate()) + " " +
+        pad(date.getHours()) + ":" +
+        pad(date.getMinutes()) + ":" +
+        pad(date.getSeconds());
+}
+
+function createActionTimeBadge(label, value, extraClass = ""){
+    const timeText = formatActionTime(value);
+
+    if(!timeText){
+        return null;
+    }
+
+    const badge = document.createElement("div");
+    badge.className = ("action-time " + extraClass).trim();
+    badge.innerText = label + ": " + timeText;
+
+    return badge;
 }
 
 const TILE_COLUMN_OPTIONS = ["2", "3", "4"];
@@ -3625,15 +3883,233 @@ function createMemoExpandControl(checked){
     return label;
 }
 
+const PASTEL_FOLDER_COLORS = [
+    "",
+    "#ffd6d6",
+    "#ffe1ba",
+    "#fff3b0",
+    "#d9f7be",
+    "#b8f2e6",
+    "#cde7ff",
+    "#d9d2ff",
+    "#f3c4fb"
+];
+
+function getGenreGroup(groupId){
+    return (data.genreGroups || []).find((group)=>group.id === groupId) || null;
+}
+
+function getGroupedGenres(){
+    const grouped = new Set();
+
+    (data.genreGroups || []).forEach((group)=>{
+        (group.genres || []).forEach((genre)=>{
+            grouped.add(genre);
+        });
+    });
+
+    return grouped;
+}
+
+function applyFolderColor(item, color){
+    if(!color){
+        return;
+    }
+
+    item.style.background = color;
+    item.style.borderColor = "rgba(0,0,0,0.12)";
+}
+
+function createFolderModal(title){
+    const modal = document.createElement("div");
+    modal.className = "folder-modal";
+
+    const panel = document.createElement("div");
+    panel.className = "folder-panel";
+
+    const heading = document.createElement("h3");
+    heading.innerText = title;
+
+    panel.appendChild(heading);
+    modal.appendChild(panel);
+    document.body.appendChild(modal);
+
+    modal.onclick = (event)=>{
+        if(event.target === modal){
+            modal.remove();
+        }
+    };
+
+    return { modal, panel };
+}
+
+function openFolderColorPicker(targetType, targetId){
+    const currentColor = targetType === "group"
+        ? (getGenreGroup(targetId) || {}).color || ""
+        : data.genreColors[targetId] || "";
+
+    const { modal, panel } = createFolderModal("폴더 색상");
+    const colorGrid = document.createElement("div");
+    colorGrid.className = "color-grid";
+
+    PASTEL_FOLDER_COLORS.forEach((color)=>{
+        const swatch = document.createElement("button");
+        swatch.type = "button";
+        swatch.className = "color-swatch" + (color === currentColor ? " active" : "");
+        swatch.style.background = color || "#fff";
+        swatch.title = color ? color : "색상 없음";
+        swatch.onclick = ()=>{
+            if(targetType === "group"){
+                const group = getGenreGroup(targetId);
+
+                if(group){
+                    group.color = color;
+                }
+            }else if(color){
+                data.genreColors[targetId] = color;
+            }else{
+                delete data.genreColors[targetId];
+            }
+
+            modal.remove();
+            saveData(()=>render(false));
+        };
+
+        colorGrid.appendChild(swatch);
+    });
+
+    panel.appendChild(colorGrid);
+    panel.appendChild(createButton("btn-back", "닫기", ()=>modal.remove()));
+}
+
+function createGenreGroupId(name){
+    return "group_" +
+        sanitizeText(name).replace(/\s+/g, "_") +
+        "_" +
+        Date.now().toString(36);
+}
+
+function addGenreGroup(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    let name = prompt("대폴더명 입력");
+
+    if(name === null){
+        return;
+    }
+
+    name = sanitizeText(name);
+
+    if(!name){
+        alert("대폴더명을 입력하세요.");
+        return;
+    }
+
+    data.genreGroups.push({
+        id:createGenreGroupId(name),
+        name:name,
+        genres:[],
+        color:""
+    });
+
+    saveData(()=>render(false));
+}
+
+function openGenreGroupSettings(groupId){
+    const group = getGenreGroup(groupId);
+
+    if(!group || !requireStoreEdit()){
+        return;
+    }
+
+    const { modal, panel } = createFolderModal("대폴더 설정");
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.value = group.name || "";
+    nameInput.placeholder = "대폴더명";
+    panel.appendChild(nameInput);
+
+    const checks = document.createElement("div");
+    checks.className = "folder-checks";
+
+    data.genres.forEach((genre)=>{
+        const label = document.createElement("label");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = genre;
+        checkbox.checked = (group.genres || []).includes(genre);
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(genre));
+        checks.appendChild(label);
+    });
+
+    panel.appendChild(checks);
+
+    panel.appendChild(createButton("btn-save", "저장", ()=>{
+        const nextName = sanitizeText(nameInput.value);
+
+        if(!nextName){
+            alert("대폴더명을 입력하세요.");
+            return;
+        }
+
+        group.name = nextName;
+        group.genres = Array.from(checks.querySelectorAll("input:checked"))
+        .map((input)=>input.value);
+
+        modal.remove();
+        saveData(()=>render(false));
+    }));
+
+    panel.appendChild(createButton("btn-back", "닫기", ()=>modal.remove()));
+}
+
+function deleteGenreGroup(groupId){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const group = getGenreGroup(groupId);
+
+    if(!group){
+        return;
+    }
+
+    if(!confirm(group.name + " 대폴더를 삭제할까요?\n안에 있던 폴더는 삭제되지 않습니다.")){
+        return;
+    }
+
+    data.genreGroups = data.genreGroups.filter((item)=>item.id !== groupId);
+
+    if(currentGenreGroup === groupId){
+        currentGenreGroup = null;
+        currentView = "genres";
+    }
+
+    saveData(()=>render(false));
+}
+
 function renderGenres(root){
     const layout = localStorage.getItem("genreLayout") || "list";
     const tileColumns = getTileColumns("genreTileColumns");
+    const activeGroup = currentView === "genreGroup" ? getGenreGroup(currentGenreGroup) : null;
+
+    if(currentView === "genreGroup" && !activeGroup){
+        currentView = "genres";
+        currentGenreGroup = null;
+        render(false);
+        return;
+    }
 
     const header = document.createElement("div");
     header.className = "header-row";
 
     const title = document.createElement("h2");
-    title.innerText = "📁 폴더 목록";
+    title.innerText = activeGroup ? "📁 " + activeGroup.name : "📁 폴더 목록";
 
     const select = document.createElement("select");
     select.id = "genre-layout";
@@ -3666,12 +4142,86 @@ function renderGenres(root){
         container.className = "grid-1";
     }
 
-    data.genres.forEach((genre, index)=>{
+    if(!activeGroup){
+        (data.genreGroups || []).forEach((group)=>{
+            const wrap = document.createElement("div");
+            wrap.className = "item-wrapper";
+
+            const item = document.createElement("div");
+            item.className = "item" + (layout === "tile" ? "" : " list-mode");
+            applyFolderColor(item, group.color);
+            item.onclick = ()=>{
+                currentGenreGroup = group.id;
+                currentGenre = null;
+                currentMachine = null;
+                currentView = "genreGroup";
+                render();
+            };
+
+            const info = document.createElement("div");
+            info.className = "info-box";
+
+            const name = document.createElement("b");
+            name.innerText = "🗂 " + group.name;
+
+            const desc = document.createElement("p");
+            desc.innerText = (group.genres || []).length + "개 폴더";
+
+            const settings = document.createElement("div");
+            settings.className = "settings-btn";
+            settings.innerText = "⚙️";
+            settings.onclick = (event)=>{
+                event.stopPropagation();
+                admin.classList.toggle("active");
+            };
+
+            info.appendChild(name);
+            info.appendChild(desc);
+            item.appendChild(info);
+
+            if(canEditCurrentStore()){
+                item.appendChild(settings);
+            }
+
+            const admin = document.createElement("div");
+            admin.className = "admin-menu";
+
+            admin.appendChild(createAdminButton("설정", (event)=>{
+                event.stopPropagation();
+                openGenreGroupSettings(group.id);
+            }));
+
+            admin.appendChild(createAdminButton("색상", (event)=>{
+                event.stopPropagation();
+                openFolderColorPicker("group", group.id);
+            }));
+
+            admin.appendChild(createAdminButton("삭제", (event)=>{
+                event.stopPropagation();
+                deleteGenreGroup(group.id);
+            }));
+
+            wrap.appendChild(item);
+            if(canEditCurrentStore()){
+                wrap.appendChild(admin);
+            }
+            container.appendChild(wrap);
+        });
+    }
+
+    const groupedGenres = getGroupedGenres();
+    const genresToRender = activeGroup
+        ? (activeGroup.genres || []).filter((genre)=>data.genres.includes(genre))
+        : data.genres.filter((genre)=>!groupedGenres.has(genre));
+
+    genresToRender.forEach((genre)=>{
+        const index = data.genres.indexOf(genre);
         const wrap = document.createElement("div");
         wrap.className = "item-wrapper";
 
         const item = document.createElement("div");
         item.className = "item" + (layout === "tile" ? "" : " list-mode");
+        applyFolderColor(item, data.genreColors[genre]);
         item.onclick = ()=>{
             currentGenre = genre;
             currentMachine = null;
@@ -3724,6 +4274,11 @@ function renderGenres(root){
             saveData(()=>render(false));
         }));
 
+        admin.appendChild(createAdminButton("색상", (event)=>{
+            event.stopPropagation();
+            openFolderColorPicker("genre", genre);
+        }));
+
         admin.appendChild(createAdminButton("수정", (event)=>{
             event.stopPropagation();
 
@@ -3753,6 +4308,15 @@ function renderGenres(root){
             data.genres[index] = newName;
             data.machines[newName] = data.machines[genre] || {};
 
+            if(data.genreColors[genre]){
+                data.genreColors[newName] = data.genreColors[genre];
+                delete data.genreColors[genre];
+            }
+
+            (data.genreGroups || []).forEach((group)=>{
+                group.genres = (group.genres || []).map((item)=>item === genre ? newName : item);
+            });
+
             if(newName !== genre){
                 delete data.machines[genre];
             }
@@ -3780,6 +4344,11 @@ function renderGenres(root){
 
             data.genres.splice(index, 1);
             delete data.machines[genre];
+            delete data.genreColors[genre];
+
+            (data.genreGroups || []).forEach((group)=>{
+                group.genres = (group.genres || []).filter((item)=>item !== genre);
+            });
 
             saveData(()=>render(false));
         }));
@@ -3793,39 +4362,52 @@ function renderGenres(root){
 
     root.appendChild(container);
 
+    if(activeGroup){
+        root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+            currentView = "genres";
+            currentGenreGroup = null;
+            render();
+        }));
+        return;
+    }
+
     if(canEditCurrentStore()){
         root.appendChild(createButton("btn-add", "+ 폴더 추가", ()=>{
             if(!requireStoreEdit()){
                 return;
             }
 
-        let name = prompt("폴더명 입력");
+            let name = prompt("폴더명 입력");
 
-        if(name === null){
-            return;
-        }
+            if(name === null){
+                return;
+            }
 
-        name = sanitizeText(name);
+            name = sanitizeText(name);
 
-        if(!name){
-            alert("이름을 입력하세요.");
-            return;
-        }
+            if(!name){
+                alert("이름을 입력하세요.");
+                return;
+            }
 
-        if(!isValidDataKey(name)){
-            alert("이름에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
-            return;
-        }
+            if(!isValidDataKey(name)){
+                alert("이름에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+                return;
+            }
 
-        if(data.genres.includes(name)){
-            alert("이미 존재합니다.");
-            return;
-        }
+            if(data.genres.includes(name)){
+                alert("이미 존재합니다.");
+                return;
+            }
 
-        data.genres.push(name);
-        data.machines[name] = {};
+            data.genres.push(name);
+            data.machines[name] = {};
 
-        saveData(()=>render(false));
+            saveData(()=>render(false));
+        }));
+
+        root.appendChild(createButton("btn-save", "+ 대폴더 추가", ()=>{
+            addGenreGroup();
         }));
     }
 }
@@ -4087,6 +4669,9 @@ function renderDetail(root){
     title.innerText = "🤖 " + currentMachine + " 상세";
     root.appendChild(title);
 
+    const mainPhotoFrame = document.createElement("div");
+    mainPhotoFrame.className = "main-photo-frame";
+
     const mainImg = document.createElement("img");
     mainImg.src = machine.photo || "";
     mainImg.alt = currentMachine + "번 메인 사진";
@@ -4094,7 +4679,16 @@ function renderDetail(root){
     mainImg.onclick = ()=>{
         openModal(machine.photo);
     };
-    root.appendChild(mainImg);
+
+    mainPhotoFrame.appendChild(mainImg);
+
+    const mainPhotoTime = createActionTimeBadge("사진 수정", machine.photoUpdatedAt, "floating-time");
+
+    if(mainPhotoTime){
+        mainPhotoFrame.appendChild(mainPhotoTime);
+    }
+
+    root.appendChild(mainPhotoFrame);
 
     if(canEditCurrentStore()){
         root.appendChild(createButton("btn-save", "📸 메인 사진 수정", ()=>{
@@ -4117,12 +4711,17 @@ function renderDetail(root){
     textarea.readOnly = true;
     textarea.value = machine.memo || "";
 
+    const memoTime = createActionTimeBadge("메모 저장", machine.memoUpdatedAt, "memo-time");
+
     const memoButton = createButton("btn-add", "✏️ 메모 수정", ()=>{
         toggleMemoEdit();
     });
     memoButton.id = "memo-btn";
 
     memoSection.appendChild(memoToggle);
+    if(memoTime){
+        memoSection.appendChild(memoTime);
+    }
     memoSection.appendChild(textarea);
     if(canEditCurrentStore()){
         memoSection.appendChild(memoButton);
@@ -4144,6 +4743,9 @@ function renderDetail(root){
         const evidence = document.createElement("div");
         evidence.className = "evidence-item";
 
+        const photoBox = document.createElement("div");
+        photoBox.className = "evidence-photo-box";
+
         const img = document.createElement("img");
         img.src = photoItem.photo || "";
         img.alt = currentMachine + "번 추가 사진";
@@ -4155,10 +4757,34 @@ function renderDetail(root){
             deleteEvidencePhoto(index);
         });
 
-        evidence.appendChild(img);
-        if(canEditCurrentStore()){
-            evidence.appendChild(deleteButton);
+        photoBox.appendChild(img);
+
+        const photoTime = createActionTimeBadge("등록", photoItem.createdAt, "floating-time");
+
+        if(photoTime){
+            photoBox.appendChild(photoTime);
         }
+
+        if(canEditCurrentStore()){
+            photoBox.appendChild(deleteButton);
+        }
+
+        const photoMemoTime = createActionTimeBadge("메모 저장", photoItem.memoUpdatedAt, "evidence-memo-time");
+
+        const photoMemo = document.createElement("textarea");
+        photoMemo.className = "evidence-memo";
+        photoMemo.placeholder = "사진 메모";
+        photoMemo.value = photoItem.memo || "";
+        photoMemo.readOnly = !canEditCurrentStore();
+        photoMemo.onblur = ()=>{
+            updateEvidenceMemo(index, photoMemo.value);
+        };
+
+        evidence.appendChild(photoBox);
+        if(photoMemoTime){
+            evidence.appendChild(photoMemoTime);
+        }
+        evidence.appendChild(photoMemo);
         evidenceGrid.appendChild(evidence);
     });
 
@@ -4668,12 +5294,14 @@ function toggleMemoEdit(){
     }
 
     data.machines[currentGenre][currentMachine].memo = textarea.value;
+    data.machines[currentGenre][currentMachine].memoUpdatedAt = new Date().toISOString();
 
     saveData(()=>{
         textarea.readOnly = true;
-        textarea.style.pointerEvents = "none";
+        textarea.style.pointerEvents = "auto";
         button.innerText = "✏️ 메모 수정";
         memoEditMode = false;
+        render(false);
         adjustMemoHeight();
         alert("메모 저장 완료");
     });
@@ -4686,6 +5314,29 @@ function openModal(src){
 
     document.getElementById("modal-img").src = src;
     document.getElementById("modal").style.display = "flex";
+}
+
+function updateEvidenceMemo(index, memo){
+    if(!canEditCurrentStore()){
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+
+    if(!machine || !Array.isArray(machine.evidencePhotos) || !machine.evidencePhotos[index]){
+        return;
+    }
+
+    const photoItem = machine.evidencePhotos[index];
+    const nextMemo = String(memo || "");
+
+    if(photoItem.memo === nextMemo){
+        return;
+    }
+
+    photoItem.memo = nextMemo;
+    photoItem.memoUpdatedAt = new Date().toISOString();
+    saveData(()=>render(false));
 }
 
 function deleteEvidencePhoto(index){
@@ -4876,6 +5527,7 @@ function uploadPhoto(type){
         try{
             if(type === 0){
                 machine.photo = await compressAndUploadImage(files[0], "main");
+                machine.photoUpdatedAt = new Date().toISOString();
             }else{
                 if(!Array.isArray(machine.evidencePhotos)){
                     machine.evidencePhotos = [];
@@ -4883,7 +5535,12 @@ function uploadPhoto(type){
 
                 for(let i = 0; i < files.length; i++){
                     const url = await compressAndUploadImage(files[i], "evidence");
-                    machine.evidencePhotos.push({ photo:url });
+                    machine.evidencePhotos.push({
+                        photo:url,
+                        memo:"",
+                        createdAt:new Date().toISOString(),
+                        memoUpdatedAt:""
+                    });
 
                     const percent = Math.round(((i + 1) / files.length) * 100);
                     document.getElementById("progress-fill").style.width = percent + "%";
@@ -4922,6 +5579,7 @@ function toggleMenu(force){
 function goToTrash(){
     currentView = "trash";
     currentGenre = null;
+    currentGenreGroup = null;
     currentMachine = null;
     render();
     toggleMenu(false);
@@ -5071,6 +5729,7 @@ document.getElementById("compression-preview-img").onclick = ()=>{
 document.getElementById("logo-wrap").onclick = ()=>{
     currentView = "genres";
     currentGenre = null;
+    currentGenreGroup = null;
     currentMachine = null;
     render();
 };
@@ -5120,10 +5779,12 @@ window.addEventListener("popstate", (event)=>{
 
         currentView = event.state.view || "genres";
         currentGenre = event.state.genre || null;
+        currentGenreGroup = event.state.group || null;
         currentMachine = event.state.machine || null;
     }else{
         currentView = "genres";
         currentGenre = null;
+        currentGenreGroup = null;
         currentMachine = null;
     }
 
