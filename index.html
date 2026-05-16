@@ -1,335 +1,4955 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>짱오락실 정답지</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; padding: 15px; background: #f0f0f0; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        
-        /* 짱오락실 로고 스타일 텍스트 */
-        .logo-text { 
-            text-align: center; 
-            font-size: 2.2rem; 
-            font-weight: 900; 
-            color: #ffcc00; 
-            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 4px 4px 5px rgba(0,0,0,0.3);
-            margin-bottom: 20px; 
-            cursor: pointer;
-            letter-spacing: -1px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>짱오락실 정답지</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    margin:0;
+    padding:15px;
+    background:#f2f2f2;
+    font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:#222;
+}
+
+.container{
+    width:100%;
+    max-width:700px;
+    margin:0 auto;
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.08);
+}
+
+.top-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.hamburger{
+    font-size:30px;
+    cursor:pointer;
+    user-select:none;
+    padding:6px 12px;
+    border-radius:10px;
+}
+
+.hamburger:active{
+    background:#eee;
+}
+
+.storage-badge{
+    flex-shrink:0;
+    max-width:210px;
+    padding:7px 10px;
+    border:1px solid #ddd;
+    border-radius:999px;
+    background:#fafafa;
+    color:#333;
+    font-size:12px;
+    font-weight:700;
+    line-height:1.25;
+    text-align:right;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.storage-badge.warning{
+    border-color:#ffb74d;
+    background:#fff8e1;
+    color:#a65b00;
+}
+
+.storage-badge.danger{
+    border-color:#ef9a9a;
+    background:#ffebee;
+    color:#b71c1c;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    min-width:0;
+}
+
+.store-select{
+    max-width:120px;
+    padding:7px 8px;
+    font-size:12px;
+    font-weight:700;
+    border-radius:999px;
+}
+
+.logo-wrap{
+    width:100%;
+    text-align:center;
+    margin-bottom:20px;
+    cursor:pointer;
+}
+
+.logo-img{
+    width:100%;
+    max-width:340px;
+    border-radius:12px;
+}
+
+.header-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.header-row h2{
+    margin:0;
+    font-size:18px;
+    min-width:0;
+}
+
+.header-title{
+    max-width:45%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+select{
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:8px;
+    font-size:13px;
+    background:white;
+}
+
+.grid-1{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.item-wrapper{
+    position:relative;
+}
+
+.item{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:12px;
+    overflow:hidden;
+    position:relative;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    transition:0.15s;
+}
+
+.item:active{
+    transform:scale(0.98);
+}
+
+.list-mode{
+    flex-direction:row;
+    align-items:center;
+    padding:10px;
+    gap:12px;
+}
+
+.thumb-box{
+    width:100%;
+    padding-top:125%;
+    background:#fafafa;
+    position:relative;
+    flex-shrink:0;
+}
+
+.list-mode .thumb-box{
+    width:60px;
+    height:75px;
+    padding-top:0;
+}
+
+.thumb-box img{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.info-box{
+    padding:10px;
+    flex-grow:1;
+    min-width:0;
+}
+
+.info-box b{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:14px;
+}
+
+.info-box p{
+    margin:5px 0 0;
+    color:#666;
+    font-size:12px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.no-photo .thumb-box{
+    display:none;
+}
+
+.settings-btn{
+    position:absolute;
+    top:4px;
+    right:4px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.9);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    opacity:0.25;
+    transition:0.2s;
+    z-index:5;
+}
+
+.settings-btn:hover{
+    opacity:1;
+}
+
+.admin-menu{
+    display:none;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:8px;
+    margin-top:5px;
+    border-radius:10px;
+    background:#fafafa;
+    border:1px solid #ddd;
+}
+
+.admin-menu.active{
+    display:flex;
+}
+
+.btn-mini{
+    width:auto;
+    margin-top:0;
+    border-radius:8px;
+    padding:8px 12px;
+    background:white;
+    border:1px solid #ccc;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:700;
+}
+
+button{
+    border:none;
+    width:100%;
+    border-radius:10px;
+    padding:14px;
+    margin-top:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:700;
+}
+
+.btn-add{
+    background:#4CAF50;
+    color:white;
+}
+
+.btn-save{
+    background:#2196F3;
+    color:white;
+}
+
+.btn-back{
+    background:#777;
+    color:white;
+}
+
+.main-img{
+    width:100%;
+    min-height:240px;
+    max-height:560px;
+    object-fit:contain;
+    background:#fafafa;
+    border-radius:12px;
+    border:1px solid #ddd;
+    cursor:pointer;
+}
+
+textarea{
+    width:100%;
+    min-height:150px;
+    border-radius:14px;
+    border:1px solid #ddd;
+    padding:16px;
+    resize:none;
+    font-size:15px;
+    line-height:1.7;
+    background:#fafafa;
+    transition:0.15s;
+}
+
+textarea:focus{
+    outline:none;
+    border:1px solid #4CAF50;
+    background:white;
+}
+
+textarea[readonly]{
+    pointer-events:none;
+}
+
+textarea.expanded-mode{
+    max-height:none;
+    height:auto;
+    overflow-y:hidden;
+}
+
+textarea.scroll-mode{
+    height:300px;
+    max-height:300px;
+    overflow-y:auto;
+}
+
+.evidence-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:12px;
+}
+
+.evidence-item{
+    position:relative;
+    padding-top:100%;
+    border:1px solid #ddd;
+    border-radius:12px;
+    overflow:hidden;
+    background:#fafafa;
+}
+
+.evidence-item img{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    cursor:pointer;
+}
+
+.evidence-delete{
+    position:absolute;
+    top:4px;
+    right:4px;
+    width:28px;
+    height:28px;
+    margin:0;
+    padding:0;
+    background:rgba(0,0,0,0.65);
+    color:white;
+    border-radius:50%;
+    line-height:28px;
+}
+
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.92);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:40000;
+}
+
+.modal img{
+    max-width:95%;
+    max-height:92%;
+    object-fit:contain;
+}
+
+.settings-modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:31000;
+    padding:16px;
+}
+
+.settings-panel{
+    width:100%;
+    max-width:680px;
+    max-height:92vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:12px;
+    padding:18px;
+}
+
+.settings-panel h3{
+    margin:0 0 12px;
+}
+
+.setting-row{
+    margin-top:12px;
+}
+
+.setting-row label{
+    display:block;
+    margin-bottom:6px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.setting-row input[type="number"],
+.setting-row input[type="file"]{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:10px;
+}
+
+.setting-row input[type="range"]{
+    width:100%;
+}
+
+.preview-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:12px;
+}
+
+.preview-box{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:10px;
+    background:#fafafa;
+}
+
+.preview-box img{
+    width:100%;
+    min-height:160px;
+    max-height:260px;
+    object-fit:contain;
+    background:white;
+    border:1px solid #eee;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.preview-box div{
+    margin-top:8px;
+    color:#555;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.settings-actions{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+}
+
+.settings-actions button{
+    margin-top:0;
+}
+
+#loading{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+    z-index:20000;
+    display:none;
+    min-width:240px;
+    text-align:center;
+}
+
+.progress-bar{
+    width:100%;
+    height:10px;
+    background:#ddd;
+    border-radius:999px;
+    overflow:hidden;
+    margin-top:14px;
+}
+
+.progress-fill{
+    width:0%;
+    height:100%;
+    background:#4CAF50;
+    transition:0.2s;
+}
+
+#side-menu{
+    position:fixed;
+    top:0;
+    left:-260px;
+    width:240px;
+    height:100%;
+    background:white;
+    z-index:30000;
+    transition:0.2s;
+    overflow-y:auto;
+    box-shadow:4px 0 12px rgba(0,0,0,0.2);
+}
+
+#side-menu.active{
+    left:0;
+}
+
+#side-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.35);
+    z-index:29999;
+    display:none;
+}
+
+#side-overlay.active{
+    display:block;
+}
+
+.menu-header{
+    padding:20px;
+    font-size:20px;
+    font-weight:700;
+    border-bottom:1px solid #eee;
+}
+
+.menu-item{
+    padding:18px 20px;
+    border-bottom:1px solid #f3f3f3;
+    cursor:pointer;
+}
+
+.menu-item:active{
+    background:#f5f5f5;
+}
+
+.login-panel{
+    display:none;
+    padding:14px;
+    border-bottom:1px solid #eee;
+    background:#fafafa;
+}
+
+.login-panel.active{
+    display:block;
+}
+
+.login-panel input,
+.login-panel select{
+    width:100%;
+    margin-top:8px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:10px;
+    font-size:13px;
+}
+
+.login-checks{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-top:10px;
+    font-size:12px;
+    color:#333;
+}
+
+.login-checks label{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.login-checks input{
+    width:auto;
+    margin:0;
+}
+
+.login-panel button{
+    padding:10px;
+    margin-top:8px;
+    font-size:13px;
+}
+
+.login-status{
+    padding:12px 20px;
+    border-bottom:1px solid #eee;
+    color:#666;
+    font-size:12px;
+    line-height:1.4;
+}
+
+.auth-locked #content{
+    filter:blur(9px);
+    pointer-events:none;
+    user-select:none;
+}
+
+.center-login{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(255,255,255,0.68);
+    z-index:25000;
+}
+
+.auth-locked .center-login{
+    display:flex;
+}
+
+.center-login-card{
+    width:100%;
+    max-width:340px;
+    background:white;
+    border:1px solid #ddd;
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.18);
+}
+
+.center-login-card h3{
+    margin:0 0 12px;
+    font-size:18px;
+}
+
+.center-login-card input{
+    width:100%;
+    margin-top:8px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:11px;
+    font-size:14px;
+}
+
+.center-login-card button{
+    margin-top:10px;
+}
+
+.memo-section{
+    margin-top:20px;
+    position:relative;
+}
+
+.memo-toggle{
+    position:absolute;
+    top:-36px;
+    right:0;
+    width:auto;
+    margin-top:0;
+    padding:7px 10px;
+    font-size:12px;
+    border-radius:8px;
+    background:#f2f2f2;
+    color:#222;
+    border:1px solid #ccc;
+    cursor:pointer;
+}
+
+.detail-section{
+    margin-top:20px;
+    border-top:1px solid #eee;
+    padding-top:15px;
+}
+
+.section-title{
+    font-weight:bold;
+    font-size:13px;
+}
+
+.trash-item{
+    background:#fff7df;
+    border:1px solid #ffd54f;
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.trash-title{
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+.trash-date{
+    font-size:12px;
+    color:#666;
+    margin-bottom:6px;
+}
+
+.trash-dday{
+    font-size:12px;
+    color:#d9534f;
+}
+
+.trash-buttons{
+    display:flex;
+    flex-shrink:0;
+    gap:6px;
+}
+
+.empty-message{
+    text-align:center;
+    color:#999;
+    padding:40px 0;
+}
+
+.sub-text{
+    font-size:13px;
+    color:#666;
+    margin-bottom:15px;
+}
+
+.account-table-wrap{
+    width:100%;
+    overflow-x:auto;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+}
+
+.account-table{
+    width:100%;
+    min-width:760px;
+    border-collapse:collapse;
+    font-size:13px;
+}
+
+.account-table th,
+.account-table td{
+    padding:9px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+    vertical-align:top;
+}
+
+.account-table th{
+    background:#fafafa;
+    font-weight:700;
+}
+
+.account-table input,
+.account-table select{
+    width:100%;
+    min-width:90px;
+    padding:7px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    font-size:12px;
+}
+
+.store-checks{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(120px,1fr));
+    gap:5px 8px;
+}
+
+.store-checks label{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    white-space:nowrap;
+}
+
+.store-checks input{
+    width:auto;
+    min-width:0;
+}
+
+.account-actions{
+    display:flex;
+    gap:6px;
+}
+
+.account-actions .btn-mini{
+    padding:7px 9px;
+}
+
+@media(max-width:600px){
+    .grid-3{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .trash-item{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+<div id="side-overlay"></div>
+
+<div id="side-menu">
+    <div class="menu-header">메뉴</div>
+    <div class="login-status" id="login-status">보기 전용</div>
+    <div class="menu-item" id="login-menu">로그인</div>
+    <div class="login-panel" id="login-panel">
+        <input type="text" id="login-id" placeholder="아이디">
+        <input type="password" id="login-password" placeholder="비밀번호">
+        <div class="login-checks">
+            <label>
+                <input type="checkbox" id="remember-login">
+                아이디/비밀번호 저장
+            </label>
+            <label>
+                <input type="checkbox" id="auto-login">
+                자동 로그인
+            </label>
+        </div>
+        <button class="btn-save" id="login-submit">로그인</button>
+        <button class="btn-back" id="logout-submit">로그아웃</button>
+    </div>
+    <div class="menu-item" id="trash-menu">🗑️ 휴지통</div>
+    <div class="menu-item" id="logo-menu">🖼️ 타이틀 변경</div>
+    <div class="menu-item" id="migrate-menu">🧹 사진 용량 정리</div>
+    <div class="menu-item" id="recount-storage-menu">📊 사진 용량 다시 계산</div>
+    <div class="menu-item" id="rename-store-menu">✏️ 지점명 수정</div>
+    <div class="menu-item" id="delete-store-menu">🗑️ 지점 삭제</div>
+    <div class="menu-item" id="restore-store-menu">♻️ 지점 복구</div>
+    <div class="menu-item" id="compression-menu">🧪 압축 설정</div>
+    <div class="menu-item" id="manage-role-menu">👤 권한 관리</div>
+    <input type="file" id="logo-upload" accept="image/*" style="display:none">
+</div>
+
+<div id="loading">
+    <div id="loading-text">저장 중...</div>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="top-bar">
+        <div class="hamburger" id="menu-button">☰</div>
+        <div class="top-actions">
+            <select class="store-select" id="store-select" title="지점 선택"></select>
+            <div class="storage-badge" id="storage-badge" title="Supabase Storage 예상 사용량">사진 용량 계산 중</div>
+        </div>
+    </div>
+
+    <div class="logo-wrap" id="logo-wrap">
+        <img id="main-logo" class="logo-img" src="" alt="짱오락실 정답지">
+    </div>
+
+    <div id="content">로딩 중...</div>
+</div>
+
+<div class="center-login" id="center-login">
+    <div class="center-login-card">
+        <h3>로그인</h3>
+        <input type="text" id="center-login-id" placeholder="아이디">
+        <input type="password" id="center-login-password" placeholder="비밀번호">
+        <div class="login-checks">
+            <label>
+                <input type="checkbox" id="center-remember-login">
+                아이디/비밀번호 저장
+            </label>
+            <label>
+                <input type="checkbox" id="center-auto-login">
+                자동 로그인
+            </label>
+        </div>
+        <button class="btn-save" id="center-login-submit">로그인</button>
+    </div>
+</div>
+
+<div class="modal" id="modal">
+    <img id="modal-img" alt="확대 이미지">
+</div>
+
+<div class="settings-modal" id="compression-modal">
+    <div class="settings-panel">
+        <h3>사진 압축 설정</h3>
+
+        <div class="setting-row">
+            <label for="compression-quality">
+                화질: <span id="compression-quality-label">62%</span>
+            </label>
+            <input type="range" id="compression-quality" min="1" max="90" step="1">
+        </div>
+
+        <div class="setting-row">
+            <label for="compression-width">최대 가로폭(px)</label>
+            <input type="number" id="compression-width" min="100" max="2400" step="50">
+        </div>
+
+        <div class="setting-row">
+            <label for="compression-test-file">테스트 사진</label>
+            <input type="file" id="compression-test-file" accept="image/*">
+        </div>
+
+        <div class="preview-grid">
+            <div class="preview-box">
+                <img id="compression-original-img" alt="원본 미리보기">
+                <div id="compression-original-info">원본 사진을 선택하세요.</div>
+            </div>
+            <div class="preview-box">
+                <img id="compression-preview-img" alt="압축 미리보기">
+                <div id="compression-preview-info">압축 미리보기가 여기에 표시됩니다.</div>
+            </div>
+        </div>
+
+        <div class="settings-actions">
+            <button class="btn-save" id="compression-preview-btn">미리보기</button>
+            <button class="btn-add" id="compression-save-btn">전 지점 적용</button>
+            <button class="btn-back" id="compression-close-btn">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const firebaseConfig = {
+    apiKey:"AIzaSyCvsQDOECCgFEa9luzFzqMeoAv9aOlPxOA",
+    authDomain:"jjang-yongsan.firebaseapp.com",
+    projectId:"jjang-yongsan",
+    storageBucket:"jjang-yongsan.firebasestorage.app",
+    messagingSenderId:"428220772419",
+    appId:"1:428220772419:web:b39c68cdaa993fbe04e4f6",
+    databaseURL:"https://jjang-yongsan-default-rtdb.firebaseio.com"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth(app);
+
+const supabaseUrl = "https://jrflsevmgmmpcvsjxtxb.supabase.co";
+const supabaseAnonKey = "sb_publishable_b6_zMQwnkqkfauXT5FDbiQ_yICruySQ";
+const supabaseBucket = "jjang_jpg";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+const DEFAULT_LOGO = "https://dummyimage.com/600x200/ffffff/000000&text=%EC%A7%B1%EC%98%A4%EB%9D%BD%EC%8B%A4";
+const TRASH_LIMIT_MS = 30 * 24 * 60 * 60 * 1000;
+const SDK_WRITE_LIMIT_BYTES = 16 * 1024 * 1024;
+const SAFE_WRITE_LIMIT_BYTES = 15 * 1024 * 1024;
+const SAVE_TIMEOUT_MS = 30000;
+const DEFAULT_COMPRESSION_SETTINGS = {
+    maxWidth:1200,
+    jpegQuality:0.62
+};
+const SUPABASE_FREE_STORAGE_BYTES = 1024 * 1024 * 1024;
+const DEFAULT_STORE_ID = "yongsan";
+const DEFAULT_STORE_NAME = "용산점";
+const DEFAULT_MASTER_ID = "game_master";
+const DEFAULT_MASTER_PASSWORD = "0000";
+
+let appData = {
+    stores:{},
+    storeOrder:[DEFAULT_STORE_ID],
+    storeNames:{
+        [DEFAULT_STORE_ID]:DEFAULT_STORE_NAME
+    },
+    siteLogo:null,
+    compressionSettings:{...DEFAULT_COMPRESSION_SETTINGS},
+    storageUsageBytes:0,
+    storeTrash:[],
+    accounts:{},
+    userRoles:{},
+    userPasswords:{}
+};
+
+let data = {
+    genres:[],
+    machines:{},
+    trash:[],
+    siteLogo:null,
+    storageUsageBytes:0
+};
+
+let currentStoreId = localStorage.getItem("currentStoreId") || DEFAULT_STORE_ID;
+let currentView = "genres";
+let currentGenre = null;
+let currentMachine = null;
+let saving = false;
+let saveQueued = false;
+let queuedCallbacks = [];
+let rendering = false;
+let memoEditMode = false;
+let memoInputListener = null;
+let currentLoginId = "";
+let currentAccountCode = "";
+let autoLoginAttempted = false;
+
+function sanitizeText(text){
+    return String(text || "")
+    .replace(/[\uFE0E\uFE0F]/g,"")
+    .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,"")
+    .trim();
+}
+
+function isValidDataKey(text){
+    return !/[.#$/[\]]/.test(text);
+}
+
+function naturalMachineCompare(a, b){
+    const left = String(a).match(/\d+|\D+/g) || [String(a)];
+    const right = String(b).match(/\d+|\D+/g) || [String(b)];
+    const length = Math.max(left.length, right.length);
+
+    for(let i = 0; i < length; i++){
+        if(left[i] === undefined){
+            return -1;
         }
 
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-        .header-row h2 { margin: 0; font-size: 1.1rem; }
-        select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
+        if(right[i] === undefined){
+            return 1;
+        }
 
-        /* 레이아웃 */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .grid-1 { display: flex; flex-direction: column; gap: 8px; }
+        const leftIsNumber = /^\d+$/.test(left[i]);
+        const rightIsNumber = /^\d+$/.test(right[i]);
 
-        /* 아이템 공통 */
-        .item-wrapper { position: relative; margin-bottom: 8px; }
-        .item { background: #fff; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; position: relative; min-height: 50px; justify-content: center; }
-        .item:active { background: #f9f9f9; }
-        .list-mode { flex-direction: row !important; align-items: center; padding: 12px; gap: 12px; }
+        if(leftIsNumber && rightIsNumber){
+            const diff = Number(left[i]) - Number(right[i]);
 
-        /* 폴더 전용 스타일 (타일 모드일 때) */
-        .folder-tile { padding: 20px 10px; text-align: center; }
-        .folder-tile b { font-size: 13px; word-break: break-all; }
+            if(diff !== 0){
+                return diff;
+            }
 
-        /* 설정 아이콘 (반투명) */
-        .settings-btn { position: absolute; top: 2px; right: 2px; padding: 6px; font-size: 16px; cursor: pointer; border-radius: 50%; z-index: 10; background: rgba(255,255,255,0.7); opacity: 0.1; transition: opacity 0.2s; }
-        .settings-btn:hover { opacity: 0.8; }
-        .list-mode .settings-btn { position: static; margin-left: auto; background: none; }
-        
-        .admin-menu { display: none; background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; margin-top: 4px; padding: 5px; gap: 5px; justify-content: flex-end; width: 100%; box-sizing: border-box; }
-        .admin-menu.active { display: flex; }
-        
-        .btn-mini { padding: 5px 12px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; background: #fff; cursor: pointer; white-space: nowrap; }
-        .btn-mini.del { color: #ff4757; border-color: #ff4757; }
+            const lengthDiff = left[i].length - right[i].length;
 
-        /* 썸네일 박스 */
-        .thumb-box { position: relative; width: 100%; padding-top: 130%; background: #fafafa; flex-shrink: 0; }
-        .list-mode .thumb-box { width: 50px; height: 65px; padding-top: 0; }
-        .thumb-box img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; }
-        
-        .info-box { padding: 8px; flex-grow: 1; min-width: 0; }
-        .list-mode .info-box { padding: 0; }
-        .info-box b { font-size: 14px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .info-box p { font-size: 12px; color: #777; margin: 4px 0 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+            if(lengthDiff !== 0){
+                return lengthDiff;
+            }
+        }else{
+            const diff = left[i].localeCompare(right[i], "ko-KR", {
+                numeric:true,
+                sensitivity:"base"
+            });
 
-        .no-photo .thumb-box { display: none; }
-        .no-photo.item { padding: 15px; justify-content: center; align-items: center; text-align: center; }
-        .no-photo.list-mode { justify-content: flex-start; text-align: left; }
+            if(diff !== 0){
+                return diff;
+            }
+        }
+    }
 
-        /* 버튼 */
-        button { padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; font-size: 15px; }
-        .btn-add { background: #4CAF50; color: white; }
-        .btn-back { background: #888; color: white; margin-top: 20px; }
-        .btn-save { background: #2196F3; color: white; }
-        .btn-del-mini { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; z-index: 5; }
+    return String(a).localeCompare(String(b), "ko-KR", {
+        numeric:true,
+        sensitivity:"base"
+    });
+}
 
-        /* 상세페이지 */
-        .main-img { width: 100%; border-radius: 8px; border: 1px solid #ddd; background: #f9f9f9; cursor: pointer; min-height: 200px; object-fit: contain; }
-        textarea { width: 100%; height: 100px; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; resize: none; font-size: 14px; }
-        .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+function createEmptyStore(){
+    return {
+        genres:[],
+        machines:{},
+        trash:[],
+        siteLogo:null,
+        storageUsageBytes:0
+    };
+}
 
-        #modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 9999; }
-        #modal img { max-width: 95%; max-height: 90%; object-fit: contain; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="logo-text" onclick="location.reload()">짱오락실</div>
-        <div id="content">로딩 중...</div>
-    </div>
-    <div id="modal" onclick="this.style.display='none'"><img id="modal-img" src=""></div>
+function hasLegacyStoreShape(value){
+    return value &&
+        typeof value === "object" &&
+        (
+            Array.isArray(value.genres) ||
+            value.machines ||
+            value.trash ||
+            Object.prototype.hasOwnProperty.call(value, "siteLogo")
+        ) &&
+        !value.stores;
+}
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyCvsQDOECCgFEa9luzFzqMeoAv9aOlPxOA",
-            authDomain: "jjang-yongsan.firebaseapp.com",
-            projectId: "jjang-yongsan",
-            storageBucket: "jjang-yongsan.firebasestorage.app",
-            messagingSenderId: "428220772419",
-            appId: "1:428220772419:web:b39c68cdaa993fbe04e4f6",
-            databaseURL: "https://jjang-yongsan-default-rtdb.firebaseio.com"
+function initializeAppData(raw){
+    if(hasLegacyStoreShape(raw)){
+        appData = {
+            stores:{
+                [DEFAULT_STORE_ID]:{
+                    ...createEmptyStore(),
+                    ...raw
+                }
+            },
+            storeOrder:[DEFAULT_STORE_ID],
+            storeNames:{
+                [DEFAULT_STORE_ID]:DEFAULT_STORE_NAME
+            },
+            siteLogo:typeof raw.siteLogo === "string" ? raw.siteLogo : null,
+            compressionSettings:{...DEFAULT_COMPRESSION_SETTINGS},
+            storageUsageBytes:typeof raw.storageUsageBytes === "number"
+                ? raw.storageUsageBytes
+                : Number(raw.storageUsageBytes) || 0,
+            storeTrash:[],
+            accounts:{},
+            userRoles:{},
+            userPasswords:{}
         };
-        
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-        const auth = getAuth(app);
-        
-        let data = { genres: [], machines: {}, genreLayout: 'list', machineLayout: 'thumb-tile' };
-        let currentView = 'genres', currentGenre = null, currentMachine = null, dragIdx = null;
+    }else if(raw && typeof raw === "object" && raw.stores){
+        appData = {
+            stores:raw.stores || {},
+            storeOrder:Array.isArray(raw.storeOrder) ? raw.storeOrder : Object.keys(raw.stores || {}),
+            storeNames:raw.storeNames && typeof raw.storeNames === "object" ? raw.storeNames : {},
+            siteLogo:typeof raw.siteLogo === "string" ? raw.siteLogo : null,
+            compressionSettings:raw.compressionSettings && typeof raw.compressionSettings === "object"
+                ? raw.compressionSettings
+                : {...DEFAULT_COMPRESSION_SETTINGS},
+            storageUsageBytes:typeof raw.storageUsageBytes === "number"
+                ? raw.storageUsageBytes
+                : Number(raw.storageUsageBytes) || 0,
+            storeTrash:Array.isArray(raw.storeTrash) ? raw.storeTrash : [],
+            accounts:raw.accounts && typeof raw.accounts === "object" ? raw.accounts : {},
+            userRoles:raw.userRoles && typeof raw.userRoles === "object" ? raw.userRoles : {},
+            userPasswords:raw.userPasswords && typeof raw.userPasswords === "object" ? raw.userPasswords : {}
+        };
+    }
 
-        window.addEventListener('popstate', (e) => {
-            if (e.state) { currentView = e.state.view; currentGenre = e.state.genre; currentMachine = e.state.machine; render(false); }
-            else { currentView = 'genres'; render(false); }
+    if(!appData.stores || typeof appData.stores !== "object"){
+        appData.stores = {};
+    }
+
+    if(!Array.isArray(appData.storeOrder)){
+        appData.storeOrder = Object.keys(appData.stores);
+    }
+
+    if(!appData.storeNames || typeof appData.storeNames !== "object"){
+        appData.storeNames = {};
+    }
+
+    if(typeof appData.siteLogo !== "string"){
+        appData.siteLogo = null;
+    }
+
+    if(!appData.compressionSettings || typeof appData.compressionSettings !== "object"){
+        appData.compressionSettings = {...DEFAULT_COMPRESSION_SETTINGS};
+    }
+
+    if(typeof appData.storageUsageBytes !== "number" || !Number.isFinite(appData.storageUsageBytes)){
+        appData.storageUsageBytes = Object.values(appData.stores || {}).reduce((sum, store)=>{
+            return sum + (Number(store && store.storageUsageBytes) || 0);
+        }, 0);
+    }
+
+    appData.compressionSettings.maxWidth = Math.min(
+        2400,
+        Math.max(
+            100,
+            Number(appData.compressionSettings.maxWidth) || DEFAULT_COMPRESSION_SETTINGS.maxWidth
+        )
+    );
+
+    appData.compressionSettings.jpegQuality = Math.min(
+        0.9,
+        Math.max(
+            0.01,
+            Number(appData.compressionSettings.jpegQuality) || DEFAULT_COMPRESSION_SETTINGS.jpegQuality
+        )
+    );
+
+    if(!Array.isArray(appData.storeTrash)){
+        appData.storeTrash = [];
+    }
+
+    if(!appData.accounts || typeof appData.accounts !== "object"){
+        appData.accounts = {};
+    }
+
+    if(!appData.userRoles || typeof appData.userRoles !== "object"){
+        appData.userRoles = {};
+    }
+
+    if(!appData.userPasswords || typeof appData.userPasswords !== "object"){
+        appData.userPasswords = {};
+    }
+
+    Object.keys(appData.userRoles || {}).forEach((loginId)=>{
+        const legacyCode = "legacy_" + normalizeLoginId(loginId);
+
+        if(appData.accounts[legacyCode]){
+            return;
+        }
+
+        const legacyRole = appData.userRoles[loginId] || {};
+
+        appData.accounts[legacyCode] = {
+            code:legacyCode,
+            loginId:normalizeLoginId(loginId),
+            passwordHash:appData.userPasswords[loginId] || "",
+            role:legacyRole.role === "master" ? "master" : legacyRole.role === "manager" ? "manager" : "staff",
+            storeIds:legacyRole.role === "manager" && legacyRole.storeId
+                ? [legacyRole.storeId]
+                : Object.keys(appData.stores || {}),
+            createdAt:new Date().toISOString()
+        };
+    });
+
+    if(!appData.stores[DEFAULT_STORE_ID] && appData.storeOrder.length === 0){
+        appData.stores[DEFAULT_STORE_ID] = createEmptyStore();
+        appData.storeOrder.push(DEFAULT_STORE_ID);
+        appData.storeNames[DEFAULT_STORE_ID] = DEFAULT_STORE_NAME;
+    }
+
+    Object.keys(appData.stores).forEach((storeId)=>{
+        if(!appData.storeOrder.includes(storeId)){
+            appData.storeOrder.push(storeId);
+        }
+
+        if(!appData.storeNames[storeId]){
+            appData.storeNames[storeId] = storeId === DEFAULT_STORE_ID ? DEFAULT_STORE_NAME : storeId;
+        }
+    });
+
+    if(!appData.siteLogo){
+        const yongsanStore = appData.stores[DEFAULT_STORE_ID];
+        const firstStore = appData.stores[appData.storeOrder[0]];
+
+        if(yongsanStore && typeof yongsanStore.siteLogo === "string" && yongsanStore.siteLogo){
+            appData.siteLogo = yongsanStore.siteLogo;
+        }else if(firstStore && typeof firstStore.siteLogo === "string" && firstStore.siteLogo){
+            appData.siteLogo = firstStore.siteLogo;
+        }
+    }
+
+    if(!appData.stores[currentStoreId]){
+        currentStoreId = appData.storeOrder[0] || DEFAULT_STORE_ID;
+        localStorage.setItem("currentStoreId", currentStoreId);
+    }
+
+    data = appData.stores[currentStoreId] || createEmptyStore();
+    initializeData();
+    appData.stores[currentStoreId] = data;
+}
+
+function syncCurrentStoreData(){
+    initializeData();
+    appData.stores[currentStoreId] = data;
+
+    if(!appData.storeOrder.includes(currentStoreId)){
+        appData.storeOrder.push(currentStoreId);
+    }
+
+    if(!appData.storeNames[currentStoreId]){
+        appData.storeNames[currentStoreId] = currentStoreId;
+    }
+}
+
+function getCurrentStoreName(){
+    return appData.storeNames[currentStoreId] || currentStoreId;
+}
+
+function getCompressionSettings(){
+    const settings = appData.compressionSettings || DEFAULT_COMPRESSION_SETTINGS;
+
+    return {
+        maxWidth:Math.min(
+            2400,
+            Math.max(100, Number(settings.maxWidth) || DEFAULT_COMPRESSION_SETTINGS.maxWidth)
+        ),
+        jpegQuality:Math.min(
+            0.9,
+            Math.max(0.01, Number(settings.jpegQuality) || DEFAULT_COMPRESSION_SETTINGS.jpegQuality)
+        )
+    };
+}
+
+function getCompressionControlsSettings(){
+    const qualityInput = document.getElementById("compression-quality");
+    const widthInput = document.getElementById("compression-width");
+
+    return {
+        maxWidth:Math.min(
+            2400,
+            Math.max(100, Number(widthInput && widthInput.value) || DEFAULT_COMPRESSION_SETTINGS.maxWidth)
+        ),
+        jpegQuality:Math.min(
+            0.9,
+            Math.max(0.01, (Number(qualityInput && qualityInput.value) || 62) / 100)
+        )
+    };
+}
+
+function updateCompressionQualityLabel(){
+    const qualityInput = document.getElementById("compression-quality");
+    const label = document.getElementById("compression-quality-label");
+
+    if(label && qualityInput){
+        label.innerText = qualityInput.value + "%";
+    }
+}
+
+function setCompressionControls(){
+    const settings = getCompressionSettings();
+    const qualityInput = document.getElementById("compression-quality");
+    const widthInput = document.getElementById("compression-width");
+
+    if(qualityInput){
+        qualityInput.value = Math.round(settings.jpegQuality * 100);
+    }
+
+    if(widthInput){
+        widthInput.value = Math.round(settings.maxWidth);
+    }
+
+    updateCompressionQualityLabel();
+}
+
+function normalizeLoginId(id){
+    return sanitizeText(id)
+    .toLowerCase()
+    .replace(/\s+/g,"_");
+}
+
+async function hashPassword(password){
+    if(!window.crypto || !crypto.subtle){
+        let hash = 5381;
+
+        for(let i = 0; i < password.length; i++){
+            hash = ((hash << 5) + hash) + password.charCodeAt(i);
+            hash = hash >>> 0;
+        }
+
+        return "fallback:" + hash.toString(16);
+    }
+
+    const bytes = new TextEncoder().encode(password);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", bytes);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return "sha256:" + hashArray.map((byte)=>byte.toString(16).padStart(2,"0")).join("");
+}
+
+function getLoginId(){
+    return currentLoginId || "";
+}
+
+function generateAccountCode(){
+    return "acct_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 8);
+}
+
+function findAccountCodeByLoginId(loginId){
+    return Object.keys(appData.accounts || {}).find((code)=>{
+        const account = appData.accounts[code];
+        return account && normalizeLoginId(account.loginId) === loginId;
+    }) || "";
+}
+
+function getCurrentAccount(){
+    if(currentAccountCode === "__default_master"){
+        return {
+            code:"__default_master",
+            loginId:DEFAULT_MASTER_ID,
+            role:"master",
+            storeIds:["*"]
+        };
+    }
+
+    return appData.accounts[currentAccountCode] || null;
+}
+
+function getCurrentUserRole(){
+    const account = getCurrentAccount();
+
+    if(!account){
+        return {
+            role:"viewer"
+        };
+    }
+
+    return {
+        role:account.role || "staff",
+        storeIds:Array.isArray(account.storeIds) ? account.storeIds : []
+    };
+}
+
+function isGameMaster(){
+    return getCurrentUserRole().role === "master";
+}
+
+function canManageStores(){
+    return isGameMaster();
+}
+
+function canAccessStore(storeId){
+    const role = getCurrentUserRole();
+
+    if(role.role === "master"){
+        return true;
+    }
+
+    return role.storeIds.includes(storeId);
+}
+
+function canEditCurrentStore(){
+    const role = getCurrentUserRole();
+
+    if(role.role === "master"){
+        return true;
+    }
+
+    if(role.role === "manager"){
+        return role.storeIds.includes(currentStoreId);
+    }
+
+    return false;
+}
+
+function requireStoreEdit(){
+    if(canEditCurrentStore()){
+        return true;
+    }
+
+    alert("수정 권한이 없습니다. 지점 관리자 또는 본사 계정으로 로그인하세요.");
+    return false;
+}
+
+function requireStoreManage(){
+    if(canManageStores()){
+        return true;
+    }
+
+    alert("본사 게임마스터 권한이 필요합니다.");
+    return false;
+}
+
+function updateAuthUI(){
+    const status = document.getElementById("login-status");
+    const loginMenu = document.getElementById("login-menu");
+    const logoutButton = document.getElementById("logout-submit");
+
+    if(status){
+        const loginId = getLoginId();
+        const role = getCurrentUserRole();
+        let roleName = "보기 전용";
+
+        if(role.role === "master"){
+            roleName = "본사 게임마스터";
+        }else if(role.role === "manager"){
+            roleName = "지점 관리자";
+        }else if(role.role === "staff"){
+            roleName = "일반 직원";
+        }
+
+        status.innerText = loginId
+            ? loginId + "\n" + roleName
+            : "로그인하지 않음\n보기 전용";
+    }
+
+    if(loginMenu){
+        loginMenu.innerText = getLoginId() ? "계정 정보" : "로그인";
+    }
+
+    if(logoutButton){
+        logoutButton.style.display = getLoginId() ? "block" : "none";
+    }
+
+    [
+        "migrate-menu",
+        "recount-storage-menu"
+    ].forEach((id)=>{
+        const element = document.getElementById(id);
+
+        if(element){
+            element.style.display = canEditCurrentStore() ? "block" : "none";
+        }
+    });
+
+    [
+        "logo-menu",
+        "rename-store-menu",
+        "delete-store-menu",
+        "restore-store-menu",
+        "compression-menu",
+        "manage-role-menu"
+    ].forEach((id)=>{
+        const element = document.getElementById(id);
+
+        if(element){
+            element.style.display = canManageStores() ? "block" : "none";
+        }
+    });
+
+    document.body.classList.toggle("auth-locked", !getLoginId());
+}
+
+function applySavedLoginOptions(){
+    const remember = localStorage.getItem("rememberLogin") === "true";
+    const auto = localStorage.getItem("autoLogin") === "true";
+    const savedId = localStorage.getItem("savedLoginId") || "";
+    const savedPassword = localStorage.getItem("savedLoginPassword") || "";
+    const idInput = document.getElementById("login-id");
+    const passwordInput = document.getElementById("login-password");
+    const centerIdInput = document.getElementById("center-login-id");
+    const centerPasswordInput = document.getElementById("center-login-password");
+    const rememberInput = document.getElementById("remember-login");
+    const autoInput = document.getElementById("auto-login");
+    const centerRememberInput = document.getElementById("center-remember-login");
+    const centerAutoInput = document.getElementById("center-auto-login");
+
+    if(rememberInput){
+        rememberInput.checked = remember;
+    }
+
+    if(centerRememberInput){
+        centerRememberInput.checked = remember;
+    }
+
+    if(autoInput){
+        autoInput.checked = auto;
+    }
+
+    if(centerAutoInput){
+        centerAutoInput.checked = auto;
+    }
+
+    if((remember || auto) && idInput){
+        idInput.value = savedId;
+    }
+
+    if((remember || auto) && centerIdInput){
+        centerIdInput.value = savedId;
+    }
+
+    if((remember || auto) && passwordInput){
+        passwordInput.value = savedPassword;
+    }
+
+    if((remember || auto) && centerPasswordInput){
+        centerPasswordInput.value = savedPassword;
+    }
+}
+
+function saveLoginOptions(loginId, password){
+    const rememberInput = document.getElementById("remember-login");
+    const autoInput = document.getElementById("auto-login");
+    const centerRememberInput = document.getElementById("center-remember-login");
+    const centerAutoInput = document.getElementById("center-auto-login");
+    const remember = !!(
+        (rememberInput && rememberInput.checked) ||
+        (centerRememberInput && centerRememberInput.checked)
+    );
+    const auto = !!(
+        (autoInput && autoInput.checked) ||
+        (centerAutoInput && centerAutoInput.checked)
+    );
+    const shouldSaveCredentials = remember || auto;
+
+    localStorage.setItem("rememberLogin", remember ? "true" : "false");
+    localStorage.setItem("autoLogin", auto ? "true" : "false");
+
+    if(rememberInput){
+        rememberInput.checked = remember;
+    }
+
+    if(centerRememberInput){
+        centerRememberInput.checked = remember;
+    }
+
+    if(autoInput){
+        autoInput.checked = auto;
+    }
+
+    if(centerAutoInput){
+        centerAutoInput.checked = auto;
+    }
+
+    if(shouldSaveCredentials){
+        localStorage.setItem("savedLoginId", loginId);
+        localStorage.setItem("savedLoginPassword", password);
+    }else{
+        localStorage.removeItem("savedLoginId");
+        localStorage.removeItem("savedLoginPassword");
+    }
+}
+
+async function validateLogin(loginId, password){
+    const isDefaultMaster =
+        loginId === DEFAULT_MASTER_ID &&
+        password === DEFAULT_MASTER_PASSWORD;
+
+    if(isDefaultMaster){
+        return "__default_master";
+    }
+
+    const accountCode = findAccountCodeByLoginId(loginId);
+    const account = accountCode ? appData.accounts[accountCode] : null;
+    const savedPassword = account && account.passwordHash;
+    const passwordHash = await hashPassword(password);
+    const hasSavedAccount =
+        account &&
+        savedPassword &&
+        (
+            savedPassword === passwordHash ||
+            savedPassword === password
+        );
+
+    if(!hasSavedAccount){
+        throw new Error("아이디 또는 비밀번호가 올바르지 않습니다.");
+    }
+
+    return accountCode;
+}
+
+async function tryAutoLogin(){
+    if(autoLoginAttempted || currentLoginId){
+        return;
+    }
+
+    autoLoginAttempted = true;
+
+    if(localStorage.getItem("autoLogin") !== "true"){
+        return;
+    }
+
+    const savedId = normalizeLoginId(localStorage.getItem("savedLoginId") || "");
+    const savedPassword = localStorage.getItem("savedLoginPassword") || "";
+
+    if(!savedId || !savedPassword){
+        return;
+    }
+
+    try{
+        const accountCode = await validateLogin(savedId, savedPassword);
+        currentLoginId = savedId;
+        currentAccountCode = accountCode;
+        updateAuthUI();
+        render(false);
+    }catch(err){
+        console.error(err);
+        localStorage.setItem("autoLogin", "false");
+        const autoInput = document.getElementById("auto-login");
+
+        if(autoInput){
+            autoInput.checked = false;
+        }
+    }
+}
+
+async function loginWithId(){
+    const idInput = document.getElementById("login-id");
+    const passwordInput = document.getElementById("login-password");
+    const centerIdInput = document.getElementById("center-login-id");
+    const centerPasswordInput = document.getElementById("center-login-password");
+    const rawId =
+        idInput && idInput.value
+            ? idInput.value
+            : centerIdInput
+                ? centerIdInput.value
+                : "";
+    const rawPassword =
+        passwordInput && passwordInput.value
+            ? passwordInput.value
+            : centerPasswordInput
+                ? centerPasswordInput.value
+                : "";
+    const loginId = normalizeLoginId(rawId);
+    const password = rawPassword;
+
+    if(!loginId || !password){
+        alert("아이디와 비밀번호를 입력하세요.");
+        return;
+    }
+
+    const interval = showLoading("로그인 중...");
+
+    try{
+        const accountCode = await validateLogin(loginId, password);
+        currentLoginId = loginId;
+        currentAccountCode = accountCode;
+        saveLoginOptions(loginId, password);
+
+        if(passwordInput){
+            const shouldKeepPassword =
+                localStorage.getItem("rememberLogin") === "true" ||
+                localStorage.getItem("autoLogin") === "true";
+
+            if(!shouldKeepPassword){
+                passwordInput.value = "";
+            }
+        }
+
+        if(centerPasswordInput){
+            const shouldKeepPassword =
+                localStorage.getItem("rememberLogin") === "true" ||
+                localStorage.getItem("autoLogin") === "true";
+
+            if(!shouldKeepPassword){
+                centerPasswordInput.value = "";
+            }
+        }
+
+        updateAuthUI();
+        render(false);
+        alert("로그인되었습니다.");
+    }catch(err){
+        console.error(err);
+        alert("로그인 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+async function logoutUser(){
+    const interval = showLoading("로그아웃 중...");
+
+    try{
+        currentLoginId = "";
+        currentAccountCode = "";
+        autoLoginAttempted = true;
+        localStorage.setItem("autoLogin", "false");
+
+        const autoInput = document.getElementById("auto-login");
+        const centerAutoInput = document.getElementById("center-auto-login");
+
+        if(autoInput){
+            autoInput.checked = false;
+        }
+
+        if(centerAutoInput){
+            centerAutoInput.checked = false;
+        }
+
+        updateAuthUI();
+        render(false);
+        alert("로그아웃되었습니다.");
+    }catch(err){
+        console.error(err);
+        alert("로그아웃 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+function getStoreSelectionPrompt(){
+    return appData.storeOrder
+    .filter((storeId)=>appData.stores[storeId])
+    .map((storeId, index)=>{
+        return (index + 1) + ". " + (appData.storeNames[storeId] || storeId);
+    })
+    .join("\n");
+}
+
+function parseStoreSelection(input){
+    const activeStoreIds = appData.storeOrder.filter((storeId)=>appData.stores[storeId]);
+
+    if(String(input).trim().toLowerCase() === "all"){
+        return activeStoreIds;
+    }
+
+    const selected = String(input)
+    .split(",")
+    .map((value)=>Number(value.trim()) - 1)
+    .filter((index)=>Number.isInteger(index) && index >= 0 && index < activeStoreIds.length)
+    .map((index)=>activeStoreIds[index]);
+
+    return Array.from(new Set(selected));
+}
+
+function describeAccount(account){
+    const roleName =
+        account.role === "master"
+            ? "본사 게임마스터"
+            : account.role === "manager"
+                ? "지점 관리자"
+                : "일반 직원";
+    const storeNames = account.storeIds && account.storeIds.includes("*")
+        ? "전체 지점"
+        : (account.storeIds || []).map((storeId)=>appData.storeNames[storeId] || storeId).join(", ");
+
+    return account.code + " / " + account.loginId + " / " + roleName + " / " + (storeNames || "접속 지점 없음");
+}
+
+async function createManagedAccount(){
+    let loginId = prompt("새 계정 아이디를 입력하세요.");
+
+    if(loginId === null){
+        return;
+    }
+
+    loginId = normalizeLoginId(loginId);
+
+    if(!loginId){
+        alert("아이디를 입력하세요.");
+        return;
+    }
+
+    if(loginId === DEFAULT_MASTER_ID || findAccountCodeByLoginId(loginId)){
+        alert("이미 사용 중인 아이디입니다.");
+        return;
+    }
+
+    let password = prompt("비밀번호를 입력하세요.");
+
+    if(password === null){
+        return;
+    }
+
+    password = password.trim();
+
+    if(!password){
+        alert("비밀번호를 입력하세요.");
+        return;
+    }
+
+    const roleChoice = prompt(
+        "권한을 선택하세요.\n" +
+        "1. 지점 관리자 (수정 가능)\n" +
+        "2. 일반 직원 (보기 가능)"
+    );
+
+    if(roleChoice === null){
+        return;
+    }
+
+    const role = roleChoice === "1" ? "manager" : "staff";
+    const storeInput = prompt(
+        "접속 가능한 지점 번호를 입력하세요.\n" +
+        "여러 지점은 쉼표로 구분, 전체는 all 입력\n\n" +
+        getStoreSelectionPrompt()
+    );
+
+    if(storeInput === null){
+        return;
+    }
+
+    const storeIds = parseStoreSelection(storeInput);
+
+    if(storeIds.length === 0){
+        alert("접속 가능한 지점을 1개 이상 선택하세요.");
+        return;
+    }
+
+    const code = generateAccountCode();
+
+    appData.accounts[code] = {
+        code:code,
+        loginId:loginId,
+        passwordHash:await hashPassword(password),
+        role:role,
+        storeIds:storeIds,
+        createdAt:new Date().toISOString()
+    };
+
+    await saveData(()=>{
+        alert("계정이 생성되었습니다.\n식별 코드: " + code);
+    });
+}
+
+async function editManagedAccount(){
+    const accounts = Object.values(appData.accounts || {});
+
+    if(accounts.length === 0){
+        alert("관리할 계정이 없습니다.");
+        return;
+    }
+
+    const list = accounts.map((account, index)=>{
+        return (index + 1) + ". " + describeAccount(account);
+    }).join("\n");
+    const input = prompt("수정할 계정 번호 또는 식별 코드를 입력하세요.\n\n" + list);
+
+    if(input === null){
+        return;
+    }
+
+    const byIndex = accounts[Number(input) - 1];
+    const account = appData.accounts[input] || byIndex;
+
+    if(!account){
+        alert("계정을 찾을 수 없습니다.");
+        return;
+    }
+
+    const action = prompt(
+        "수정 항목을 선택하세요.\n" +
+        "1. 아이디 변경\n" +
+        "2. 비밀번호 변경\n" +
+        "3. 권한 변경\n" +
+        "4. 접속 지점 변경\n" +
+        "5. 계정 삭제"
+    );
+
+    if(action === null){
+        return;
+    }
+
+    if(action === "1"){
+        let newLoginId = prompt("새 아이디를 입력하세요.", account.loginId);
+
+        if(newLoginId === null){
+            return;
+        }
+
+        newLoginId = normalizeLoginId(newLoginId);
+
+        if(!newLoginId){
+            alert("아이디를 입력하세요.");
+            return;
+        }
+
+        const existingCode = findAccountCodeByLoginId(newLoginId);
+
+        if(newLoginId === DEFAULT_MASTER_ID || (existingCode && existingCode !== account.code)){
+            alert("이미 사용 중인 아이디입니다.");
+            return;
+        }
+
+        account.loginId = newLoginId;
+    }else if(action === "2"){
+        let newPassword = prompt("새 비밀번호를 입력하세요.");
+
+        if(newPassword === null){
+            return;
+        }
+
+        newPassword = newPassword.trim();
+
+        if(!newPassword){
+            alert("비밀번호를 입력하세요.");
+            return;
+        }
+
+        account.passwordHash = await hashPassword(newPassword);
+    }else if(action === "3"){
+        const roleChoice = prompt(
+            "권한을 선택하세요.\n" +
+            "1. 지점 관리자 (수정 가능)\n" +
+            "2. 일반 직원 (보기 가능)",
+            account.role === "manager" ? "1" : "2"
+        );
+
+        if(roleChoice === null){
+            return;
+        }
+
+        account.role = roleChoice === "1" ? "manager" : "staff";
+    }else if(action === "4"){
+        const storeInput = prompt(
+            "접속 가능한 지점 번호를 입력하세요.\n" +
+            "여러 지점은 쉼표로 구분, 전체는 all 입력\n\n" +
+            getStoreSelectionPrompt()
+        );
+
+        if(storeInput === null){
+            return;
+        }
+
+        const storeIds = parseStoreSelection(storeInput);
+
+        if(storeIds.length === 0){
+            alert("접속 가능한 지점을 1개 이상 선택하세요.");
+            return;
+        }
+
+        account.storeIds = storeIds;
+    }else if(action === "5"){
+        if(!confirm(account.loginId + " 계정을 삭제할까요?")){
+            return;
+        }
+
+        delete appData.accounts[account.code];
+
+        if(currentAccountCode === account.code){
+            currentAccountCode = "";
+            currentLoginId = "";
+        }
+    }else{
+        alert("번호를 올바르게 입력하세요.");
+        return;
+    }
+
+    await saveData(()=>{
+        updateAuthUI();
+        renderStoreSelector();
+        render(false);
+        alert("계정 정보가 저장되었습니다.");
+    });
+}
+
+async function manageUserRole(){
+    if(!requireStoreManage()){
+        return;
+    }
+
+    currentView = "accounts";
+    currentGenre = null;
+    currentMachine = null;
+    render();
+    toggleMenu(false);
+}
+
+function renderStoreSelector(){
+    const select = document.getElementById("store-select");
+
+    if(!select){
+        return;
+    }
+
+    select.innerHTML = "";
+
+    const visibleStoreIds = appData.storeOrder.filter((storeId)=>{
+        return appData.stores[storeId] && (!getLoginId() || canAccessStore(storeId));
+    });
+
+    if(getLoginId() && visibleStoreIds.length > 0 && !visibleStoreIds.includes(currentStoreId)){
+        currentStoreId = visibleStoreIds[0];
+        data = appData.stores[currentStoreId];
+    }
+
+    appData.storeOrder.forEach((storeId)=>{
+        if(!appData.stores[storeId]){
+            return;
+        }
+
+        if(getLoginId() && !canAccessStore(storeId)){
+            return;
+        }
+
+        const option = document.createElement("option");
+        option.value = storeId;
+        option.innerText = appData.storeNames[storeId] || storeId;
+        select.appendChild(option);
+    });
+
+    if(canManageStores()){
+        const addOption = document.createElement("option");
+        addOption.value = "__add_store__";
+        addOption.innerText = "+ 지점 추가";
+        select.appendChild(addOption);
+    }
+
+    select.value = currentStoreId;
+}
+
+function createStoreId(name){
+    const cleaned = sanitizeText(name)
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9가-힣_-]/g, "_")
+    .replace(/_+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+    return cleaned || "store_" + Date.now();
+}
+
+function addStore(){
+    if(!requireStoreManage()){
+        renderStoreSelector();
+        return;
+    }
+
+    let storeName = prompt("추가할 지점명 입력");
+
+    if(storeName === null){
+        renderStoreSelector();
+        return;
+    }
+
+    storeName = sanitizeText(storeName);
+
+    if(!storeName){
+        alert("지점명을 입력하세요.");
+        renderStoreSelector();
+        return;
+    }
+
+    if(!isValidDataKey(storeName)){
+        alert("지점명에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+        renderStoreSelector();
+        return;
+    }
+
+    let storeId = createStoreId(storeName);
+    let suffix = 2;
+
+    while(appData.stores[storeId]){
+        storeId = createStoreId(storeName) + "_" + suffix;
+        suffix++;
+    }
+
+    appData.stores[storeId] = createEmptyStore();
+    appData.storeOrder.push(storeId);
+    appData.storeNames[storeId] = storeName;
+
+    currentStoreId = storeId;
+    localStorage.setItem("currentStoreId", currentStoreId);
+    data = appData.stores[currentStoreId];
+    currentView = "genres";
+    currentGenre = null;
+    currentMachine = null;
+
+    saveData(()=>{
+        renderStoreSelector();
+        loadLogo();
+        render(false);
+    });
+}
+
+function switchStore(storeId){
+    if(storeId === "__add_store__"){
+        addStore();
+        return;
+    }
+
+    if(!appData.stores[storeId]){
+        renderStoreSelector();
+        return;
+    }
+
+    if(getLoginId() && !canAccessStore(storeId)){
+        alert("이 지점에 접속할 권한이 없습니다.");
+        renderStoreSelector();
+        return;
+    }
+
+    syncCurrentStoreData();
+    currentStoreId = storeId;
+    localStorage.setItem("currentStoreId", currentStoreId);
+    data = appData.stores[currentStoreId];
+    initializeData();
+    currentView = "genres";
+    currentGenre = null;
+    currentMachine = null;
+    loadLogo();
+    renderStoreSelector();
+    render(false);
+}
+
+function renameCurrentStore(){
+    if(!requireStoreManage()){
+        return;
+    }
+
+    const oldName = getCurrentStoreName();
+    let newName = prompt("지점명 수정", oldName);
+
+    if(newName === null){
+        return;
+    }
+
+    newName = sanitizeText(newName);
+
+    if(!newName){
+        alert("지점명을 입력하세요.");
+        return;
+    }
+
+    if(!isValidDataKey(newName)){
+        alert("지점명에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+        return;
+    }
+
+    appData.storeNames[currentStoreId] = newName;
+
+    saveData(()=>{
+        renderStoreSelector();
+        updateStorageBadge();
+        toggleMenu(false);
+        alert("지점명이 수정되었습니다.");
+    });
+}
+
+function getActiveStoreCount(){
+    return appData.storeOrder.filter((storeId)=>appData.stores[storeId]).length;
+}
+
+function deleteCurrentStore(){
+    if(!requireStoreManage()){
+        return;
+    }
+
+    if(getActiveStoreCount() <= 1){
+        alert("지점은 최소 1개 이상 필요합니다.");
+        return;
+    }
+
+    const storeId = currentStoreId;
+    const storeName = getCurrentStoreName();
+
+    if(!confirm(
+        storeName +
+        " 지점을 삭제하시겠습니까?\n지점 복구 메뉴에서 되살릴 수 있습니다."
+    )){
+        return;
+    }
+
+    appData.storeTrash.push({
+        storeId:storeId,
+        name:storeName,
+        data:appData.stores[storeId],
+        deletedAt:new Date().toISOString()
+    });
+
+    delete appData.stores[storeId];
+    delete appData.storeNames[storeId];
+    appData.storeOrder = appData.storeOrder.filter((id)=>id !== storeId);
+
+    currentStoreId = appData.storeOrder.find((id)=>appData.stores[id]) || DEFAULT_STORE_ID;
+    localStorage.setItem("currentStoreId", currentStoreId);
+    data = appData.stores[currentStoreId] || createEmptyStore();
+    currentView = "genres";
+    currentGenre = null;
+    currentMachine = null;
+
+    saveData(()=>{
+        loadLogo();
+        renderStoreSelector();
+        render(false);
+        toggleMenu(false);
+        alert("지점이 삭제되었습니다.");
+    });
+}
+
+function restoreDeletedStore(){
+    if(!requireStoreManage()){
+        return;
+    }
+
+    if(!Array.isArray(appData.storeTrash) || appData.storeTrash.length === 0){
+        alert("복구할 지점이 없습니다.");
+        return;
+    }
+
+    const list = appData.storeTrash
+    .map((item, index)=>{
+        return (index + 1) + ". " + item.name + " (" + new Date(item.deletedAt).toLocaleString("ko-KR") + ")";
+    })
+    .join("\n");
+
+    const input = prompt("복구할 지점 번호를 입력하세요.\n\n" + list);
+
+    if(input === null){
+        return;
+    }
+
+    const index = Number(input) - 1;
+
+    if(!Number.isInteger(index) || index < 0 || index >= appData.storeTrash.length){
+        alert("번호를 올바르게 입력하세요.");
+        return;
+    }
+
+    const item = appData.storeTrash[index];
+    let storeId = item.storeId || createStoreId(item.name);
+    let suffix = 2;
+
+    while(appData.stores[storeId]){
+        storeId = (item.storeId || createStoreId(item.name)) + "_" + suffix;
+        suffix++;
+    }
+
+    appData.stores[storeId] = item.data || createEmptyStore();
+    appData.storeNames[storeId] = item.name || storeId;
+    appData.storeOrder.push(storeId);
+    appData.storeTrash.splice(index, 1);
+
+    currentStoreId = storeId;
+    localStorage.setItem("currentStoreId", currentStoreId);
+    data = appData.stores[currentStoreId];
+    currentView = "genres";
+    currentGenre = null;
+    currentMachine = null;
+
+    saveData(()=>{
+        loadLogo();
+        renderStoreSelector();
+        render(false);
+        toggleMenu(false);
+        alert("지점이 복구되었습니다.");
+    });
+}
+
+function initializeData(){
+    if(!data || typeof data !== "object"){
+        data = {};
+    }
+
+    if(!Array.isArray(data.genres)){
+        data.genres = [];
+    }
+
+    if(!data.machines || typeof data.machines !== "object" || Array.isArray(data.machines)){
+        data.machines = {};
+    }
+
+    if(!Array.isArray(data.trash)){
+        data.trash = [];
+    }
+
+    if(typeof data.siteLogo !== "string"){
+        data.siteLogo = null;
+    }
+
+    if(typeof data.storageUsageBytes !== "number" || !Number.isFinite(data.storageUsageBytes)){
+        data.storageUsageBytes = 0;
+    }
+
+    data.genres.forEach((genre)=>{
+        if(!data.machines[genre] || typeof data.machines[genre] !== "object"){
+            data.machines[genre] = {};
+        }
+
+        Object.keys(data.machines[genre]).forEach((machine)=>{
+            const machineData = data.machines[genre][machine];
+
+            if(!machineData || typeof machineData !== "object" || Array.isArray(machineData)){
+                data.machines[genre][machine] = {
+                    photo:"",
+                    memo:"",
+                    evidencePhotos:[]
+                };
+                return;
+            }
+
+            if(typeof machineData.photo !== "string"){
+                machineData.photo = "";
+            }
+
+            if(typeof machineData.memo !== "string"){
+                machineData.memo = "";
+            }
+
+            if(!Array.isArray(machineData.evidencePhotos)){
+                machineData.evidencePhotos = [];
+            }
+        });
+    });
+}
+
+function autoTrashClean(){
+    if(!Array.isArray(data.trash)){
+        data.trash = [];
+    }
+
+    const now = Date.now();
+
+    data.trash = data.trash.filter((item)=>{
+        const deletedTime = new Date(item.deletedAt).getTime();
+        return Number.isFinite(deletedTime) && now - deletedTime < TRASH_LIMIT_MS;
+    });
+}
+
+function getJsonSizeBytes(value){
+    const json = JSON.stringify(value);
+
+    if(window.TextEncoder){
+        return new TextEncoder().encode(json).length;
+    }
+
+    return new Blob([json]).size;
+}
+
+function formatBytes(bytes){
+    if(bytes >= 1024 * 1024){
+        return (bytes / 1024 / 1024).toFixed(1) + "MB";
+    }
+
+    if(bytes >= 1024){
+        return (bytes / 1024).toFixed(1) + "KB";
+    }
+
+    return bytes + "B";
+}
+
+function addStorageUsage(bytes){
+    appData.storageUsageBytes =
+        (Number(appData.storageUsageBytes) || 0) +
+        bytes;
+    updateStorageBadge();
+}
+
+function updateStorageBadge(){
+    const badge = document.getElementById("storage-badge");
+
+    if(!badge){
+        return;
+    }
+
+    const used = Math.max(0, appData.storageUsageBytes || 0);
+    const ratio = used / SUPABASE_FREE_STORAGE_BYTES;
+    const remaining = Math.max(0, SUPABASE_FREE_STORAGE_BYTES - used);
+    const dbSize = getJsonSizeBytes(appData);
+
+    badge.classList.toggle("warning", ratio >= 0.7 && ratio < 0.9);
+    badge.classList.toggle("danger", ratio >= 0.9);
+
+    badge.innerText =
+        "사진 " +
+        formatBytes(used) +
+        " / " +
+        formatBytes(SUPABASE_FREE_STORAGE_BYTES);
+
+    badge.title =
+        "Supabase Storage 전체 사용량: " +
+        formatBytes(used) +
+        " 사용, " +
+        formatBytes(remaining) +
+        " 남음\nFirebase DB 크기: " +
+        formatBytes(dbSize) +
+        "\n이 값은 이 앱에서 업로드/정리한 사진 기준의 예상치입니다.";
+}
+
+function getSupabaseFileSize(file){
+    if(!file || !file.metadata){
+        return 0;
+    }
+
+    if(typeof file.metadata.size === "number"){
+        return file.metadata.size;
+    }
+
+    if(typeof file.metadata.contentLength === "number"){
+        return file.metadata.contentLength;
+    }
+
+    return 0;
+}
+
+function isSupabaseFolder(file){
+    return file && !file.metadata;
+}
+
+async function getSupabaseStorageUsage(prefix = ""){
+    let total = 0;
+    let offset = 0;
+    const limit = 1000;
+
+    while(true){
+        const { data:files, error } = await supabase
+        .storage
+        .from(supabaseBucket)
+        .list(prefix, {
+            limit:limit,
+            offset:offset,
+            sortBy:{
+                column:"name",
+                order:"asc"
+            }
         });
 
-        signInAnonymously(auth).then(() => {
-            onValue(ref(database, 'dollCraneData'), (snap) => {
-                if (snap.exists()) data = { ...data, ...snap.val() };
-                if (!window.history.state) history.replaceState({view: 'genres'}, '');
-                render(false);
+        if(error){
+            throw error;
+        }
+
+        if(!files || files.length === 0){
+            break;
+        }
+
+        for(const file of files){
+            if(isSupabaseFolder(file)){
+                const childPrefix = prefix ? prefix + "/" + file.name : file.name;
+                total += await getSupabaseStorageUsage(childPrefix);
+            }else{
+                total += getSupabaseFileSize(file);
+            }
+        }
+
+        if(files.length < limit){
+            break;
+        }
+
+        offset += limit;
+    }
+
+    return total;
+}
+
+async function recountStorageUsage(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    toggleMenu(false);
+
+    const interval = showLoading("📊 사진 용량 다시 계산 중...");
+
+    try{
+        const total = await calculateTotalStorageUsage();
+
+        appData.storageUsageBytes = total;
+
+        await saveData(()=>{
+            updateStorageBadge();
+        });
+
+        alert("사진 용량 계산 완료: " + formatBytes(total));
+    }catch(err){
+        console.error(err);
+        alert(
+            "사진 용량 계산 실패: " +
+            err.message +
+            "\nSupabase Storage에서 파일 목록 조회 권한이 필요합니다."
+        );
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+function withTimeout(promise, milliseconds, message){
+    let timeoutId = null;
+
+    const timeout = new Promise((_, reject)=>{
+        timeoutId = setTimeout(()=>{
+            reject(new Error(message));
+        }, milliseconds);
+    });
+
+    return Promise.race([promise, timeout])
+    .finally(()=>{
+        clearTimeout(timeoutId);
+    });
+}
+
+function showLoading(text = "저장 중..."){
+    const loading = document.getElementById("loading");
+    const loadingText = document.getElementById("loading-text");
+    const fill = document.getElementById("progress-fill");
+
+    loading.style.display = "block";
+    loadingText.innerText = text;
+    fill.style.width = "15%";
+
+    let percent = 15;
+
+    const interval = setInterval(()=>{
+        percent += Math.random() * 15;
+
+        if(percent > 90){
+            percent = 90;
+        }
+
+        fill.style.width = percent + "%";
+    }, 200);
+
+    return interval;
+}
+
+function hideLoading(interval){
+    clearInterval(interval);
+
+    const fill = document.getElementById("progress-fill");
+    fill.style.width = "100%";
+
+    setTimeout(()=>{
+        document.getElementById("loading").style.display = "none";
+        fill.style.width = "0%";
+    }, 250);
+}
+
+async function saveData(callback){
+    if(callback){
+        queuedCallbacks.push(callback);
+    }
+
+    if(saving){
+        saveQueued = true;
+        return;
+    }
+
+    saving = true;
+    const interval = showLoading("💾 저장 중...");
+
+    try{
+        syncCurrentStoreData();
+
+        const dataSize = getJsonSizeBytes(appData);
+
+        if(dataSize > SAFE_WRITE_LIMIT_BYTES){
+            throw new Error(
+                "데이터가 너무 큽니다. 현재 " +
+                formatBytes(dataSize) +
+                " / SDK 1회 저장 제한 " +
+                formatBytes(SDK_WRITE_LIMIT_BYTES) +
+                " 입니다. 오래된 사진을 줄이거나 Supabase Storage로 분리해야 합니다."
+            );
+        }
+
+        await withTimeout(
+            set(ref(database, "dollCraneData"), appData),
+            SAVE_TIMEOUT_MS,
+            "저장 응답이 30초 이상 없습니다. 인터넷 연결, Firebase 권한, 데이터 용량을 확인하세요."
+        );
+
+        hideLoading(interval);
+        updateStorageBadge();
+
+        const callbacks = queuedCallbacks.splice(0);
+        callbacks.forEach((fn)=>{
+            try{
+                fn();
+            }catch(err){
+                console.error(err);
+            }
+        });
+    }catch(err){
+        hideLoading(interval);
+        console.error(err);
+        alert("저장 실패: " + err.message);
+    }finally{
+        saving = false;
+
+        if(saveQueued){
+            saveQueued = false;
+            saveData();
+        }
+    }
+}
+
+function compressImage(file){
+    return new Promise((resolve, reject)=>{
+        const reader = new FileReader();
+
+        reader.onerror = ()=>{
+            reject(new Error("파일 읽기 실패"));
+        };
+
+        reader.onload = (event)=>{
+            const img = new Image();
+
+            img.onerror = ()=>{
+                reject(new Error("이미지 로드 실패"));
+            };
+
+            img.onload = ()=>{
+                try{
+                    const settings = getCompressionSettings();
+                    const canvas = document.createElement("canvas");
+
+                    let width = img.width;
+                    let height = img.height;
+
+                    if(width > settings.maxWidth){
+                        height *= settings.maxWidth / width;
+                        width = settings.maxWidth;
+                    }
+
+                    canvas.width = Math.round(width);
+                    canvas.height = Math.round(height);
+
+                    const ctx = canvas.getContext("2d");
+
+                    if(!ctx){
+                        reject(new Error("Canvas 오류"));
+                        return;
+                    }
+
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    resolve(canvas.toDataURL("image/jpeg", settings.jpegQuality));
+                }catch(err){
+                    reject(err);
+                }
+            };
+
+            img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+
+function compressDataUrl(dataUrl, overrideSettings){
+    return new Promise((resolve, reject)=>{
+        const img = new Image();
+
+        img.onerror = ()=>{
+            reject(new Error("이미지 로드 실패"));
+        };
+
+        img.onload = ()=>{
+            try{
+                const settings = overrideSettings || getCompressionSettings();
+                const canvas = document.createElement("canvas");
+                let width = img.width;
+                let height = img.height;
+
+                if(width > settings.maxWidth){
+                    height *= settings.maxWidth / width;
+                    width = settings.maxWidth;
+                }
+
+                canvas.width = Math.round(width);
+                canvas.height = Math.round(height);
+
+                const ctx = canvas.getContext("2d");
+
+                if(!ctx){
+                    reject(new Error("Canvas 오류"));
+                    return;
+                }
+
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                resolve(canvas.toDataURL("image/jpeg", settings.jpegQuality));
+            }catch(err){
+                reject(err);
+            }
+        };
+
+        img.src = dataUrl;
+    });
+}
+
+function isDataUrl(value){
+    return typeof value === "string" && /^data:image\/[a-zA-Z0-9.+-]+;base64,/.test(value);
+}
+
+function readFileAsDataUrl(file){
+    return new Promise((resolve, reject)=>{
+        const reader = new FileReader();
+
+        reader.onerror = ()=>{
+            reject(new Error("파일 읽기 실패"));
+        };
+
+        reader.onload = (event)=>{
+            resolve(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+
+async function getDataUrlSizeBytes(dataUrl){
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+    return blob.size;
+}
+
+async function generateCompressionPreview(){
+    const input = document.getElementById("compression-test-file");
+    const originalImg = document.getElementById("compression-original-img");
+    const previewImg = document.getElementById("compression-preview-img");
+    const originalInfo = document.getElementById("compression-original-info");
+    const previewInfo = document.getElementById("compression-preview-info");
+    const file = input && input.files && input.files[0];
+
+    if(!file){
+        alert("테스트 사진을 선택하세요.");
+        return;
+    }
+
+    const interval = showLoading("압축 미리보기 생성 중...");
+
+    try{
+        const originalDataUrl = await readFileAsDataUrl(file);
+        const settings = getCompressionControlsSettings();
+        const compressedDataUrl = await compressDataUrl(originalDataUrl, settings);
+        const compressedBytes = await getDataUrlSizeBytes(compressedDataUrl);
+        const savedRatio = file.size > 0
+            ? Math.round((1 - (compressedBytes / file.size)) * 100)
+            : 0;
+
+        if(originalImg){
+            originalImg.src = originalDataUrl;
+        }
+
+        if(previewImg){
+            previewImg.src = compressedDataUrl;
+        }
+
+        if(originalInfo){
+            originalInfo.innerText =
+                "원본: " +
+                formatBytes(file.size) +
+                "\n파일명: " +
+                file.name;
+        }
+
+        if(previewInfo){
+            previewInfo.innerText =
+                "압축 후: " +
+                formatBytes(compressedBytes) +
+                "\n절감: " +
+                Math.max(0, savedRatio) +
+                "%\n설정: " +
+                settings.maxWidth +
+                "px / " +
+                Math.round(settings.jpegQuality * 100) +
+                "%";
+        }
+    }catch(err){
+        console.error(err);
+        alert("압축 미리보기 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+function openCompressionSettings(){
+    if(!requireStoreManage()){
+        return;
+    }
+
+    setCompressionControls();
+
+    const modal = document.getElementById("compression-modal");
+
+    if(modal){
+        modal.style.display = "flex";
+    }
+}
+
+function closeCompressionSettings(){
+    const modal = document.getElementById("compression-modal");
+
+    if(modal){
+        modal.style.display = "none";
+    }
+}
+
+function openPreviewImage(imageId){
+    const image = document.getElementById(imageId);
+
+    if(!image || !image.src){
+        return;
+    }
+
+    openModal(image.src);
+}
+
+async function saveCompressionSettings(){
+    if(!requireStoreManage()){
+        return;
+    }
+
+    appData.compressionSettings = getCompressionControlsSettings();
+
+    await saveData(()=>{
+        closeCompressionSettings();
+        alert(
+            "전 지점 압축 설정이 저장되었습니다.\n" +
+            "최대 가로폭: " +
+            appData.compressionSettings.maxWidth +
+            "px\n화질: " +
+            Math.round(appData.compressionSettings.jpegQuality * 100) +
+            "%"
+        );
+    });
+}
+
+function safeStorageSegment(value){
+    return String(value || "item")
+    .replace(/[^a-zA-Z0-9_-]/g, "_")
+    .replace(/_+/g, "_")
+    .slice(0, 80) || "item";
+}
+
+function storageImagePath(kind){
+    const genre = safeStorageSegment(currentGenre || "common");
+    const machine = safeStorageSegment(currentMachine || "common");
+    const random = Math.random().toString(36).slice(2, 10);
+
+    if(kind === "logo"){
+        return "global/logo_" +
+            Date.now() + "_" +
+            random +
+            ".jpg";
+    }
+
+    return "stores/" +
+        safeStorageSegment(currentStoreId) +
+        "/dollCraneImages/" +
+        genre + "/" +
+        machine + "/" +
+        kind + "_" +
+        Date.now() + "_" +
+        random +
+        ".jpg";
+}
+
+async function uploadDataUrlToStorage(dataUrl, path, options = {}){
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+
+    const { error } = await supabase
+    .storage
+    .from(supabaseBucket)
+    .upload(path, blob, {
+        contentType:"image/jpeg",
+        cacheControl:"31536000",
+        upsert:false
+    });
+
+    if(error){
+        throw error;
+    }
+
+    const { data:publicData } = supabase
+    .storage
+    .from(supabaseBucket)
+    .getPublicUrl(path);
+
+    if(!publicData || !publicData.publicUrl){
+        throw new Error("Supabase 공개 URL을 만들 수 없습니다. 버킷 공개 설정을 확인하세요.");
+    }
+
+    if(options.trackUsage !== false){
+        addStorageUsage(blob.size);
+    }
+
+    return publicData.publicUrl;
+}
+
+async function compressAndUploadImage(file, kind){
+    const compressed = await compressImage(file);
+    return uploadDataUrlToStorage(compressed, storageImagePath(kind));
+}
+
+function isImageUrl(value){
+    return typeof value === "string" &&
+        /^https?:\/\//.test(value) &&
+        (
+            value.includes(supabaseUrl) ||
+            value.includes("supabase.co/storage/v1/object/public")
+        );
+}
+
+function getSupabaseObjectPath(url){
+    try{
+        const parsed = new URL(url);
+        const marker = "/storage/v1/object/public/" + supabaseBucket + "/";
+        const index = parsed.pathname.indexOf(marker);
+
+        if(index === -1){
+            return "";
+        }
+
+        return decodeURIComponent(parsed.pathname.slice(index + marker.length));
+    }catch(err){
+        return "";
+    }
+}
+
+async function removeSupabaseObjectPaths(paths){
+    const uniquePaths = Array.from(new Set(paths.filter(Boolean)));
+
+    if(uniquePaths.length === 0){
+        return;
+    }
+
+    const { error } = await supabase
+    .storage
+    .from(supabaseBucket)
+    .remove(uniquePaths);
+
+    if(error){
+        throw error;
+    }
+}
+
+async function listSupabaseObjectPaths(prefix = ""){
+    let paths = [];
+    let offset = 0;
+    const limit = 1000;
+
+    while(true){
+        const { data:files, error } = await supabase
+        .storage
+        .from(supabaseBucket)
+        .list(prefix, {
+            limit:limit,
+            offset:offset,
+            sortBy:{
+                column:"name",
+                order:"asc"
+            }
+        });
+
+        if(error){
+            throw error;
+        }
+
+        if(!files || files.length === 0){
+            break;
+        }
+
+        for(const file of files){
+            const childPath = prefix ? prefix + "/" + file.name : file.name;
+
+            if(isSupabaseFolder(file)){
+                paths = paths.concat(await listSupabaseObjectPaths(childPath));
+            }else{
+                paths.push(childPath);
+            }
+        }
+
+        if(files.length < limit){
+            break;
+        }
+
+        offset += limit;
+    }
+
+    return paths;
+}
+
+function collectReferencedSupabasePaths(targetData){
+    return new Set(
+        collectPhotoReferences(targetData)
+        .map((refItem)=>getSupabaseObjectPath(refItem.parent[refItem.key]))
+        .filter(Boolean)
+    );
+}
+
+async function removeUnreferencedCurrentStoreFiles(){
+    const referencedPaths = collectReferencedSupabasePaths(data);
+    let allPaths = await listSupabaseObjectPaths(
+        "stores/" + safeStorageSegment(currentStoreId)
+    );
+
+    if(currentStoreId === DEFAULT_STORE_ID){
+        allPaths = allPaths.concat(await listSupabaseObjectPaths("dollCraneImages"));
+    }
+
+    const unusedPaths = allPaths.filter((path)=>!referencedPaths.has(path));
+
+    await removeSupabaseObjectPaths(unusedPaths);
+
+    return unusedPaths.length;
+}
+
+async function calculateTotalStorageUsage(){
+    return getSupabaseStorageUsage("");
+}
+
+function collectPhotoReferences(targetData){
+    const refs = [];
+
+    if(targetData.siteLogo){
+        refs.push({
+            parent:targetData,
+            key:"siteLogo",
+            kind:"legacy-logo"
+        });
+    }
+
+    Object.keys(targetData.machines || {}).forEach((genre)=>{
+        const machines = targetData.machines[genre] || {};
+
+        Object.keys(machines).forEach((machineId)=>{
+            const machine = machines[machineId];
+
+            if(!machine || typeof machine !== "object"){
+                return;
+            }
+
+            if(machine.photo){
+                refs.push({
+                    parent:machine,
+                    key:"photo",
+                    kind:"main"
+                });
+            }
+
+            (machine.evidencePhotos || []).forEach((photoItem)=>{
+                if(photoItem && photoItem.photo){
+                    refs.push({
+                        parent:photoItem,
+                        key:"photo",
+                        kind:"evidence"
+                    });
+                }
             });
         });
+    });
 
-        function saveData(cb) { set(ref(database, 'dollCraneData'), data).then(() => cb && cb()); }
+    (targetData.trash || []).forEach((item)=>{
+        if(item && item.type === "photo" && item.data && item.data.photo){
+            refs.push({
+                parent:item.data,
+                key:"photo",
+                kind:"trash"
+            });
+        }
 
-        function render(push = true) {
-            if (push) history.pushState({view: currentView, genre: currentGenre, machine: currentMachine}, '');
-            const root = document.getElementById('content');
-            root.innerHTML = '';
-
-            if (currentView === 'genres') {
-                root.innerHTML = `
-                    <div class="header-row">
-                        <h2>📁 폴더 목록</h2>
-                        <select id="g-sel">
-                            <option value="list">일렬</option>
-                            <option value="tile">타일(3열)</option>
-                        </select>
-                    </div>`;
-                const sel = document.getElementById('g-sel'); sel.value = data.genreLayout || 'list';
-                sel.onchange = (e) => { data.genreLayout = e.target.value; saveData(() => render(false)); };
-
-                const isTile = data.genreLayout === 'tile';
-                const container = document.createElement('div');
-                container.className = isTile ? 'grid-3' : 'grid-1';
-                
-                data.genres.forEach((g, i) => {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'item-wrapper';
-                    const itemClass = `item ${!isTile ? 'list-mode' : 'folder-tile'}`;
-                    
-                    wrapper.innerHTML = `
-                        <div class="${itemClass}" draggable="true" id="folder-${i}">
-                            <div class="folder-info" onclick="window.toMachines('${g}')" style="flex-grow:1; display:flex; flex-direction:${isTile?'column':'row'}; align-items:center; gap:8px;">
-                                <span style="font-size:${isTile?'24px':'16px'}">📁</span>
-                                <b>${g}</b>
-                            </div>
-                            <div class="settings-btn" onclick="window.toggleMenu(event, 'folder-${i}')">⚙️</div>
-                        </div>
-                        <div class="admin-menu" id="menu-folder-${i}">
-                            <button class="btn-mini" onclick="window.editGenre(${i})">이름 수정</button>
-                            <button class="btn-mini del" onclick="window.delGenre(${i})">폴더 삭제</button>
-                        </div>
-                    `;
-                    
-                    const item = wrapper.querySelector('.item');
-                    item.ondragstart = () => dragIdx = i;
-                    item.ondragover = (e) => e.preventDefault();
-                    item.ondrop = () => {
-                        const moved = data.genres.splice(dragIdx, 1)[0];
-                        data.genres.splice(i, 0, moved);
-                        saveData(() => render(false));
-                    };
-                    container.appendChild(wrapper);
+        if(item && item.type === "machine" && item.data){
+            if(item.data.photo){
+                refs.push({
+                    parent:item.data,
+                    key:"photo",
+                    kind:"trash-main"
                 });
-                root.appendChild(container);
-                
-                const add = document.createElement('button'); add.className='btn-add'; add.innerText='+ 새 폴더 추가';
-                add.onclick=()=>{ const n=prompt('폴더 이름:'); if(n){data.genres.push(n); data.machines[n]={}; saveData();} };
-                root.appendChild(add);
+            }
 
-            } else if (currentView === 'machines') {
-                root.innerHTML = `
-                    <div class="header-row">
-                        <h2 style="flex-shrink:0; max-width:50%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">📂 ${currentGenre}</h2>
-                        <select id="l-sel">
-                            <option value="list">일렬(숫자만)</option>
-                            <option value="tile">타일(숫자만)</option>
-                            <option value="thumb-list">썸네일 일렬</option>
-                            <option value="thumb-tile">썸네일 타일(3열)</option>
-                            <option value="memo-list">메모 일렬</option>
-                            <option value="memo-tile">메모 타일(3열)</option>
-                        </select>
-                    </div>`;
-                const sel = document.getElementById('l-sel'); sel.value = data.machineLayout;
-                sel.onchange = (e) => { data.machineLayout = e.target.value; saveData(() => render(false)); };
+            (item.data.evidencePhotos || []).forEach((photoItem)=>{
+                if(photoItem && photoItem.photo){
+                    refs.push({
+                        parent:photoItem,
+                        key:"photo",
+                        kind:"trash-evidence"
+                    });
+                }
+            });
+        }
 
-                const layout = data.machineLayout;
-                const isTile = layout.includes('tile');
-                const showPhoto = layout.includes('thumb') || layout.includes('memo');
-                const showMemo = layout.includes('memo');
+        if(item && item.type === "genre" && item.data){
+            Object.keys(item.data || {}).forEach((machineId)=>{
+                const machine = item.data[machineId];
 
-                const container = document.createElement('div');
-                container.className = isTile ? 'grid-3' : 'grid-1';
+                if(!machine || typeof machine !== "object"){
+                    return;
+                }
 
-                const mObj = data.machines[currentGenre] || {};
-                Object.keys(mObj).sort((a,b)=>parseInt(a)-parseInt(b)).forEach((m, i) => {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'item-wrapper';
-                    
-                    const itemClass = `item ${!isTile ? 'list-mode' : ''} ${!showPhoto ? 'no-photo' : ''}`;
-                    
-                    wrapper.innerHTML = `
-                        <div class="${itemClass}" onclick="window.toPhoto('${m}')">
-                            <div class="thumb-box"><img src="${mObj[m].photo || ''}"></div>
-                            <div class="info-box">
-                                <b>${m}</b>
-                                ${showMemo ? `<p>${mObj[m].memo || '메모 없음'}</p>` : ''}
-                            </div>
-                            <div class="settings-btn" onclick="window.toggleMenu(event, 'machine-${i}')">⚙️</div>
-                        </div>
-                        <div class="admin-menu" id="menu-machine-${i}">
-                            <button class="btn-mini" onclick="window.editMachineName('${m}')">이름 수정</button>
-                            <button class="btn-mini del" onclick="window.delMachine('${m}')">삭제</button>
-                        </div>
-                    `;
-                    container.appendChild(wrapper);
+                if(machine.photo){
+                    refs.push({
+                        parent:machine,
+                        key:"photo",
+                        kind:"trash-genre-main"
+                    });
+                }
+
+                (machine.evidencePhotos || []).forEach((photoItem)=>{
+                    if(photoItem && photoItem.photo){
+                        refs.push({
+                            parent:photoItem,
+                            key:"photo",
+                            kind:"trash-genre-evidence"
+                        });
+                    }
                 });
-                root.appendChild(container);
+            });
+        }
+    });
 
-                const add = document.createElement('button'); add.className='btn-add'; add.innerText='+ 추가';
-                add.onclick=()=>{ const n=prompt('번호:'); if(n){data.machines[currentGenre][n]={photo:null,memo:'',evidencePhotos:[]}; saveData();} };
-                root.appendChild(add);
-                const back = document.createElement('button'); back.className='btn-back'; back.innerText='뒤로가기';
-                back.onclick=()=>history.back();
-                root.appendChild(back);
+    return refs.filter((refItem)=>{
+        return isDataUrl(refItem.parent[refItem.key]) || isImageUrl(refItem.parent[refItem.key]);
+    });
+}
 
-            } else if (currentView === 'photo') {
-                const m = data.machines[currentGenre][currentMachine];
-                root.innerHTML = `
-                    <h2 style="margin:0 0 15px 0">🤖 ${currentMachine} 상세</h2>
-                    <img src="${m.photo || ''}" class="main-img" onclick="openM('${m.photo}')">
-                    <button class="btn-save" onclick="up(0)">📸 메인 정답지 수정</button>
-                    <textarea id="memo" placeholder="공략법이나 특징을 입력하세요...">${m.memo || ''}</textarea>
-                    <button class="btn-add" onclick="saveM()">💾 메모 저장</button>
-                    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
-                        <span style="font-weight:bold; font-size:13px; color:#666;">📸 추가 사진</span>
-                        <div class="evidence-grid">
-                            ${(m.evidencePhotos || []).map((p, i) => `
-                                <div class="item" style="padding-top:100%; position:relative;">
-                                    <img src="${p.photo}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain;" onclick="openM('${p.photo}')">
-                                    <button class="btn-del-mini" onclick="delE(${i})">×</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <button class="btn-save" style="margin-top:10px; font-size:13px;" onclick="up(1)">+ 추가 사진 등록</button>
-                    </div>
-                    <button class="btn-back" onclick="history.back()">뒤로가기</button>
-                `;
+async function imageSourceToDataUrl(source){
+    if(isDataUrl(source)){
+        return source;
+    }
+
+    const response = await fetch(source);
+
+    if(!response.ok){
+        throw new Error("이미지 다운로드 실패: " + response.status);
+    }
+
+    const blob = await response.blob();
+
+    return new Promise((resolve, reject)=>{
+        const reader = new FileReader();
+
+        reader.onerror = ()=>{
+            reject(new Error("이미지 읽기 실패"));
+        };
+
+        reader.onload = (event)=>{
+            resolve(event.target.result);
+        };
+
+        reader.readAsDataURL(blob);
+    });
+}
+
+async function recompressPhotoReference(refItem, state){
+    const source = refItem.parent[refItem.key];
+    const oldPath = isImageUrl(source) ? getSupabaseObjectPath(source) : "";
+    const sourceDataUrl = await imageSourceToDataUrl(source);
+    const compressed = await compressDataUrl(sourceDataUrl);
+
+    refItem.parent[refItem.key] = await uploadDataUrlToStorage(
+        compressed,
+        "stores/" +
+        safeStorageSegment(currentStoreId) +
+        "/dollCraneImages/recompressed/" +
+        Date.now() + "_" +
+        state.done +
+        "_" +
+        Math.random().toString(36).slice(2, 10) +
+        ".jpg",
+        {
+            trackUsage:false
+        }
+    );
+
+    if(oldPath){
+        state.oldPaths.push(oldPath);
+    }
+}
+
+async function migrateDataUrlsInPlace(value, state){
+    if(Array.isArray(value)){
+        for(let i = 0; i < value.length; i++){
+            if(isDataUrl(value[i])){
+                state.done++;
+                document.getElementById("loading-text").innerText =
+                    "사진 용량 정리 중... " + state.done + "/" + state.total;
+                document.getElementById("progress-fill").style.width =
+                    Math.round((state.done / state.total) * 90) + "%";
+
+                const compressed = await compressDataUrl(value[i]);
+
+                value[i] = await uploadDataUrlToStorage(
+                    compressed,
+                    "stores/" +
+                    safeStorageSegment(currentStoreId) +
+                    "/dollCraneImages/migration/" +
+                    Date.now() + "_" +
+                    state.done +
+                    "_" +
+                    Math.random().toString(36).slice(2, 10) +
+                    ".jpg"
+                );
+            }else{
+                await migrateDataUrlsInPlace(value[i], state);
             }
         }
 
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.admin-menu').forEach(m => m.classList.remove('active'));
+        return;
+    }
+
+    if(value && typeof value === "object"){
+        const keys = Object.keys(value);
+
+        for(const key of keys){
+            if(isDataUrl(value[key])){
+                state.done++;
+                document.getElementById("loading-text").innerText =
+                    "사진 용량 정리 중... " + state.done + "/" + state.total;
+                document.getElementById("progress-fill").style.width =
+                    Math.round((state.done / state.total) * 90) + "%";
+
+                const compressed = await compressDataUrl(value[key]);
+
+                value[key] = await uploadDataUrlToStorage(
+                    compressed,
+                    "stores/" +
+                    safeStorageSegment(currentStoreId) +
+                    "/dollCraneImages/migration/" +
+                    Date.now() + "_" +
+                    state.done +
+                    "_" +
+                    Math.random().toString(36).slice(2, 10) +
+                    ".jpg"
+                );
+            }else{
+                await migrateDataUrlsInPlace(value[key], state);
+            }
+        }
+    }
+}
+
+async function migratePhotosToStorage(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    initializeData();
+
+    const photoRefs = collectPhotoReferences(data);
+    const total = photoRefs.length;
+
+    if(total === 0){
+        alert("정리할 사진 데이터가 없습니다.");
+        toggleMenu(false);
+        return;
+    }
+
+    if(!confirm(
+        "저장된 사진 " +
+        total +
+        "개를 현재 압축 설정으로 다시 압축합니다.\n새 파일로 다시 업로드하고 DB의 사진 URL을 교체합니다.\n진행 중에는 화면을 닫지 마세요."
+    )){
+        return;
+    }
+
+    toggleMenu(false);
+
+    const interval = showLoading("사진 용량 정리 중... 0/" + total);
+
+    try{
+        const state = {
+            total:total,
+            done:0,
+            oldPaths:[]
+        };
+
+        for(const photoRef of photoRefs){
+            state.done++;
+
+            document.getElementById("loading-text").innerText =
+                "사진 용량 정리 중... " + state.done + "/" + state.total;
+            document.getElementById("progress-fill").style.width =
+                Math.round((state.done / state.total) * 90) + "%";
+
+            await recompressPhotoReference(photoRef, state);
+        }
+
+        await saveData(()=>{
+            loadLogo();
+            render(false);
         });
 
-        window.toggleMenu = (e, id) => {
-            e.stopPropagation();
-            const menu = document.getElementById(`menu-${id}`);
-            const isActive = menu.classList.contains('active');
-            document.querySelectorAll('.admin-menu').forEach(m => m.classList.remove('active'));
-            if (!isActive) menu.classList.add('active');
-        };
+        if(state.oldPaths.length > 0){
+            document.getElementById("loading-text").innerText =
+                "이전 사진 파일 삭제 중...";
 
-        window.toMachines = (g) => { currentGenre = g; currentView = 'machines'; render(); };
-        window.toPhoto = (m) => { currentMachine = m; currentView = 'photo'; render(); };
-
-        window.editGenre = (i) => {
-            const oldName = data.genres[i];
-            const newName = prompt('수정할 폴더 이름을 입력하세요:', oldName);
-            if(newName && newName !== oldName) {
-                data.genres[i] = newName;
-                data.machines[newName] = data.machines[oldName];
-                delete data.machines[oldName];
-                saveData(() => render(false));
-            }
-        };
-
-        window.editMachineName = (oldName) => {
-            const newName = prompt('수정할 이름을 입력하세요:', oldName);
-            if(newName && newName !== oldName) {
-                data.machines[currentGenre][newName] = data.machines[currentGenre][oldName];
-                delete data.machines[currentGenre][oldName];
-                saveData(() => render(false));
-            }
-        };
-
-        window.delGenre = (i) => {
-            if(confirm(`'${data.genres[i]}' 폴더와 안의 정보를 모두 삭제하시겠습니까?`)) {
-                const name = data.genres[i];
-                data.genres.splice(i, 1);
-                delete data.machines[name];
-                saveData(() => render(false));
-            }
-        };
-
-        window.delMachine = (m) => {
-            if(confirm(`${m}를 삭제할까요?`)) {
-                delete data.machines[currentGenre][m];
-                saveData(() => render(false));
-            }
+            await removeSupabaseObjectPaths(state.oldPaths);
         }
 
-        window.openM = (s) => { if(s){document.getElementById('modal-img').src=s; document.getElementById('modal').style.display='flex';} };
-        window.saveM = () => { data.machines[currentGenre][currentMachine].memo = document.getElementById('memo').value; saveData(()=>alert('공략이 저장되었습니다.')); };
-        window.delE = (i) => { if(confirm('이 사진을 삭제하시겠습니까?')) { data.machines[currentGenre][currentMachine].evidencePhotos.splice(i,1); saveData(() => render(false)); } };
-        window.up = (type) => {
-            const i = document.createElement('input'); i.type='file'; i.accept='image/*';
-            i.onchange = e => {
-                const f = e.target.files[0]; const r = new FileReader();
-                r.onload = ev => {
-                    if(type === 0) data.machines[currentGenre][currentMachine].photo = ev.target.result;
-                    else {
-                        if(!data.machines[currentGenre][currentMachine].evidencePhotos) data.machines[currentGenre][currentMachine].evidencePhotos=[];
-                        data.machines[currentGenre][currentMachine].evidencePhotos.push({photo: ev.target.result});
-                    }
-                    saveData(() => render(false));
-                };
-                r.readAsDataURL(f);
-            };
-            i.click();
+        document.getElementById("loading-text").innerText =
+            "안 쓰는 사진 파일 정리 중...";
+
+        const removedUnusedCount =
+            await removeUnreferencedCurrentStoreFiles();
+
+        document.getElementById("loading-text").innerText =
+            "사진 용량 다시 계산 중...";
+
+        appData.storageUsageBytes = await calculateTotalStorageUsage();
+
+        await saveData(()=>{
+            updateStorageBadge();
+            render(false);
+        });
+
+        alert(
+            "사진 용량 정리가 완료되었습니다.\n" +
+            "안 쓰는 이전 파일 " +
+            removedUnusedCount +
+            "개를 정리했습니다."
+        );
+    }catch(err){
+        console.error(err);
+        alert("사진 용량 정리 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+function loadLogo(){
+    const logo = document.getElementById("main-logo");
+
+    if(!logo){
+        return;
+    }
+
+    logo.onerror = ()=>{
+        logo.onerror = null;
+        logo.src = DEFAULT_LOGO;
+    };
+
+    logo.src = appData.siteLogo || DEFAULT_LOGO;
+}
+
+function pushHistory(){
+    history.pushState({
+        view:currentView,
+        genre:currentGenre,
+        machine:currentMachine,
+        store:currentStoreId
+    }, "");
+}
+
+function render(push = true){
+    if(rendering){
+        return;
+    }
+
+    rendering = true;
+
+    try{
+        initializeData();
+        renderStoreSelector();
+        updateStorageBadge();
+
+        if(push){
+            pushHistory();
+        }
+
+        const root = document.getElementById("content");
+        root.innerHTML = "";
+
+        if(currentView === "genres"){
+            renderGenres(root);
+        }else if(currentView === "machines"){
+            renderMachines(root);
+        }else if(currentView === "detail"){
+            renderDetail(root);
+        }else if(currentView === "trash"){
+            renderTrash(root);
+        }else if(currentView === "accounts"){
+            renderAccounts(root);
+        }else{
+            currentView = "genres";
+            renderGenres(root);
+        }
+    }finally{
+        rendering = false;
+    }
+}
+
+function createButton(className, text, onClick){
+    const button = document.createElement("button");
+    button.className = className;
+    button.innerText = text;
+    button.onclick = onClick;
+    return button;
+}
+
+function createAdminButton(text, onClick){
+    return createButton("btn-mini", text, onClick);
+}
+
+function renderGenres(root){
+    const layout = localStorage.getItem("genreLayout") || "list";
+
+    const header = document.createElement("div");
+    header.className = "header-row";
+
+    const title = document.createElement("h2");
+    title.innerText = "📁 폴더 목록";
+
+    const select = document.createElement("select");
+    select.id = "genre-layout";
+    select.innerHTML = `
+        <option value="list">일렬</option>
+        <option value="tile">타일</option>
+    `;
+    select.value = layout;
+    select.onchange = ()=>{
+        localStorage.setItem("genreLayout", select.value);
+        render(false);
+    };
+
+    header.appendChild(title);
+    header.appendChild(select);
+    root.appendChild(header);
+
+    const container = document.createElement("div");
+    container.className = layout === "tile" ? "grid-3" : "grid-1";
+
+    data.genres.forEach((genre, index)=>{
+        const wrap = document.createElement("div");
+        wrap.className = "item-wrapper";
+
+        const item = document.createElement("div");
+        item.className = "item" + (layout === "tile" ? "" : " list-mode");
+        item.onclick = ()=>{
+            currentGenre = genre;
+            currentMachine = null;
+            currentView = "machines";
+            render();
         };
-    </script>
+
+        const info = document.createElement("div");
+        info.className = "info-box";
+
+        const name = document.createElement("b");
+        name.innerText = "📁 " + genre;
+
+        const settings = document.createElement("div");
+        settings.className = "settings-btn";
+        settings.innerText = "⚙️";
+        settings.onclick = (event)=>{
+            event.stopPropagation();
+            admin.classList.toggle("active");
+        };
+
+        info.appendChild(name);
+        item.appendChild(info);
+        if(canEditCurrentStore()){
+            item.appendChild(settings);
+        }
+
+        const admin = document.createElement("div");
+        admin.className = "admin-menu";
+
+        admin.appendChild(createAdminButton("⬆️", (event)=>{
+            event.stopPropagation();
+
+            if(index <= 0){
+                return;
+            }
+
+            [data.genres[index - 1], data.genres[index]] = [data.genres[index], data.genres[index - 1]];
+            saveData(()=>render(false));
+        }));
+
+        admin.appendChild(createAdminButton("⬇️", (event)=>{
+            event.stopPropagation();
+
+            if(index >= data.genres.length - 1){
+                return;
+            }
+
+            [data.genres[index + 1], data.genres[index]] = [data.genres[index], data.genres[index + 1]];
+            saveData(()=>render(false));
+        }));
+
+        admin.appendChild(createAdminButton("수정", (event)=>{
+            event.stopPropagation();
+
+            let newName = prompt("폴더명 수정", genre);
+
+            if(newName === null){
+                return;
+            }
+
+            newName = sanitizeText(newName);
+
+            if(!newName){
+                alert("이름을 입력하세요.");
+                return;
+            }
+
+            if(!isValidDataKey(newName)){
+                alert("이름에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+                return;
+            }
+
+            if(newName !== genre && data.genres.includes(newName)){
+                alert("이미 존재합니다.");
+                return;
+            }
+
+            data.genres[index] = newName;
+            data.machines[newName] = data.machines[genre] || {};
+
+            if(newName !== genre){
+                delete data.machines[genre];
+            }
+
+            if(currentGenre === genre){
+                currentGenre = newName;
+            }
+
+            saveData(()=>render(false));
+        }));
+
+        admin.appendChild(createAdminButton("삭제", (event)=>{
+            event.stopPropagation();
+
+            if(!confirm("정말 삭제하시겠습니까?\n휴지통으로 이동됩니다.")){
+                return;
+            }
+
+            data.trash.push({
+                type:"genre",
+                name:genre,
+                data:data.machines[genre] || {},
+                deletedAt:new Date().toISOString()
+            });
+
+            data.genres.splice(index, 1);
+            delete data.machines[genre];
+
+            saveData(()=>render(false));
+        }));
+
+        wrap.appendChild(item);
+        if(canEditCurrentStore()){
+            wrap.appendChild(admin);
+        }
+        container.appendChild(wrap);
+    });
+
+    root.appendChild(container);
+
+    if(canEditCurrentStore()){
+        root.appendChild(createButton("btn-add", "+ 폴더 추가", ()=>{
+            if(!requireStoreEdit()){
+                return;
+            }
+
+        let name = prompt("폴더명 입력");
+
+        if(name === null){
+            return;
+        }
+
+        name = sanitizeText(name);
+
+        if(!name){
+            alert("이름을 입력하세요.");
+            return;
+        }
+
+        if(!isValidDataKey(name)){
+            alert("이름에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+            return;
+        }
+
+        if(data.genres.includes(name)){
+            alert("이미 존재합니다.");
+            return;
+        }
+
+        data.genres.push(name);
+        data.machines[name] = {};
+
+        saveData(()=>render(false));
+        }));
+    }
+}
+
+function renderMachines(root){
+    if(!currentGenre || !data.genres.includes(currentGenre)){
+        currentView = "genres";
+        render(false);
+        return;
+    }
+
+    const layout = localStorage.getItem("machineLayout") || "thumb-tile";
+    const isTile = layout.includes("tile");
+    const showThumb = layout.includes("thumb") || layout.includes("memo");
+    const showMemo = layout.includes("memo");
+
+    const header = document.createElement("div");
+    header.className = "header-row";
+
+    const title = document.createElement("h2");
+    title.className = "header-title";
+    title.innerText = "📂 " + currentGenre;
+
+    const select = document.createElement("select");
+    select.id = "machine-layout";
+    select.innerHTML = `
+        <option value="list">일렬</option>
+        <option value="tile">타일</option>
+        <option value="thumb-list">썸네일 일렬</option>
+        <option value="thumb-tile">썸네일 타일</option>
+        <option value="memo-list">메모 일렬</option>
+        <option value="memo-tile">메모 타일</option>
+    `;
+    select.value = layout;
+    select.onchange = ()=>{
+        localStorage.setItem("machineLayout", select.value);
+        render(false);
+    };
+
+    header.appendChild(title);
+    header.appendChild(select);
+    root.appendChild(header);
+
+    const container = document.createElement("div");
+    container.className = isTile ? "grid-3" : "grid-1";
+
+    const machines = data.machines[currentGenre] || {};
+
+    Object.keys(machines)
+    .sort(naturalMachineCompare)
+    .forEach((machine)=>{
+        const machineData = machines[machine] || {};
+
+        const wrap = document.createElement("div");
+        wrap.className = "item-wrapper";
+
+        const item = document.createElement("div");
+        item.className = "item" + (isTile ? "" : " list-mode") + (showThumb ? "" : " no-photo");
+        item.onclick = ()=>{
+            currentMachine = machine;
+            currentView = "detail";
+            render();
+        };
+
+        const thumbBox = document.createElement("div");
+        thumbBox.className = "thumb-box";
+
+        const img = document.createElement("img");
+        img.src = machineData.photo || "";
+        img.alt = machine + "번 사진";
+        thumbBox.appendChild(img);
+
+        const info = document.createElement("div");
+        info.className = "info-box";
+
+        const machineName = document.createElement("b");
+        machineName.innerText = machine;
+        info.appendChild(machineName);
+
+        if(showMemo){
+            const memo = document.createElement("p");
+            memo.innerText = machineData.memo || "메모 없음";
+            info.appendChild(memo);
+        }
+
+        const settings = document.createElement("div");
+        settings.className = "settings-btn";
+        settings.innerText = "⚙️";
+        settings.onclick = (event)=>{
+            event.stopPropagation();
+            admin.classList.toggle("active");
+        };
+
+        item.appendChild(thumbBox);
+        item.appendChild(info);
+        if(canEditCurrentStore()){
+            item.appendChild(settings);
+        }
+
+        const admin = document.createElement("div");
+        admin.className = "admin-menu";
+
+        admin.appendChild(createAdminButton("이름 수정", (event)=>{
+            event.stopPropagation();
+
+            let newName = prompt("기계 번호 수정", machine);
+
+            if(newName === null){
+                return;
+            }
+
+            newName = sanitizeText(newName);
+
+            if(!newName){
+                alert("기계 번호를 입력하세요.");
+                return;
+            }
+
+            if(!isValidDataKey(newName)){
+                alert("기계 번호에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+                return;
+            }
+
+            if(newName !== machine && data.machines[currentGenre][newName]){
+                alert("이미 존재합니다.");
+                return;
+            }
+
+            data.machines[currentGenre][newName] = data.machines[currentGenre][machine];
+
+            if(newName !== machine){
+                delete data.machines[currentGenre][machine];
+            }
+
+            if(currentMachine === machine){
+                currentMachine = newName;
+            }
+
+            saveData(()=>render(false));
+        }));
+
+        admin.appendChild(createAdminButton("삭제", (event)=>{
+            event.stopPropagation();
+
+            if(!confirm("정말 삭제하시겠습니까?\n휴지통으로 이동됩니다.")){
+                return;
+            }
+
+            data.trash.push({
+                type:"machine",
+                genre:currentGenre,
+                name:machine,
+                data:data.machines[currentGenre][machine],
+                deletedAt:new Date().toISOString()
+            });
+
+            delete data.machines[currentGenre][machine];
+
+            saveData(()=>render(false));
+        }));
+
+        wrap.appendChild(item);
+        if(canEditCurrentStore()){
+            wrap.appendChild(admin);
+        }
+        container.appendChild(wrap);
+    });
+
+    root.appendChild(container);
+
+    if(canEditCurrentStore()){
+        root.appendChild(createButton("btn-add", "+ 기계 추가", ()=>{
+        if(!requireStoreEdit()){
+            return;
+        }
+
+        if(!data.machines[currentGenre]){
+            data.machines[currentGenre] = {};
+        }
+
+        let number = prompt("기계 번호 입력");
+
+        if(number === null){
+            return;
+        }
+
+        number = sanitizeText(number);
+
+        if(!number){
+            alert("기계 번호를 입력하세요.");
+            return;
+        }
+
+        if(!isValidDataKey(number)){
+            alert("기계 번호에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+            return;
+        }
+
+        if(data.machines[currentGenre][number]){
+            alert("이미 존재합니다.");
+            return;
+        }
+
+        data.machines[currentGenre][number] = {
+            photo:"",
+            memo:"",
+            evidencePhotos:[]
+        };
+
+        saveData(()=>render(false));
+        }));
+    }
+
+    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        history.back();
+    }));
+}
+
+function renderDetail(root){
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+
+    if(!machine){
+        root.innerHTML = "<p>데이터 없음</p>";
+        root.appendChild(createButton("btn-back", "뒤로가기", ()=>history.back()));
+        return;
+    }
+
+    memoEditMode = false;
+    memoInputListener = null;
+
+    const title = document.createElement("h2");
+    title.innerText = "🤖 " + currentMachine + " 상세";
+    root.appendChild(title);
+
+    const mainImg = document.createElement("img");
+    mainImg.src = machine.photo || "";
+    mainImg.alt = currentMachine + "번 메인 사진";
+    mainImg.className = "main-img";
+    mainImg.onclick = ()=>{
+        openModal(machine.photo);
+    };
+    root.appendChild(mainImg);
+
+    if(canEditCurrentStore()){
+        root.appendChild(createButton("btn-save", "📸 메인 사진 수정", ()=>{
+            uploadPhoto(0);
+        }));
+    }
+
+    const memoSection = document.createElement("div");
+    memoSection.className = "memo-section";
+
+    const memoToggle = createButton("memo-toggle", "📋 스크롤 모드", ()=>{
+        toggleMemoMode();
+    });
+    memoToggle.id = "memo-mode-toggle";
+
+    const textarea = document.createElement("textarea");
+    textarea.id = "memo";
+    textarea.className = "expanded-mode";
+    textarea.placeholder = "메모 입력";
+    textarea.readOnly = true;
+    textarea.value = machine.memo || "";
+
+    const memoButton = createButton("btn-add", "✏️ 메모 수정", ()=>{
+        toggleMemoEdit();
+    });
+    memoButton.id = "memo-btn";
+
+    memoSection.appendChild(memoToggle);
+    memoSection.appendChild(textarea);
+    if(canEditCurrentStore()){
+        memoSection.appendChild(memoButton);
+    }
+    root.appendChild(memoSection);
+
+    const detailSection = document.createElement("div");
+    detailSection.className = "detail-section";
+
+    const sectionTitle = document.createElement("span");
+    sectionTitle.className = "section-title";
+    sectionTitle.innerText = "📸 추가 사진";
+    detailSection.appendChild(sectionTitle);
+
+    const evidenceGrid = document.createElement("div");
+    evidenceGrid.className = "evidence-grid";
+
+    (machine.evidencePhotos || []).forEach((photoItem, index)=>{
+        const evidence = document.createElement("div");
+        evidence.className = "evidence-item";
+
+        const img = document.createElement("img");
+        img.src = photoItem.photo || "";
+        img.alt = currentMachine + "번 추가 사진";
+        img.onclick = ()=>{
+            openModal(photoItem.photo);
+        };
+
+        const deleteButton = createButton("evidence-delete", "×", ()=>{
+            deleteEvidencePhoto(index);
+        });
+
+        evidence.appendChild(img);
+        if(canEditCurrentStore()){
+            evidence.appendChild(deleteButton);
+        }
+        evidenceGrid.appendChild(evidence);
+    });
+
+    detailSection.appendChild(evidenceGrid);
+    if(canEditCurrentStore()){
+        detailSection.appendChild(createButton("btn-save", "+ 추가 사진 등록", ()=>{
+            uploadPhoto(1);
+        }));
+    }
+    root.appendChild(detailSection);
+
+    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        history.back();
+    }));
+
+    applyMemoDisplayMode();
+}
+
+function renderTrash(root){
+    const now = Date.now();
+
+    const title = document.createElement("h2");
+    title.innerText = "🗑️ 휴지통";
+    root.appendChild(title);
+
+    const guide = document.createElement("p");
+    guide.className = "sub-text";
+    guide.innerText = "30일 후 자동 삭제";
+    root.appendChild(guide);
+
+    if(!data.trash || data.trash.length === 0){
+        const empty = document.createElement("p");
+        empty.className = "empty-message";
+        empty.innerText = "휴지통 비어있음";
+        root.appendChild(empty);
+    }else{
+        const trashContainer = document.createElement("div");
+
+        data.trash.forEach((item, index)=>{
+            const deletedTime = new Date(item.deletedAt).getTime();
+            const daysLeft = Math.max(0, Math.ceil((TRASH_LIMIT_MS - (now - deletedTime)) / (24 * 60 * 60 * 1000)));
+
+            let itemType = "📸 사진";
+
+            if(item.type === "genre"){
+                itemType = "📁 폴더";
+            }else if(item.type === "machine"){
+                itemType = "🤖 기계";
+            }
+
+            const trashItem = document.createElement("div");
+            trashItem.className = "trash-item";
+
+            const info = document.createElement("div");
+
+            const itemTitle = document.createElement("div");
+            itemTitle.className = "trash-title";
+            itemTitle.innerText = itemType + " - " + (item.name || "");
+
+            const date = document.createElement("div");
+            date.className = "trash-date";
+            date.innerText = "삭제: " + new Date(item.deletedAt).toLocaleString("ko-KR");
+
+            const dday = document.createElement("div");
+            dday.className = "trash-dday";
+            dday.innerText = daysLeft + "일 후 자동 삭제";
+
+            info.appendChild(itemTitle);
+            info.appendChild(date);
+            info.appendChild(dday);
+
+            const buttons = document.createElement("div");
+            buttons.className = "trash-buttons";
+
+            buttons.appendChild(createAdminButton("복구", ()=>{
+                restoreTrashItem(index);
+            }));
+
+            const deleteButton = createAdminButton("영구삭제", ()=>{
+                deleteTrashItem(index);
+            });
+            deleteButton.style.background = "#d9534f";
+            deleteButton.style.color = "white";
+            buttons.appendChild(deleteButton);
+
+            trashItem.appendChild(info);
+            if(canEditCurrentStore()){
+                trashItem.appendChild(buttons);
+            }
+            trashContainer.appendChild(trashItem);
+        });
+
+        root.appendChild(trashContainer);
+    }
+
+    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        history.back();
+    }));
+}
+
+function getRoleLabel(role){
+    if(role === "master"){
+        return "본사 게임마스터";
+    }
+
+    if(role === "manager"){
+        return "지점 관리자";
+    }
+
+    return "일반 직원";
+}
+
+function getAccountStoreNames(account){
+    const storeIds = Array.isArray(account.storeIds) ? account.storeIds : [];
+
+    if(storeIds.includes("*")){
+        return "전체 지점";
+    }
+
+    return storeIds
+    .map((storeId)=>appData.storeNames[storeId] || storeId)
+    .join(", ") || "없음";
+}
+
+function renderAccounts(root){
+    if(!canManageStores()){
+        root.innerHTML = "<p>본사 게임마스터 권한이 필요합니다.</p>";
+        root.appendChild(createButton("btn-back", "뒤로가기", ()=>history.back()));
+        return;
+    }
+
+    const header = document.createElement("div");
+    header.className = "header-row";
+
+    const title = document.createElement("h2");
+    const accounts = Object.values(appData.accounts || {});
+    title.innerText = "계정 관리 (" + accounts.length + "개)";
+
+    header.appendChild(title);
+    root.appendChild(header);
+
+    root.appendChild(createButton("btn-add", "+ 계정 생성", ()=>{
+        addAccountRow();
+    }));
+
+    const wrap = document.createElement("div");
+    wrap.className = "account-table-wrap";
+
+    const table = document.createElement("table");
+    table.className = "account-table";
+
+    const thead = document.createElement("thead");
+    thead.innerHTML = `
+        <tr>
+            <th>식별 코드</th>
+            <th>아이디</th>
+            <th>비밀번호</th>
+            <th>권한</th>
+            <th>접속 지점</th>
+            <th>관리</th>
+        </tr>
+    `;
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    if(accounts.length === 0){
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 6;
+        cell.innerText = "생성된 계정이 없습니다.";
+        row.appendChild(cell);
+        tbody.appendChild(row);
+    }else{
+        accounts
+        .sort((a,b)=>String(a.loginId || "").localeCompare(String(b.loginId || ""), "ko-KR"))
+        .forEach((account)=>{
+            tbody.appendChild(createAccountRow(account));
+        });
+    }
+
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    root.appendChild(wrap);
+
+    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        currentView = "genres";
+        render();
+    }));
+}
+
+function createAccountRow(account){
+    const row = document.createElement("tr");
+    row.dataset.accountCode = account.code;
+
+    const codeCell = document.createElement("td");
+    codeCell.innerText = account.code;
+
+    const idCell = document.createElement("td");
+    const idInput = document.createElement("input");
+    idInput.className = "account-login-id";
+    idInput.value = account.loginId || "";
+    idCell.appendChild(idInput);
+
+    const passwordCell = document.createElement("td");
+    const passwordInput = document.createElement("input");
+    passwordInput.className = "account-password";
+    passwordInput.type = "text";
+    passwordInput.placeholder = "변경시에만 입력";
+    passwordCell.appendChild(passwordInput);
+
+    const roleCell = document.createElement("td");
+    const roleSelect = document.createElement("select");
+    roleSelect.className = "account-role";
+    roleSelect.innerHTML = `
+        <option value="manager">지점 관리자</option>
+        <option value="staff">일반 직원</option>
+    `;
+    roleSelect.value = account.role === "manager" ? "manager" : "staff";
+    roleCell.appendChild(roleSelect);
+
+    const storesCell = document.createElement("td");
+    storesCell.appendChild(createStoreChecks(account.storeIds || []));
+
+    const actionCell = document.createElement("td");
+    const actions = document.createElement("div");
+    actions.className = "account-actions";
+
+    actions.appendChild(createAdminButton("저장", ()=>{
+        saveAccountRow(account.code);
+    }));
+
+    const deleteButton = createAdminButton("삭제", ()=>{
+        deleteAccountRow(account.code);
+    });
+    deleteButton.style.background = "#d9534f";
+    deleteButton.style.color = "white";
+    actions.appendChild(deleteButton);
+    actionCell.appendChild(actions);
+
+    row.appendChild(codeCell);
+    row.appendChild(idCell);
+    row.appendChild(passwordCell);
+    row.appendChild(roleCell);
+    row.appendChild(storesCell);
+    row.appendChild(actionCell);
+
+    return row;
+}
+
+function createStoreChecks(selectedStoreIds){
+    const box = document.createElement("div");
+    box.className = "store-checks";
+
+    appData.storeOrder.forEach((storeId)=>{
+        if(!appData.stores[storeId]){
+            return;
+        }
+
+        const label = document.createElement("label");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = storeId;
+        checkbox.className = "account-store-check";
+        checkbox.checked = selectedStoreIds.includes(storeId) || selectedStoreIds.includes("*");
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(appData.storeNames[storeId] || storeId));
+        box.appendChild(label);
+    });
+
+    return box;
+}
+
+function getAccountRowValues(code){
+    const row = document.querySelector('[data-account-code="' + code + '"]');
+
+    if(!row){
+        return null;
+    }
+
+    const loginId = normalizeLoginId(row.querySelector(".account-login-id").value);
+    const password = row.querySelector(".account-password").value.trim();
+    const role = row.querySelector(".account-role").value;
+    const storeIds = Array.from(row.querySelectorAll(".account-store-check:checked"))
+    .map((checkbox)=>checkbox.value);
+
+    return {
+        loginId,
+        password,
+        role,
+        storeIds
+    };
+}
+
+function addAccountRow(){
+    const code = generateAccountCode();
+    appData.accounts[code] = {
+        code,
+        loginId:"new_user_" + Object.keys(appData.accounts || {}).length,
+        passwordHash:"",
+        role:"staff",
+        storeIds:[currentStoreId],
+        createdAt:new Date().toISOString()
+    };
+
+    render(false);
+}
+
+async function saveAccountRow(code){
+    const account = appData.accounts[code];
+    const values = getAccountRowValues(code);
+
+    if(!account || !values){
+        alert("계정 정보를 찾을 수 없습니다.");
+        return;
+    }
+
+    if(!values.loginId){
+        alert("아이디를 입력하세요.");
+        return;
+    }
+
+    if(values.loginId === DEFAULT_MASTER_ID){
+        alert("기본 마스터 아이디는 사용할 수 없습니다.");
+        return;
+    }
+
+    const existingCode = findAccountCodeByLoginId(values.loginId);
+
+    if(existingCode && existingCode !== code){
+        alert("이미 사용 중인 아이디입니다.");
+        return;
+    }
+
+    if(values.storeIds.length === 0){
+        alert("접속 지점을 1개 이상 선택하세요.");
+        return;
+    }
+
+    account.loginId = values.loginId;
+    account.role = values.role;
+    account.storeIds = values.storeIds;
+
+    if(values.password){
+        account.passwordHash = await hashPassword(values.password);
+    }
+
+    if(!account.passwordHash){
+        alert("새 계정은 비밀번호를 입력해야 저장할 수 있습니다.");
+        return;
+    }
+
+    await saveData(()=>{
+        render(false);
+        alert("계정이 저장되었습니다.");
+    });
+}
+
+function deleteAccountRow(code){
+    const account = appData.accounts[code];
+
+    if(!account){
+        return;
+    }
+
+    if(!confirm(account.loginId + " 계정을 삭제할까요?")){
+        return;
+    }
+
+    delete appData.accounts[code];
+
+    if(currentAccountCode === code){
+        currentAccountCode = "";
+        currentLoginId = "";
+    }
+
+    saveData(()=>{
+        render(false);
+        updateAuthUI();
+    });
+}
+
+function adjustMemoHeight(){
+    const textarea = document.getElementById("memo");
+
+    if(!textarea || textarea.classList.contains("scroll-mode")){
+        return;
+    }
+
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+}
+
+function applyMemoDisplayMode(){
+    setTimeout(()=>{
+        const textarea = document.getElementById("memo");
+        const button = document.getElementById("memo-mode-toggle");
+
+        if(!textarea){
+            return;
+        }
+
+        const savedMode = localStorage.getItem("memoDisplayMode") || "expanded";
+
+        if(savedMode === "scroll"){
+            textarea.classList.remove("expanded-mode");
+            textarea.classList.add("scroll-mode");
+
+            if(button){
+                button.innerText = "📖 펼침 모드";
+            }
+        }else{
+            textarea.classList.remove("scroll-mode");
+            textarea.classList.add("expanded-mode");
+
+            if(button){
+                button.innerText = "📋 스크롤 모드";
+            }
+
+            adjustMemoHeight();
+        }
+    }, 0);
+}
+
+function toggleMemoMode(){
+    const textarea = document.getElementById("memo");
+    const button = document.getElementById("memo-mode-toggle");
+
+    if(!textarea){
+        return;
+    }
+
+    const isExpanded = textarea.classList.contains("expanded-mode");
+
+    if(isExpanded){
+        textarea.classList.remove("expanded-mode");
+        textarea.classList.add("scroll-mode");
+        textarea.style.height = "";
+        localStorage.setItem("memoDisplayMode", "scroll");
+
+        if(button){
+            button.innerText = "📖 펼침 모드";
+        }
+    }else{
+        textarea.classList.remove("scroll-mode");
+        textarea.classList.add("expanded-mode");
+        localStorage.setItem("memoDisplayMode", "expanded");
+
+        if(button){
+            button.innerText = "📋 스크롤 모드";
+        }
+
+        adjustMemoHeight();
+    }
+}
+
+function toggleMemoEdit(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const textarea = document.getElementById("memo");
+    const button = document.getElementById("memo-btn");
+
+    if(!textarea || !button){
+        return;
+    }
+
+    if(!memoEditMode){
+        memoEditMode = true;
+        textarea.readOnly = false;
+        textarea.style.pointerEvents = "auto";
+        textarea.focus();
+        button.innerText = "💾 저장";
+
+        memoInputListener = ()=>{
+            adjustMemoHeight();
+        };
+
+        textarea.addEventListener("input", memoInputListener);
+        adjustMemoHeight();
+        return;
+    }
+
+    if(memoInputListener){
+        textarea.removeEventListener("input", memoInputListener);
+        memoInputListener = null;
+    }
+
+    if(!data.machines[currentGenre] || !data.machines[currentGenre][currentMachine]){
+        alert("데이터 오류");
+        return;
+    }
+
+    data.machines[currentGenre][currentMachine].memo = textarea.value;
+
+    saveData(()=>{
+        textarea.readOnly = true;
+        textarea.style.pointerEvents = "none";
+        button.innerText = "✏️ 메모 수정";
+        memoEditMode = false;
+        adjustMemoHeight();
+        alert("메모 저장 완료");
+    });
+}
+
+function openModal(src){
+    if(!src){
+        return;
+    }
+
+    document.getElementById("modal-img").src = src;
+    document.getElementById("modal").style.display = "flex";
+}
+
+function deleteEvidencePhoto(index){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!confirm("정말 삭제하시겠습니까?")){
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+
+    if(!machine || !Array.isArray(machine.evidencePhotos)){
+        alert("사진 데이터 오류");
+        return;
+    }
+
+    const deletedPhoto = machine.evidencePhotos[index];
+
+    if(!deletedPhoto){
+        alert("사진 데이터 오류");
+        return;
+    }
+
+    data.trash.push({
+        type:"photo",
+        genre:currentGenre,
+        machine:currentMachine,
+        name:currentMachine + "번 추가사진",
+        data:deletedPhoto,
+        deletedAt:new Date().toISOString()
+    });
+
+    machine.evidencePhotos.splice(index, 1);
+    saveData(()=>render(false));
+}
+
+function restoreTrashItem(index){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!confirm("복구하시겠습니까?")){
+        return;
+    }
+
+    const item = data.trash[index];
+
+    if(!item){
+        return;
+    }
+
+    if(item.type === "genre"){
+        if(!data.genres.includes(item.name)){
+            data.genres.push(item.name);
+            data.machines[item.name] = item.data || {};
+        }
+    }else if(item.type === "machine"){
+        if(!item.genre){
+            alert("원본 폴더 정보 없음");
+            return;
+        }
+
+        if(!data.genres.includes(item.genre)){
+            data.genres.push(item.genre);
+        }
+
+        if(!data.machines[item.genre]){
+            data.machines[item.genre] = {};
+        }
+
+        data.machines[item.genre][item.name] = item.data || {
+            photo:"",
+            memo:"",
+            evidencePhotos:[]
+        };
+    }else if(item.type === "photo"){
+        if(!data.machines[item.genre] || !data.machines[item.genre][item.machine]){
+            alert("원본 기계 없음");
+            return;
+        }
+
+        if(!Array.isArray(data.machines[item.genre][item.machine].evidencePhotos)){
+            data.machines[item.genre][item.machine].evidencePhotos = [];
+        }
+
+        data.machines[item.genre][item.machine].evidencePhotos.push(item.data);
+    }
+
+    data.trash.splice(index, 1);
+
+    saveData(()=>{
+        render(false);
+        alert("복구 완료");
+    });
+}
+
+function deleteTrashItem(index){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!confirm("영구 삭제하시겠습니까?\n되돌릴 수 없습니다.")){
+        return;
+    }
+
+    data.trash.splice(index, 1);
+
+    saveData(()=>{
+        render(false);
+        alert("영구 삭제 완료");
+    });
+}
+
+function uploadPhoto(type){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!currentGenre || !currentMachine){
+        alert("기계 정보 없음");
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+
+    if(!machine){
+        alert("기계 데이터 없음");
+        return;
+    }
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.multiple = type === 1;
+
+    input.onchange = async(event)=>{
+        const files = Array.from(event.target.files || []);
+
+        if(files.length === 0){
+            return;
+        }
+
+        const interval = showLoading("📤 이미지 업로드 중...");
+
+        try{
+            if(type === 0){
+                machine.photo = await compressAndUploadImage(files[0], "main");
+            }else{
+                if(!Array.isArray(machine.evidencePhotos)){
+                    machine.evidencePhotos = [];
+                }
+
+                for(let i = 0; i < files.length; i++){
+                    const url = await compressAndUploadImage(files[i], "evidence");
+                    machine.evidencePhotos.push({ photo:url });
+
+                    const percent = Math.round(((i + 1) / files.length) * 100);
+                    document.getElementById("progress-fill").style.width = percent + "%";
+                    document.getElementById("loading-text").innerText = "📤 이미지 업로드 중... " + percent + "%";
+                }
+            }
+
+            await saveData(()=>{
+                render(false);
+            });
+        }catch(err){
+            console.error(err);
+            alert("업로드 실패: " + err.message);
+        }finally{
+            hideLoading(interval);
+        }
+    };
+
+    input.click();
+}
+
+function toggleMenu(force){
+    const menu = document.getElementById("side-menu");
+    const overlay = document.getElementById("side-overlay");
+    const active = typeof force === "boolean" ? force : !menu.classList.contains("active");
+
+    menu.classList.toggle("active", active);
+    overlay.classList.toggle("active", active);
+}
+
+function goToTrash(){
+    currentView = "trash";
+    currentGenre = null;
+    currentMachine = null;
+    render();
+    toggleMenu(false);
+}
+
+document.getElementById("menu-button").onclick = ()=>{
+    toggleMenu();
+};
+
+document.getElementById("side-overlay").onclick = ()=>{
+    toggleMenu(false);
+};
+
+document.getElementById("login-menu").onclick = ()=>{
+    document.getElementById("login-panel").classList.toggle("active");
+};
+
+document.getElementById("login-submit").onclick = ()=>{
+    loginWithId();
+};
+
+document.getElementById("logout-submit").onclick = ()=>{
+    logoutUser();
+};
+
+document.getElementById("auto-login").onchange = (event)=>{
+    const rememberInput = document.getElementById("remember-login");
+    const centerRememberInput = document.getElementById("center-remember-login");
+    const centerAutoInput = document.getElementById("center-auto-login");
+
+    if(event.target.checked && rememberInput){
+        rememberInput.checked = true;
+    }
+
+    if(centerAutoInput){
+        centerAutoInput.checked = event.target.checked;
+    }
+
+    if(event.target.checked && centerRememberInput){
+        centerRememberInput.checked = true;
+    }
+};
+
+document.getElementById("center-login-submit").onclick = ()=>{
+    const idInput = document.getElementById("login-id");
+    const passwordInput = document.getElementById("login-password");
+    const centerIdInput = document.getElementById("center-login-id");
+    const centerPasswordInput = document.getElementById("center-login-password");
+
+    if(idInput && centerIdInput){
+        idInput.value = centerIdInput.value;
+    }
+
+    if(passwordInput && centerPasswordInput){
+        passwordInput.value = centerPasswordInput.value;
+    }
+
+    loginWithId();
+};
+
+document.getElementById("center-auto-login").onchange = (event)=>{
+    const rememberInput = document.getElementById("remember-login");
+    const autoInput = document.getElementById("auto-login");
+    const centerRememberInput = document.getElementById("center-remember-login");
+
+    if(autoInput){
+        autoInput.checked = event.target.checked;
+    }
+
+    if(event.target.checked && rememberInput){
+        rememberInput.checked = true;
+    }
+
+    if(event.target.checked && centerRememberInput){
+        centerRememberInput.checked = true;
+    }
+};
+
+document.getElementById("store-select").onchange = (event)=>{
+    switchStore(event.target.value);
+};
+
+document.getElementById("trash-menu").onclick = ()=>{
+    goToTrash();
+};
+
+document.getElementById("logo-menu").onclick = ()=>{
+    if(!requireStoreManage()){
+        return;
+    }
+
+    document.getElementById("logo-upload").click();
+};
+
+document.getElementById("migrate-menu").onclick = ()=>{
+    migratePhotosToStorage();
+};
+
+document.getElementById("recount-storage-menu").onclick = ()=>{
+    recountStorageUsage();
+};
+
+document.getElementById("rename-store-menu").onclick = ()=>{
+    renameCurrentStore();
+};
+
+document.getElementById("delete-store-menu").onclick = ()=>{
+    deleteCurrentStore();
+};
+
+document.getElementById("restore-store-menu").onclick = ()=>{
+    restoreDeletedStore();
+};
+
+document.getElementById("compression-menu").onclick = ()=>{
+    openCompressionSettings();
+};
+
+document.getElementById("manage-role-menu").onclick = ()=>{
+    manageUserRole();
+};
+
+document.getElementById("compression-quality").oninput = ()=>{
+    updateCompressionQualityLabel();
+};
+
+document.getElementById("compression-preview-btn").onclick = ()=>{
+    generateCompressionPreview();
+};
+
+document.getElementById("compression-save-btn").onclick = ()=>{
+    saveCompressionSettings();
+};
+
+document.getElementById("compression-close-btn").onclick = ()=>{
+    closeCompressionSettings();
+};
+
+document.getElementById("compression-original-img").onclick = ()=>{
+    openPreviewImage("compression-original-img");
+};
+
+document.getElementById("compression-preview-img").onclick = ()=>{
+    openPreviewImage("compression-preview-img");
+};
+
+document.getElementById("logo-wrap").onclick = ()=>{
+    currentView = "genres";
+    currentGenre = null;
+    currentMachine = null;
+    render();
+};
+
+document.getElementById("modal").onclick = ()=>{
+    document.getElementById("modal").style.display = "none";
+};
+
+document.getElementById("logo-upload").onchange = async(event)=>{
+    if(!requireStoreManage()){
+        event.target.value = "";
+        return;
+    }
+
+    const file = event.target.files && event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const interval = showLoading("📤 타이틀 이미지 업로드 중...");
+
+    try{
+        appData.siteLogo = await compressAndUploadImage(file, "logo");
+
+        await saveData(()=>{
+            loadLogo();
+            toggleMenu(false);
+            alert("타이틀 변경 완료");
+        });
+    }catch(err){
+        console.error(err);
+        alert("타이틀 업로드 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+        event.target.value = "";
+    }
+};
+
+window.addEventListener("popstate", (event)=>{
+    if(event.state){
+        if(event.state.store && appData.stores[event.state.store]){
+            currentStoreId = event.state.store;
+            localStorage.setItem("currentStoreId", currentStoreId);
+            data = appData.stores[currentStoreId];
+        }
+
+        currentView = event.state.view || "genres";
+        currentGenre = event.state.genre || null;
+        currentMachine = event.state.machine || null;
+    }else{
+        currentView = "genres";
+        currentGenre = null;
+        currentMachine = null;
+    }
+
+    render(false);
+});
+
+window.addEventListener("online", ()=>{
+    console.log("온라인 상태");
+});
+
+window.addEventListener("offline", ()=>{
+    alert("인터넷 연결 끊김");
+});
+
+window.addEventListener("error", (event)=>{
+    console.error("전역 오류:", event.error);
+});
+
+window.addEventListener("unhandledrejection", (event)=>{
+    console.error("Promise 오류:", event.reason);
+});
+
+window.addEventListener("beforeunload", (event)=>{
+    if(memoEditMode){
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+
+setInterval(()=>{
+    if(currentView === "trash"){
+        render(false);
+    }
+}, 60000);
+
+window.showProgress = showLoading;
+window.hideProgress = hideLoading;
+window.adjustMemoHeight = adjustMemoHeight;
+window.toggleMemoMode = toggleMemoMode;
+window.toggleMemoEdit = toggleMemoEdit;
+window.openM = openModal;
+window.delE = deleteEvidencePhoto;
+window.restoreTrashItem = restoreTrashItem;
+window.deleteTrashItem = deleteTrashItem;
+window.compressImage = compressImage;
+window.compressDataUrl = compressDataUrl;
+window.migratePhotosToStorage = migratePhotosToStorage;
+window.recountStorageUsage = recountStorageUsage;
+window.renameCurrentStore = renameCurrentStore;
+window.deleteCurrentStore = deleteCurrentStore;
+window.restoreDeletedStore = restoreDeletedStore;
+window.manageUserRole = manageUserRole;
+window.openCompressionSettings = openCompressionSettings;
+window.closeCompressionSettings = closeCompressionSettings;
+window.generateCompressionPreview = generateCompressionPreview;
+window.saveCompressionSettings = saveCompressionSettings;
+window.openPreviewImage = openPreviewImage;
+window.up = uploadPhoto;
+window.toggleMenu = toggleMenu;
+window.goToTrash = goToTrash;
+
+initializeAppData(appData);
+renderStoreSelector();
+loadLogo();
+updateStorageBadge();
+updateAuthUI();
+applySavedLoginOptions();
+
+signInAnonymously(auth)
+.then(()=>{
+    const interval = showLoading("🔄 데이터 로드 중...");
+
+    onValue(ref(database, "dollCraneData"), (snapshot)=>{
+        if(snapshot.exists()){
+            initializeAppData(snapshot.val());
+        }else{
+            initializeAppData(appData);
+        }
+
+        autoTrashClean();
+        loadLogo();
+        renderStoreSelector();
+        updateStorageBadge();
+        updateAuthUI();
+        applySavedLoginOptions();
+        tryAutoLogin();
+        hideLoading(interval);
+        render(false);
+    });
+})
+.catch((err)=>{
+    console.error(err);
+    alert("Firebase 로그인 실패");
+    render(false);
+});
+
+console.log("짱오락실 정답지 실행 완료");
+</script>
 </body>
 </html>
