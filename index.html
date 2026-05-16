@@ -112,6 +112,7 @@ body{
     justify-content:space-between;
     align-items:center;
     gap:10px;
+    flex-wrap:wrap;
     margin-bottom:15px;
 }
 
@@ -146,6 +147,65 @@ select{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
+}
+
+.grid-tile{
+    display:grid;
+    gap:10px;
+}
+
+.grid-cols-2{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.grid-cols-3{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.grid-cols-4{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.grid-tile .item-wrapper{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.grid-tile .item-wrapper>.item{
+    height:100%;
+}
+
+.view-options{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.view-options select{
+    max-width:150px;
+}
+
+.memo-expand-option{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    padding:7px 8px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:white;
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.memo-expand-option input{
+    width:14px;
+    height:14px;
+    margin:0;
 }
 
 .item-wrapper{
@@ -219,6 +279,29 @@ select{
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+}
+
+.info-box p.memo-preview{
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    line-height:1.45;
+    min-height:36px;
+    max-height:36px;
+    overflow:hidden;
+    text-overflow:clip;
+    white-space:normal;
+    word-break:break-word;
+}
+
+.info-box p.memo-preview.expanded{
+    display:block;
+    -webkit-line-clamp:unset;
+    max-height:none;
+}
+
+.machine-card.memo-card:not(.memo-expanded) .info-box{
+    min-height:70px;
 }
 
 .no-photo .thumb-box{
@@ -611,11 +694,21 @@ textarea.scroll-mode{
     display:flex;
     align-items:center;
     gap:7px;
+    width:100%;
+    min-width:0;
+    line-height:1.4;
+    white-space:nowrap;
 }
 
-.login-checks input{
-    width:auto;
+.login-checks input[type="checkbox"],
+.login-panel .login-checks input[type="checkbox"],
+.center-login-card .login-checks input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    min-width:16px;
+    flex:0 0 16px;
     margin:0;
+    padding:0;
 }
 
 .login-panel button{
@@ -679,6 +772,10 @@ textarea.scroll-mode{
 
 .center-login-card button{
     margin-top:10px;
+}
+
+.center-login-card .login-checks{
+    width:100%;
 }
 
 .memo-section{
@@ -769,7 +866,7 @@ textarea.scroll-mode{
 
 .account-table{
     width:100%;
-    min-width:760px;
+    min-width:920px;
     border-collapse:collapse;
     font-size:13px;
 }
@@ -795,6 +892,19 @@ textarea.scroll-mode{
     border:1px solid #ccc;
     border-radius:7px;
     font-size:12px;
+}
+
+.account-table textarea{
+    width:100%;
+    min-width:150px;
+    min-height:54px;
+    padding:7px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    background:white;
+    font-size:12px;
+    line-height:1.4;
+    resize:vertical;
 }
 
 .store-checks{
@@ -1207,6 +1317,12 @@ function initializeAppData(raw){
         appData.accounts = {};
     }
 
+    Object.values(appData.accounts).forEach((account)=>{
+        if(account && typeof account.memo !== "string"){
+            account.memo = "";
+        }
+    });
+
     if(!appData.userRoles || typeof appData.userRoles !== "object"){
         appData.userRoles = {};
     }
@@ -1226,6 +1342,7 @@ function initializeAppData(raw){
 
         appData.accounts[legacyCode] = {
             code:legacyCode,
+            memo:"",
             loginId:normalizeLoginId(loginId),
             passwordHash:appData.userPasswords[loginId] || "",
             role:legacyRole.role === "master" ? "master" : legacyRole.role === "manager" ? "manager" : "staff",
@@ -1810,7 +1927,9 @@ function describeAccount(account){
         ? "전체 지점"
         : (account.storeIds || []).map((storeId)=>appData.storeNames[storeId] || storeId).join(", ");
 
-    return account.code + " / " + account.loginId + " / " + roleName + " / " + (storeNames || "접속 지점 없음");
+    const memoText = account.memo ? " / " + account.memo : "";
+
+    return account.code + memoText + " / " + account.loginId + " / " + roleName + " / " + (storeNames || "접속 지점 없음");
 }
 
 async function createManagedAccount(){
@@ -3453,8 +3572,62 @@ function createAdminButton(text, onClick){
     return createButton("btn-mini", text, onClick);
 }
 
+const TILE_COLUMN_OPTIONS = ["2", "3", "4"];
+
+function getTileColumns(storageKey){
+    const value = localStorage.getItem(storageKey);
+    return TILE_COLUMN_OPTIONS.includes(value) ? value : "3";
+}
+
+function createTileColumnSelect(storageKey, value){
+    const select = document.createElement("select");
+
+    TILE_COLUMN_OPTIONS.forEach((column)=>{
+        const option = document.createElement("option");
+        option.value = column;
+        option.innerText = column + "열";
+        select.appendChild(option);
+    });
+
+    select.value = value;
+
+    select.onchange = ()=>{
+        localStorage.setItem(storageKey, select.value);
+        render(false);
+    };
+
+    return select;
+}
+
+function applyTileColumns(container, columnCount){
+    const safeColumnCount = TILE_COLUMN_OPTIONS.includes(columnCount) ? columnCount : "3";
+    container.className = "grid-tile grid-cols-" + safeColumnCount;
+}
+
+function createMemoExpandControl(checked){
+    const label = document.createElement("label");
+    label.className = "memo-expand-option";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.checked = checked;
+    input.onchange = ()=>{
+        localStorage.setItem("machineMemoExpanded", input.checked ? "1" : "0");
+        render(false);
+    };
+
+    const text = document.createElement("span");
+    text.innerText = "메모 펼치기";
+
+    label.appendChild(input);
+    label.appendChild(text);
+
+    return label;
+}
+
 function renderGenres(root){
     const layout = localStorage.getItem("genreLayout") || "list";
+    const tileColumns = getTileColumns("genreTileColumns");
 
     const header = document.createElement("div");
     header.className = "header-row";
@@ -3474,12 +3647,24 @@ function renderGenres(root){
         render(false);
     };
 
+    const options = document.createElement("div");
+    options.className = "view-options";
+    options.appendChild(select);
+
+    if(layout === "tile"){
+        options.appendChild(createTileColumnSelect("genreTileColumns", tileColumns));
+    }
+
     header.appendChild(title);
-    header.appendChild(select);
+    header.appendChild(options);
     root.appendChild(header);
 
     const container = document.createElement("div");
-    container.className = layout === "tile" ? "grid-3" : "grid-1";
+    if(layout === "tile"){
+        applyTileColumns(container, tileColumns);
+    }else{
+        container.className = "grid-1";
+    }
 
     data.genres.forEach((genre, index)=>{
         const wrap = document.createElement("div");
@@ -3656,6 +3841,8 @@ function renderMachines(root){
     const isTile = layout.includes("tile");
     const showThumb = layout.includes("thumb") || layout.includes("memo");
     const showMemo = layout.includes("memo");
+    const tileColumns = getTileColumns("machineTileColumns");
+    const memoPreviewExpanded = localStorage.getItem("machineMemoExpanded") === "1";
 
     const header = document.createElement("div");
     header.className = "header-row";
@@ -3680,12 +3867,28 @@ function renderMachines(root){
         render(false);
     };
 
+    const options = document.createElement("div");
+    options.className = "view-options";
+    options.appendChild(select);
+
+    if(isTile){
+        options.appendChild(createTileColumnSelect("machineTileColumns", tileColumns));
+    }
+
+    if(showMemo){
+        options.appendChild(createMemoExpandControl(memoPreviewExpanded));
+    }
+
     header.appendChild(title);
-    header.appendChild(select);
+    header.appendChild(options);
     root.appendChild(header);
 
     const container = document.createElement("div");
-    container.className = isTile ? "grid-3" : "grid-1";
+    if(isTile){
+        applyTileColumns(container, tileColumns);
+    }else{
+        container.className = "grid-1";
+    }
 
     const machines = data.machines[currentGenre] || {};
 
@@ -3698,7 +3901,14 @@ function renderMachines(root){
         wrap.className = "item-wrapper";
 
         const item = document.createElement("div");
-        item.className = "item" + (isTile ? "" : " list-mode") + (showThumb ? "" : " no-photo");
+        item.className = [
+            "item",
+            "machine-card",
+            isTile ? "" : "list-mode",
+            showThumb ? "" : "no-photo",
+            showMemo ? "memo-card" : "",
+            showMemo && memoPreviewExpanded ? "memo-expanded" : ""
+        ].filter(Boolean).join(" ");
         item.onclick = ()=>{
             currentMachine = machine;
             currentView = "detail";
@@ -3722,7 +3932,9 @@ function renderMachines(root){
 
         if(showMemo){
             const memo = document.createElement("p");
+            memo.className = "memo-preview" + (memoPreviewExpanded ? " expanded" : "");
             memo.innerText = machineData.memo || "메모 없음";
+            memo.title = machineData.memo || "";
             info.appendChild(memo);
         }
 
@@ -4101,6 +4313,7 @@ function renderAccounts(root){
     const thead = document.createElement("thead");
     thead.innerHTML = `
         <tr>
+            <th>메모</th>
             <th>식별 코드</th>
             <th>아이디</th>
             <th>비밀번호</th>
@@ -4116,7 +4329,7 @@ function renderAccounts(root){
     if(accounts.length === 0){
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-        cell.colSpan = 6;
+        cell.colSpan = 7;
         cell.innerText = "생성된 계정이 없습니다.";
         row.appendChild(cell);
         tbody.appendChild(row);
@@ -4141,6 +4354,13 @@ function renderAccounts(root){
 function createAccountRow(account){
     const row = document.createElement("tr");
     row.dataset.accountCode = account.code;
+
+    const memoCell = document.createElement("td");
+    const memoInput = document.createElement("textarea");
+    memoInput.className = "account-memo";
+    memoInput.placeholder = "배포 메모";
+    memoInput.value = account.memo || "";
+    memoCell.appendChild(memoInput);
 
     const codeCell = document.createElement("td");
     codeCell.innerText = account.code;
@@ -4187,6 +4407,7 @@ function createAccountRow(account){
     actions.appendChild(deleteButton);
     actionCell.appendChild(actions);
 
+    row.appendChild(memoCell);
     row.appendChild(codeCell);
     row.appendChild(idCell);
     row.appendChild(passwordCell);
@@ -4229,12 +4450,14 @@ function getAccountRowValues(code){
     }
 
     const loginId = normalizeLoginId(row.querySelector(".account-login-id").value);
+    const memo = sanitizeText(row.querySelector(".account-memo").value);
     const password = row.querySelector(".account-password").value.trim();
     const role = row.querySelector(".account-role").value;
     const storeIds = Array.from(row.querySelectorAll(".account-store-check:checked"))
     .map((checkbox)=>checkbox.value);
 
     return {
+        memo,
         loginId,
         password,
         role,
@@ -4246,6 +4469,7 @@ function addAccountRow(){
     const code = generateAccountCode();
     appData.accounts[code] = {
         code,
+        memo:"",
         loginId:"new_user_" + Object.keys(appData.accounts || {}).length,
         passwordHash:"",
         role:"staff",
@@ -4288,6 +4512,7 @@ async function saveAccountRow(code){
     }
 
     account.loginId = values.loginId;
+    account.memo = values.memo;
     account.role = values.role;
     account.storeIds = values.storeIds;
 
@@ -4576,6 +4801,41 @@ function deleteTrashItem(index){
     });
 }
 
+function isMobileDevice(){
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "");
+}
+
+function createPhotoInput(type){
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.value = "";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    input.style.top = "-9999px";
+    input.style.width = "1px";
+    input.style.height = "1px";
+    input.style.opacity = "0";
+
+    if(isMobileDevice()){
+        const useCamera = confirm("카메라로 촬영할까요?\n취소하면 앨범에서 선택합니다.");
+
+        if(useCamera){
+            input.capture = "environment";
+            input.setAttribute("capture", "environment");
+            input.multiple = false;
+        }else{
+            input.multiple = type === 1;
+        }
+    }else{
+        input.multiple = type === 1;
+    }
+
+    document.body.appendChild(input);
+
+    return input;
+}
+
 function uploadPhoto(type){
     if(!requireStoreEdit()){
         return;
@@ -4593,15 +4853,21 @@ function uploadPhoto(type){
         return;
     }
 
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.multiple = type === 1;
+    const input = createPhotoInput(type);
+
+    const cleanupInput = ()=>{
+        setTimeout(()=>{
+            if(input.parentNode){
+                input.parentNode.removeChild(input);
+            }
+        }, 500);
+    };
 
     input.onchange = async(event)=>{
         const files = Array.from(event.target.files || []);
 
         if(files.length === 0){
+            cleanupInput();
             return;
         }
 
@@ -4633,7 +4899,12 @@ function uploadPhoto(type){
             alert("업로드 실패: " + err.message);
         }finally{
             hideLoading(interval);
+            cleanupInput();
         }
+    };
+
+    input.oncancel = ()=>{
+        cleanupInput();
     };
 
     input.click();
