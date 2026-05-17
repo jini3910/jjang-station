@@ -422,6 +422,40 @@ select{
     border-color:#222;
 }
 
+.admin-only-toggle{
+    width:auto;
+    margin-top:0;
+    padding:8px 10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:white;
+    color:#333;
+    font-size:12px;
+    font-weight:700;
+}
+
+.admin-only-toggle.active{
+    border-color:#d9534f;
+    background:#fff0f0;
+    color:#b71c1c;
+}
+
+.admin-only-item{
+    box-shadow:inset 0 0 0 2px rgba(217,83,79,0.35);
+}
+
+.admin-only-badge{
+    display:inline-block;
+    width:max-content;
+    margin-top:6px;
+    padding:3px 7px;
+    border-radius:999px;
+    background:rgba(80,80,80,0.58);
+    color:white;
+    font-size:11px;
+    line-height:1.25;
+}
+
 .btn-mini{
     width:auto;
     margin-top:0;
@@ -481,13 +515,18 @@ button{
 
 .action-time{
     display:inline-block;
-    padding:4px 7px;
-    border-radius:7px;
-    background:rgba(80,80,80,0.58);
-    color:white;
-    font-size:11px;
+    padding:3px 6px;
+    border-radius:6px;
+    background:rgba(80,80,80,0.24);
+    color:rgba(255,255,255,0.74);
+    font-size:10px;
     line-height:1.35;
     pointer-events:none;
+}
+
+.action-time:hover{
+    background:rgba(80,80,80,0.45);
+    color:white;
 }
 
 .floating-time{
@@ -1070,6 +1109,233 @@ textarea.scroll-mode{
     padding:7px 9px;
 }
 
+.help-page{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.help-section{
+    border:1px solid #e5e5e5;
+    border-radius:10px;
+    padding:14px;
+    background:#fafafa;
+}
+
+.help-section h3{
+    margin:0 0 8px;
+    font-size:16px;
+}
+
+.help-section p{
+    margin:0 0 8px;
+    color:#444;
+    font-size:13px;
+    line-height:1.65;
+}
+
+.help-section ul,
+.help-section ol{
+    margin:8px 0 0;
+    padding-left:20px;
+}
+
+.help-section li{
+    margin:5px 0;
+    color:#333;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.help-note{
+    border-left:4px solid #4CAF50;
+    padding:10px 12px;
+    border-radius:8px;
+    background:#f1fbf2;
+    color:#2d5c31;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.figure-toolbar{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.figure-search{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:12px;
+    font-size:14px;
+}
+
+.figure-preview{
+    display:none;
+    gap:10px;
+    align-items:flex-start;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fafafa;
+}
+
+.figure-preview.active{
+    display:flex;
+}
+
+.figure-preview img{
+    width:96px;
+    height:120px;
+    object-fit:contain;
+    border:1px solid #eee;
+    border-radius:8px;
+    background:white;
+}
+
+.figure-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+}
+
+.figure-card{
+    border:1px solid #ddd;
+    border-radius:12px;
+    overflow:hidden;
+    background:white;
+}
+
+.figure-images{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:1px;
+    background:#eee;
+}
+
+.figure-image-box{
+    min-height:150px;
+    background:#fafafa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.figure-image-box img{
+    width:100%;
+    height:180px;
+    object-fit:contain;
+    background:white;
+    cursor:pointer;
+}
+
+.figure-image-label{
+    position:absolute;
+    top:6px;
+    left:6px;
+    padding:3px 6px;
+    border-radius:999px;
+    background:rgba(0,0,0,0.38);
+    color:white;
+    font-size:10px;
+}
+
+.figure-info{
+    padding:10px;
+}
+
+.figure-info h3{
+    margin:0 0 6px;
+    font-size:15px;
+}
+
+.figure-info p{
+    margin:5px 0;
+    color:#555;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.figure-detail-list{
+    display:grid;
+    gap:6px;
+    margin-top:8px;
+}
+
+.figure-detail-row{
+    display:grid;
+    grid-template-columns:76px minmax(0,1fr);
+    gap:8px;
+    padding:7px 8px;
+    border-radius:8px;
+    background:#f7f7f7;
+    font-size:12px;
+    line-height:1.45;
+}
+
+.figure-detail-label{
+    color:#777;
+    font-weight:700;
+}
+
+.figure-detail-value{
+    color:#333;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.figure-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:0 10px 10px;
+}
+
+.figure-actions .btn-mini{
+    padding:7px 9px;
+}
+
+.figure-form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:10px;
+}
+
+.figure-form-field{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.figure-form-field.full{
+    grid-column:1 / -1;
+}
+
+.figure-form-field label{
+    color:#333;
+    font-size:12px;
+    font-weight:700;
+}
+
+.figure-form-field input,
+.figure-form-field textarea{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:9px;
+    background:white;
+    font-size:13px;
+}
+
+.figure-form-field textarea{
+    min-height:78px;
+    resize:vertical;
+}
+
 @media(max-width:600px){
     .grid-3{
         grid-template-columns:repeat(2,1fr);
@@ -1078,6 +1344,14 @@ textarea.scroll-mode{
     .trash-item{
         align-items:flex-start;
         flex-direction:column;
+    }
+
+    .figure-grid{
+        grid-template-columns:1fr;
+    }
+
+    .figure-form-grid{
+        grid-template-columns:1fr;
     }
 }
 </style>
@@ -1107,6 +1381,7 @@ textarea.scroll-mode{
         <button class="btn-back" id="logout-submit">로그아웃</button>
     </div>
     <div class="menu-item" id="trash-menu">🗑️ 휴지통</div>
+    <div class="menu-item" id="figure-catalog-menu">🎁 피규어 도감</div>
     <div class="menu-item" id="logo-menu">🖼️ 타이틀 변경</div>
     <div class="menu-item" id="migrate-menu">🧹 사진 용량 정리</div>
     <div class="menu-item" id="recount-storage-menu">📊 사진 용량 다시 계산</div>
@@ -1115,6 +1390,7 @@ textarea.scroll-mode{
     <div class="menu-item" id="restore-store-menu">♻️ 지점 복구</div>
     <div class="menu-item" id="compression-menu">🧪 압축 설정</div>
     <div class="menu-item" id="manage-role-menu">👤 권한 관리</div>
+    <div class="menu-item" id="help-menu">❔ 도움말</div>
     <input type="file" id="logo-upload" accept="image/*" style="display:none">
 </div>
 
@@ -1254,6 +1530,7 @@ let appData = {
     compressionSettings:{...DEFAULT_COMPRESSION_SETTINGS},
     storageUsageBytes:0,
     storeTrash:[],
+    figureCatalog:[],
     accounts:{},
     userRoles:{},
     userPasswords:{}
@@ -1276,6 +1553,8 @@ let saving = false;
 let saveQueued = false;
 let queuedCallbacks = [];
 let rendering = false;
+let adminOnlySelectMode = null;
+let figureCatalogSearch = "";
 let memoEditMode = false;
 let memoInputListener = null;
 let currentLoginId = "";
@@ -1381,6 +1660,7 @@ function initializeAppData(raw){
                 ? raw.storageUsageBytes
                 : Number(raw.storageUsageBytes) || 0,
             storeTrash:[],
+            figureCatalog:[],
             accounts:{},
             userRoles:{},
             userPasswords:{}
@@ -1398,6 +1678,7 @@ function initializeAppData(raw){
                 ? raw.storageUsageBytes
                 : Number(raw.storageUsageBytes) || 0,
             storeTrash:Array.isArray(raw.storeTrash) ? raw.storeTrash : [],
+            figureCatalog:Array.isArray(raw.figureCatalog) ? raw.figureCatalog : [],
             accounts:raw.accounts && typeof raw.accounts === "object" ? raw.accounts : {},
             userRoles:raw.userRoles && typeof raw.userRoles === "object" ? raw.userRoles : {},
             userPasswords:raw.userPasswords && typeof raw.userPasswords === "object" ? raw.userPasswords : {}
@@ -1449,6 +1730,42 @@ function initializeAppData(raw){
     if(!Array.isArray(appData.storeTrash)){
         appData.storeTrash = [];
     }
+
+    if(!Array.isArray(appData.figureCatalog)){
+        appData.figureCatalog = [];
+    }
+
+    appData.figureCatalog = appData.figureCatalog
+    .filter((entry)=>entry && typeof entry === "object")
+    .map((entry, index)=>{
+        if(typeof entry.id !== "string" || !entry.id){
+            entry.id = "figure_" + Date.now() + "_" + index;
+        }
+
+        [
+            "name",
+            "keywords",
+            "nw",
+            "gw",
+            "code",
+            "extraKeywords",
+            "memo",
+            "boxPhoto",
+            "figurePhoto",
+            "createdAt",
+            "updatedAt",
+            "updatedBy",
+            "updatedRole",
+            "updatedStoreId",
+            "updatedStoreName"
+        ].forEach((key)=>{
+            if(typeof entry[key] !== "string"){
+                entry[key] = "";
+            }
+        });
+
+        return entry;
+    });
 
     if(!appData.accounts || typeof appData.accounts !== "object"){
         appData.accounts = {};
@@ -2599,6 +2916,10 @@ function initializeData(){
         data.genreColors = {};
     }
 
+    if(!data.adminOnlyGenres || typeof data.adminOnlyGenres !== "object" || Array.isArray(data.adminOnlyGenres)){
+        data.adminOnlyGenres = {};
+    }
+
     if(typeof data.siteLogo !== "string"){
         data.siteLogo = null;
     }
@@ -2627,6 +2948,8 @@ function initializeData(){
         if(typeof group.color !== "string"){
             group.color = "";
         }
+
+        group.adminOnly = group.adminOnly === true;
 
         return group;
     });
@@ -2663,6 +2986,8 @@ function initializeData(){
             if(typeof machineData.memoUpdatedAt !== "string"){
                 machineData.memoUpdatedAt = "";
             }
+
+            machineData.adminOnly = machineData.adminOnly === true;
 
             if(!Array.isArray(machineData.evidencePhotos)){
                 machineData.evidencePhotos = [];
@@ -3246,6 +3571,15 @@ function storageImagePath(kind){
             ".jpg";
     }
 
+    if(String(kind).startsWith("figure_")){
+        return "global/figureCatalog/" +
+            kind +
+            "_" +
+            Date.now() + "_" +
+            random +
+            ".jpg";
+    }
+
     return "stores/" +
         safeStorageSegment(currentStoreId) +
         "/dollCraneImages/" +
@@ -3757,6 +4091,10 @@ function render(push = true){
         renderStoreSelector();
         updateStorageBadge();
 
+        if(!canEditCurrentStore()){
+            adminOnlySelectMode = null;
+        }
+
         if(push){
             pushHistory();
         }
@@ -3774,6 +4112,10 @@ function render(push = true){
             renderTrash(root);
         }else if(currentView === "accounts"){
             renderAccounts(root);
+        }else if(currentView === "figureCatalog"){
+            renderFigureCatalog(root);
+        }else if(currentView === "help"){
+            renderHelp(root);
         }else{
             currentView = "genres";
             renderGenres(root);
@@ -3918,6 +4260,78 @@ function applyFolderColor(item, color){
 
     item.style.background = color;
     item.style.borderColor = "rgba(0,0,0,0.12)";
+}
+
+function canViewAdminOnlyItems(){
+    return canEditCurrentStore();
+}
+
+function isAdminOnlyGenre(genre){
+    return !!(data.adminOnlyGenres && data.adminOnlyGenres[genre]) ||
+        (data.genreGroups || []).some((group)=>{
+            return group.adminOnly === true && (group.genres || []).includes(genre);
+        });
+}
+
+function isAdminOnlyMachine(machineData){
+    return !!(machineData && machineData.adminOnly === true);
+}
+
+function createAdminOnlyBadge(){
+    const badge = document.createElement("span");
+    badge.className = "admin-only-badge";
+    badge.innerText = "관리자만";
+    return badge;
+}
+
+function createAdminOnlyModeButton(mode){
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "admin-only-toggle" + (adminOnlySelectMode === mode ? " active" : "");
+    button.innerText = "🔒 관리자만";
+    button.onclick = ()=>{
+        adminOnlySelectMode = adminOnlySelectMode === mode ? null : mode;
+        render(false);
+    };
+    return button;
+}
+
+function toggleAdminOnlyGenre(genre){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(isAdminOnlyGenre(genre)){
+        delete data.adminOnlyGenres[genre];
+    }else{
+        data.adminOnlyGenres[genre] = true;
+    }
+
+    saveData(()=>render(false));
+}
+
+function toggleAdminOnlyGroup(group){
+    if(!group || !requireStoreEdit()){
+        return;
+    }
+
+    group.adminOnly = group.adminOnly !== true;
+    saveData(()=>render(false));
+}
+
+function toggleAdminOnlyMachine(machineName){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const machineData = data.machines[currentGenre] && data.machines[currentGenre][machineName];
+
+    if(!machineData){
+        return;
+    }
+
+    machineData.adminOnly = machineData.adminOnly !== true;
+    saveData(()=>render(false));
 }
 
 function createFolderModal(title){
@@ -4105,6 +4519,13 @@ function renderGenres(root){
         return;
     }
 
+    if(activeGroup && activeGroup.adminOnly && !canViewAdminOnlyItems()){
+        currentView = "genres";
+        currentGenreGroup = null;
+        render(false);
+        return;
+    }
+
     const header = document.createElement("div");
     header.className = "header-row";
 
@@ -4131,6 +4552,10 @@ function renderGenres(root){
         options.appendChild(createTileColumnSelect("genreTileColumns", tileColumns));
     }
 
+    if(canEditCurrentStore()){
+        options.appendChild(createAdminOnlyModeButton("genres"));
+    }
+
     header.appendChild(title);
     header.appendChild(options);
     root.appendChild(header);
@@ -4143,14 +4568,24 @@ function renderGenres(root){
     }
 
     if(!activeGroup){
-        (data.genreGroups || []).forEach((group)=>{
+        (data.genreGroups || [])
+        .filter((group)=>canViewAdminOnlyItems() || !group.adminOnly)
+        .forEach((group)=>{
             const wrap = document.createElement("div");
             wrap.className = "item-wrapper";
 
             const item = document.createElement("div");
             item.className = "item" + (layout === "tile" ? "" : " list-mode");
+            if(group.adminOnly){
+                item.classList.add("admin-only-item");
+            }
             applyFolderColor(item, group.color);
             item.onclick = ()=>{
+                if(adminOnlySelectMode === "genres"){
+                    toggleAdminOnlyGroup(group);
+                    return;
+                }
+
                 currentGenreGroup = group.id;
                 currentGenre = null;
                 currentMachine = null;
@@ -4177,6 +4612,9 @@ function renderGenres(root){
 
             info.appendChild(name);
             info.appendChild(desc);
+            if(group.adminOnly){
+                info.appendChild(createAdminOnlyBadge());
+            }
             item.appendChild(info);
 
             if(canEditCurrentStore()){
@@ -4213,16 +4651,25 @@ function renderGenres(root){
     const genresToRender = activeGroup
         ? (activeGroup.genres || []).filter((genre)=>data.genres.includes(genre))
         : data.genres.filter((genre)=>!groupedGenres.has(genre));
+    const visibleGenresToRender = genresToRender.filter((genre)=>canViewAdminOnlyItems() || !isAdminOnlyGenre(genre));
 
-    genresToRender.forEach((genre)=>{
+    visibleGenresToRender.forEach((genre)=>{
         const index = data.genres.indexOf(genre);
         const wrap = document.createElement("div");
         wrap.className = "item-wrapper";
 
         const item = document.createElement("div");
         item.className = "item" + (layout === "tile" ? "" : " list-mode");
+        if(isAdminOnlyGenre(genre)){
+            item.classList.add("admin-only-item");
+        }
         applyFolderColor(item, data.genreColors[genre]);
         item.onclick = ()=>{
+            if(adminOnlySelectMode === "genres"){
+                toggleAdminOnlyGenre(genre);
+                return;
+            }
+
             currentGenre = genre;
             currentMachine = null;
             currentView = "machines";
@@ -4244,6 +4691,9 @@ function renderGenres(root){
         };
 
         info.appendChild(name);
+        if(isAdminOnlyGenre(genre)){
+            info.appendChild(createAdminOnlyBadge());
+        }
         item.appendChild(info);
         if(canEditCurrentStore()){
             item.appendChild(settings);
@@ -4313,6 +4763,11 @@ function renderGenres(root){
                 delete data.genreColors[genre];
             }
 
+            if(data.adminOnlyGenres[genre]){
+                data.adminOnlyGenres[newName] = data.adminOnlyGenres[genre];
+                delete data.adminOnlyGenres[genre];
+            }
+
             (data.genreGroups || []).forEach((group)=>{
                 group.genres = (group.genres || []).map((item)=>item === genre ? newName : item);
             });
@@ -4345,6 +4800,7 @@ function renderGenres(root){
             data.genres.splice(index, 1);
             delete data.machines[genre];
             delete data.genreColors[genre];
+            delete data.adminOnlyGenres[genre];
 
             (data.genreGroups || []).forEach((group)=>{
                 group.genres = (group.genres || []).filter((item)=>item !== genre);
@@ -4419,6 +4875,13 @@ function renderMachines(root){
         return;
     }
 
+    if(isAdminOnlyGenre(currentGenre) && !canViewAdminOnlyItems()){
+        currentView = "genres";
+        currentGenre = null;
+        render(false);
+        return;
+    }
+
     const layout = localStorage.getItem("machineLayout") || "thumb-tile";
     const isTile = layout.includes("tile");
     const showThumb = layout.includes("thumb") || layout.includes("memo");
@@ -4461,6 +4924,10 @@ function renderMachines(root){
         options.appendChild(createMemoExpandControl(memoPreviewExpanded));
     }
 
+    if(canEditCurrentStore()){
+        options.appendChild(createAdminOnlyModeButton("machines"));
+    }
+
     header.appendChild(title);
     header.appendChild(options);
     root.appendChild(header);
@@ -4476,6 +4943,7 @@ function renderMachines(root){
 
     Object.keys(machines)
     .sort(naturalMachineCompare)
+    .filter((machine)=>canViewAdminOnlyItems() || !isAdminOnlyMachine(machines[machine]))
     .forEach((machine)=>{
         const machineData = machines[machine] || {};
 
@@ -4491,7 +4959,15 @@ function renderMachines(root){
             showMemo ? "memo-card" : "",
             showMemo && memoPreviewExpanded ? "memo-expanded" : ""
         ].filter(Boolean).join(" ");
+        if(isAdminOnlyMachine(machineData)){
+            item.classList.add("admin-only-item");
+        }
         item.onclick = ()=>{
+            if(adminOnlySelectMode === "machines"){
+                toggleAdminOnlyMachine(machine);
+                return;
+            }
+
             currentMachine = machine;
             currentView = "detail";
             render();
@@ -4511,6 +4987,9 @@ function renderMachines(root){
         const machineName = document.createElement("b");
         machineName.innerText = machine;
         info.appendChild(machineName);
+        if(isAdminOnlyMachine(machineData)){
+            info.appendChild(createAdminOnlyBadge());
+        }
 
         if(showMemo){
             const memo = document.createElement("p");
@@ -4641,6 +5120,7 @@ function renderMachines(root){
         data.machines[currentGenre][number] = {
             photo:"",
             memo:"",
+            adminOnly:false,
             evidencePhotos:[]
         };
 
@@ -4657,6 +5137,12 @@ function renderDetail(root){
     const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
 
     if(!machine){
+        root.innerHTML = "<p>데이터 없음</p>";
+        root.appendChild(createButton("btn-back", "뒤로가기", ()=>history.back()));
+        return;
+    }
+
+    if(isAdminOnlyMachine(machine) && !canViewAdminOnlyItems()){
         root.innerHTML = "<p>데이터 없음</p>";
         root.appendChild(createButton("btn-back", "뒤로가기", ()=>history.back()));
         return;
@@ -4883,6 +5369,689 @@ function renderTrash(root){
     root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
         history.back();
     }));
+}
+
+function renderHelpLegacy(root){
+    const title = document.createElement("h2");
+    title.innerText = "도움말";
+    root.appendChild(title);
+
+    const page = document.createElement("div");
+    page.className = "help-page";
+    page.innerHTML = `
+        <div class="help-note">
+            이 페이지는 처음 쓰는 직원이 바로 이해할 수 있게 만든 설명서입니다.
+            기본 흐름은 지점 선택 → 폴더 선택 → 정답지 번호 선택 → 사진과 메모 확인입니다.
+        </div>
+
+        <div class="help-section">
+            <h3>1. 로그인과 권한</h3>
+            <p>로그인하지 않은 사람은 기본적으로 볼 수 없거나 보기 전용입니다. 계정마다 볼 수 있는 지점과 수정 권한이 다릅니다.</p>
+            <ul>
+                <li>본사 게임마스터: 모든 지점, 계정, 압축 설정, 지점 관리, 전체 데이터 수정이 가능합니다.</li>
+                <li>지점 관리자: 허용된 자기 지점의 폴더, 정답지, 사진, 메모를 수정할 수 있습니다.</li>
+                <li>일반 직원: 허용된 지점을 보고 정답지를 확인하는 용도입니다.</li>
+                <li>자동 로그인과 아이디/비밀번호 저장을 체크하면 다음 접속이 편해집니다. 공용 기기에서는 체크하지 않는 것이 좋습니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>2. 지점 선택</h3>
+            <p>오른쪽 위 지점 목록에서 매장을 바꿀 수 있습니다. 각 지점은 폴더, 정답지, 메모 설정을 따로 가집니다.</p>
+            <ul>
+                <li>마스터는 지점 추가, 지점명 수정, 지점 삭제, 지점 복구를 할 수 있습니다.</li>
+                <li>용산점처럼 매장별로 다른 세팅과 사진을 관리할 때 사용합니다.</li>
+                <li>한 지점에서 쓰는 계정은 권한 관리에서 해당 지점만 체크해 배포하면 됩니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>3. 폴더와 대폴더</h3>
+            <p>폴더는 정답지 번호들을 담는 기본 분류입니다. 대폴더는 여러 폴더를 한 번에 묶는 상위 폴더입니다.</p>
+            <ul>
+                <li>폴더 추가: 새 분류를 만듭니다.</li>
+                <li>대폴더 추가: 여러 폴더를 묶을 큰 폴더를 만듭니다.</li>
+                <li>대폴더 설정: 체크박스로 어느 폴더를 대폴더 안에 넣을지 고릅니다.</li>
+                <li>색상: 폴더나 대폴더를 파스텔 색상으로 표시해 자주 쓰는 분류를 빠르게 찾습니다.</li>
+                <li>관리자만: 관리자 전용 모드를 켠 뒤 폴더를 누르면 일반 직원에게 숨길 수 있습니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>4. 정답지 번호 목록</h3>
+            <p>폴더 안에는 기계 번호별 정답지가 있습니다. 번호는 자연 정렬로 보이기 때문에 1_1, 2_1, 10_1 같은 번호도 순서가 보기 좋게 정리됩니다.</p>
+            <ul>
+                <li>기계 추가: 새 정답지 번호를 만듭니다.</li>
+                <li>이름 수정: 번호를 바꿉니다.</li>
+                <li>삭제: 휴지통으로 보냅니다.</li>
+                <li>관리자만: 관리자 전용 모드를 켠 뒤 정답지를 누르면 일반 직원에게 숨길 수 있습니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>5. 사진과 메모</h3>
+            <p>정답지 상세 화면에서 메인 사진, 메모, 추가 사진을 관리합니다. 수정한 시간은 년월일 시분초까지 회색 배지로 표시됩니다.</p>
+            <ul>
+                <li>메인 사진 수정: 대표 사진을 바꿉니다. 모바일에서는 카메라 촬영 또는 앨범 선택을 고를 수 있습니다.</li>
+                <li>메모 수정: 중요한 공략, 집게 위치, 주의사항을 적습니다.</li>
+                <li>스크롤 모드: 메모가 길 때 고정 높이 안에서 스크롤로 봅니다.</li>
+                <li>추가 사진 등록: 증거 사진, 다른 각도, 실패/성공 예시를 여러 장 붙입니다.</li>
+                <li>추가 사진 메모: 사진마다 왜 찍었는지 설명을 남깁니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>6. 화면 보기 방식</h3>
+            <p>목록은 일렬 또는 타일 형태로 바꿀 수 있습니다. 타일은 2열, 3열, 4열 중 선택할 수 있습니다.</p>
+            <ul>
+                <li>폴더 타일: 폴더가 많을 때 한눈에 보기 좋습니다.</li>
+                <li>썸네일 타일: 사진을 보고 빠르게 정답지를 찾을 때 좋습니다.</li>
+                <li>메모 타일/메모 일렬: 메모 내용으로 찾을 때 좋습니다.</li>
+                <li>메모 펼치기: 기본은 2줄 미리보기이고, 체크하면 전체 메모가 펼쳐집니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>7. 휴지통과 복구</h3>
+            <p>폴더, 정답지, 추가 사진을 삭제하면 바로 완전 삭제되지 않고 휴지통으로 이동합니다.</p>
+            <ul>
+                <li>휴지통에서는 복구 또는 영구 삭제를 할 수 있습니다.</li>
+                <li>삭제된 항목은 30일 후 자동 삭제됩니다.</li>
+                <li>실수로 지운 경우 메뉴의 휴지통에서 먼저 확인하세요.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>8. 사진 용량과 압축</h3>
+            <p>사진은 Supabase Storage에 저장되고, 정답지 데이터는 Firebase Database에 저장됩니다. 메뉴의 용량 표시는 현재 사진 저장량을 확인하는 용도입니다.</p>
+            <ul>
+                <li>사진 용량 정리: 기존 사진을 현재 압축 설정으로 다시 압축합니다.</li>
+                <li>사진 용량 다시 계산: Storage에 실제 저장된 파일 크기를 다시 계산합니다.</li>
+                <li>압축 설정: 마스터가 테스트 사진으로 화질과 용량을 비교하고 전 지점 기준 압축률을 정합니다.</li>
+                <li>글자가 흐리면 압축 화질이나 최대 가로폭을 조금 올리면 됩니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>9. 계정 배포 응용법</h3>
+            <p>권한 관리는 마스터가 직원용 계정을 만들어 배포하는 곳입니다.</p>
+            <ul>
+                <li>계정 메모에는 “용산 주말 직원용”, “테스트용”, “A지점 관리자폰”처럼 어디에 배포했는지 적어두세요.</li>
+                <li>일반 직원 계정은 보기용으로 만들고, 지점 관리자 계정은 실제 수정 담당자에게만 주세요.</li>
+                <li>매장별로 계정을 나누면 누가 어느 지점에 접근 가능한지 관리하기 쉽습니다.</li>
+                <li>공용 태블릿에는 자동 로그인을 켜고, 개인 휴대폰에는 필요할 때만 로그인하게 운영할 수 있습니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>10. 추천 운영 방식</h3>
+            <ol>
+                <li>마스터가 지점을 먼저 만듭니다.</li>
+                <li>폴더와 대폴더로 게임 종류를 나눕니다.</li>
+                <li>정답지 번호를 만들고 메인 사진을 등록합니다.</li>
+                <li>현장에서 확인한 팁은 메모와 추가 사진 메모에 남깁니다.</li>
+                <li>직원에게는 필요한 지점만 보이는 계정을 만들어 줍니다.</li>
+                <li>민감하거나 검수 중인 정답지는 관리자만 보기로 숨겨둡니다.</li>
+            </ol>
+        </div>
+    `;
+
+    root.appendChild(page);
+    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        currentView = "genres";
+        currentGenre = null;
+        currentGenreGroup = null;
+        currentMachine = null;
+        render();
+    }));
+}
+
+function renderHelp(root){
+    const title = document.createElement("h2");
+    title.innerText = "도움말";
+    root.appendChild(title);
+
+    const page = document.createElement("div");
+    page.className = "help-page";
+    page.innerHTML = `
+        <div class="help-note">
+            이 도움말은 버튼과 아이콘이 무슨 기능인지 빠르게 확인하는 설명서입니다.
+            기본 사용 순서는 오른쪽 위에서 지점 선택, 폴더 선택, 정답지 번호 선택, 사진과 메모 확인입니다.
+        </div>
+
+        <div class="help-section">
+            <h3>자주 보이는 화면 버튼</h3>
+            <ul>
+                <li>☰ 메뉴: 왼쪽 메뉴를 엽니다. 로그인, 휴지통, 지점 관리, 사진 용량 정리, 도움말로 이동할 때 씁니다.</li>
+                <li>오른쪽 위 지점 선택: 용산점처럼 매장을 바꿉니다. 계정 권한이 있는 지점만 사용할 수 있습니다.</li>
+                <li>사진 용량 표시: 현재 Storage에 사진이 얼마나 저장되어 있는지 보여줍니다.</li>
+                <li>타이틀 로고: 누르면 첫 화면으로 돌아갑니다.</li>
+                <li>뒤로가기: 이전 화면이나 상위 목록으로 돌아갑니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>로그인 관련 버튼</h3>
+            <ul>
+                <li>로그인: 아이디와 비밀번호로 들어갑니다. 계정 권한에 따라 보이는 지점과 수정 가능 범위가 달라집니다.</li>
+                <li>아이디/비밀번호 저장: 다음 접속 때 입력칸을 자동으로 채웁니다. 공용 기기에서는 주의하세요.</li>
+                <li>자동 로그인: 다음 접속 때 저장된 계정으로 자동 로그인합니다.</li>
+                <li>로그아웃: 현재 기기에서 로그인 상태를 해제합니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>폴더 화면 버튼</h3>
+            <ul>
+                <li>일렬/타일 선택: 폴더를 세로 목록이나 타일 형태로 바꿉니다.</li>
+                <li>2열/3열/4열: 타일 화면에서 한 줄에 몇 개씩 보일지 정합니다.</li>
+                <li>+ 폴더 추가: 새 폴더를 만듭니다. 예: 피규어, 인형, 과자, 이벤트.</li>
+                <li>+ 대폴더 추가: 여러 폴더를 묶는 큰 폴더를 만듭니다. 예: 1층, 2층, 신규 기계.</li>
+                <li>⚙️ 설정: 폴더나 대폴더의 관리 메뉴를 엽니다.</li>
+                <li>⬆️ / ⬇️: 폴더 순서를 위아래로 옮깁니다.</li>
+                <li>수정: 폴더 이름을 바꿉니다.</li>
+                <li>색상: 폴더 색을 파스텔톤으로 바꿉니다. 자주 쓰는 폴더를 눈에 띄게 만들 때 좋습니다.</li>
+                <li>설정: 대폴더 안에 어떤 폴더를 넣을지 체크박스로 고릅니다.</li>
+                <li>삭제: 폴더를 휴지통으로 보냅니다. 바로 완전 삭제되지 않습니다.</li>
+                <li>🔒 관리자만: 이 버튼을 켠 뒤 폴더를 누르면 일반 직원에게 숨김/해제됩니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>정답지 목록 버튼</h3>
+            <ul>
+                <li>일렬/타일/썸네일/메모 보기: 정답지를 어떤 방식으로 볼지 정합니다.</li>
+                <li>썸네일 일렬/썸네일 타일: 사진을 보면서 정답지를 찾을 때 씁니다.</li>
+                <li>메모 일렬/메모 타일: 메모 내용으로 정답지를 찾을 때 씁니다.</li>
+                <li>메모 펼치기: 꺼져 있으면 2줄만 보이고, 켜면 전체 메모가 보입니다.</li>
+                <li>+ 기계 추가: 새 정답지 번호를 만듭니다.</li>
+                <li>⚙️ 설정: 해당 정답지의 관리 메뉴를 엽니다.</li>
+                <li>이름 수정: 정답지 번호를 바꿉니다. 예: 10_1, 10_2.</li>
+                <li>삭제: 정답지를 휴지통으로 보냅니다.</li>
+                <li>🔒 관리자만: 이 버튼을 켠 뒤 정답지를 누르면 일반 직원에게 숨김/해제됩니다.</li>
+                <li>관리자만 배지: 관리자에게만 보이는 항목이라는 표시입니다. 일반 직원에게는 목록에서 보이지 않습니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>정답지 상세 화면 버튼</h3>
+            <ul>
+                <li>메인 사진: 누르면 크게 확대됩니다.</li>
+                <li>메인 사진 수정: 대표 사진을 새로 등록합니다. 모바일은 카메라 촬영 또는 앨범 선택을 고를 수 있습니다.</li>
+                <li>스크롤 모드 / 펼침 모드: 메모가 길 때 보는 방식을 바꿉니다.</li>
+                <li>메모 수정: 메모를 편집합니다. 저장 버튼을 누르면 반영됩니다.</li>
+                <li>+ 추가 사진 등록: 참고 사진을 여러 장 붙입니다.</li>
+                <li>추가 사진: 누르면 크게 확대됩니다.</li>
+                <li>×: 추가 사진을 삭제해 휴지통으로 보냅니다.</li>
+                <li>추가 사진 메모: 사진마다 설명을 적습니다. 칸을 벗어나면 자동 저장됩니다.</li>
+                <li>회색 시간 배지: 사진 등록, 메모 저장, 사진 수정이 언제 됐는지 표시합니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>왼쪽 메뉴 버튼</h3>
+            <ul>
+                <li>휴지통: 삭제한 폴더, 정답지, 사진을 복구하거나 영구 삭제합니다.</li>
+                <li>타이틀 변경: 상단 로고 이미지를 바꿉니다. 마스터 권한에서 사용합니다.</li>
+                <li>사진 용량 정리: 저장된 사진을 현재 압축 설정으로 다시 줄입니다.</li>
+                <li>사진 용량 다시 계산: Storage에 저장된 실제 사진 용량을 다시 계산합니다.</li>
+                <li>지점명 수정: 현재 지점 이름을 바꿉니다.</li>
+                <li>지점 삭제: 현재 지점을 삭제하고 지점 휴지통으로 보냅니다.</li>
+                <li>지점 복구: 삭제한 지점을 다시 살립니다.</li>
+                <li>압축 설정: 사진 화질과 최대 가로폭을 테스트하고 전 지점 기준으로 저장합니다.</li>
+                <li>권한 관리: 계정을 만들고, 아이디/비밀번호/메모/지점/권한을 관리합니다.</li>
+                <li>도움말: 지금 보고 있는 버튼 설명 페이지입니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>권한 관리 버튼</h3>
+            <ul>
+                <li>+ 계정 생성: 새 직원 계정을 만듭니다.</li>
+                <li>메모: 이 계정을 어디에 배포했는지 적습니다. 예: 용산 주말 직원용.</li>
+                <li>식별 코드: 계정을 구분하는 고유 코드입니다. 아이디를 바꿔도 식별 코드는 유지됩니다.</li>
+                <li>아이디: 로그인할 때 쓰는 이름입니다.</li>
+                <li>비밀번호: 변경할 때만 입력합니다.</li>
+                <li>권한: 지점 관리자 또는 일반 직원으로 정합니다.</li>
+                <li>접속 지점: 이 계정이 볼 수 있는 지점을 체크합니다.</li>
+                <li>저장: 계정 변경 내용을 저장합니다.</li>
+                <li>삭제: 계정을 삭제합니다.</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h3>추천 응용법</h3>
+            <ul>
+                <li>검수 중인 정답지는 🔒 관리자만으로 숨겨두고, 확인이 끝나면 해제하세요.</li>
+                <li>대폴더는 층별, 구역별, 이벤트별로 만들면 직원이 빠르게 찾습니다.</li>
+                <li>추가 사진 메모에는 “성공 위치”, “피해야 할 각도”, “최근 변경됨”처럼 현장 팁을 적으면 좋습니다.</li>
+                <li>계정 메모에는 어느 휴대폰이나 어느 직원에게 준 계정인지 적어두면 나중에 관리하기 쉽습니다.</li>
+            </ul>
+        </div>
+    `;
+
+    root.appendChild(page);
+    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        currentView = "genres";
+        currentGenre = null;
+        currentGenreGroup = null;
+        currentMachine = null;
+        render();
+    }));
+}
+
+function createFigureCatalogId(){
+    return "figure_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 8);
+}
+
+function getFigureEntry(entryId){
+    return (appData.figureCatalog || []).find((entry)=>entry.id === entryId) || null;
+}
+
+function updateFigureEntryAudit(entry){
+    entry.updatedAt = new Date().toISOString();
+    entry.updatedBy = getLoginId() || "unknown";
+    entry.updatedRole = getCurrentUserRole().role || "";
+    entry.updatedStoreId = currentStoreId;
+    entry.updatedStoreName = getCurrentStoreName();
+}
+
+function getFigureSearchText(entry){
+    return [
+        entry.name,
+        entry.nw,
+        entry.gw,
+        entry.code,
+        entry.extraKeywords,
+        entry.keywords,
+        entry.memo,
+        entry.updatedStoreName
+    ].join(" ");
+}
+
+function getFigureAuditText(entry){
+    if(!entry.updatedAt){
+        return "수정 기록 없음";
+    }
+
+    return formatActionTime(entry.updatedAt) +
+        " / " +
+        (entry.updatedBy || "unknown") +
+        " / " +
+        (entry.updatedStoreName || entry.updatedStoreId || "지점 없음");
+}
+
+function figureEntryMatches(entry, query){
+    const keyword = normalizeLoginId(query).replace(/_/g, "");
+
+    if(!keyword){
+        return true;
+    }
+
+    const target = normalizeLoginId([
+        getFigureSearchText(entry)
+    ].join(" ")).replace(/_/g, "");
+
+    return target.includes(keyword);
+}
+
+function renderFigureImageBox(label, src){
+    const box = document.createElement("div");
+    box.className = "figure-image-box";
+
+    const tag = document.createElement("span");
+    tag.className = "figure-image-label";
+    tag.innerText = label;
+    box.appendChild(tag);
+
+    if(src){
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = label;
+        img.onclick = ()=>openModal(src);
+        box.appendChild(img);
+    }else{
+        const empty = document.createElement("p");
+        empty.innerText = "사진 없음";
+        box.appendChild(empty);
+    }
+
+    return box;
+}
+
+function renderFigureCatalogResults(container, emptyMessage, query){
+    container.innerHTML = "";
+
+    const entries = (appData.figureCatalog || [])
+    .filter((entry)=>figureEntryMatches(entry, query))
+    .sort((a,b)=>String(a.name || "").localeCompare(String(b.name || ""), "ko-KR"));
+
+    emptyMessage.style.display = entries.length === 0 ? "block" : "none";
+
+    entries.forEach((entry)=>{
+        container.appendChild(createFigureCatalogCard(entry));
+    });
+}
+
+function renderFigureCatalog(root){
+    const header = document.createElement("div");
+    header.className = "header-row";
+
+    const title = document.createElement("h2");
+    title.innerText = "🎁 피규어 도감";
+
+    header.appendChild(title);
+    root.appendChild(header);
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "figure-toolbar";
+
+    const search = document.createElement("input");
+    search.className = "figure-search";
+    search.type = "search";
+    search.placeholder = "피규어 이름, 박스 코드, N/W, G/W, C/No, 일본어 단서 검색";
+    search.value = figureCatalogSearch;
+
+    toolbar.appendChild(search);
+
+    if(canEditCurrentStore()){
+        toolbar.appendChild(createButton("btn-add", "+ 피규어 등록", ()=>{
+            addFigureCatalogEntry();
+        }));
+    }
+
+    root.appendChild(toolbar);
+
+    const grid = document.createElement("div");
+    grid.className = "figure-grid";
+
+    const empty = document.createElement("p");
+    empty.className = "empty-message";
+    empty.innerText = "검색 결과가 없습니다.";
+
+    search.oninput = ()=>{
+        figureCatalogSearch = search.value;
+        renderFigureCatalogResults(grid, empty, figureCatalogSearch);
+    };
+
+    renderFigureCatalogResults(grid, empty, figureCatalogSearch);
+
+    root.appendChild(empty);
+    root.appendChild(grid);
+
+    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        currentView = "genres";
+        render();
+    }));
+}
+
+function createFigureCatalogCard(entry){
+    const card = document.createElement("div");
+    card.className = "figure-card";
+
+    const images = document.createElement("div");
+    images.className = "figure-images";
+    images.appendChild(renderFigureImageBox("박스", entry.boxPhoto));
+    images.appendChild(renderFigureImageBox("정답", entry.figurePhoto));
+    card.appendChild(images);
+
+    const info = document.createElement("div");
+    info.className = "figure-info";
+
+    const name = document.createElement("h3");
+    name.innerText = entry.name || "이름 없음";
+
+    const detailList = document.createElement("div");
+    detailList.className = "figure-detail-list";
+
+    const addDetail = (label, value)=>{
+        const row = document.createElement("div");
+        row.className = "figure-detail-row";
+
+        const labelEl = document.createElement("div");
+        labelEl.className = "figure-detail-label";
+        labelEl.innerText = label;
+
+        const valueEl = document.createElement("div");
+        valueEl.className = "figure-detail-value";
+        valueEl.innerText = String(value || "").trim() || "없음";
+
+        row.appendChild(labelEl);
+        row.appendChild(valueEl);
+        detailList.appendChild(row);
+    };
+
+    addDetail("피규어명", entry.name);
+    addDetail("N/W", entry.nw);
+    addDetail("G/W", entry.gw);
+    addDetail("코드", entry.code);
+    addDetail("검색문구", entry.extraKeywords || entry.keywords);
+    addDetail("메모", entry.memo);
+
+    const audit = document.createElement("p");
+    audit.innerText = "마지막 수정: " + getFigureAuditText(entry);
+
+    info.appendChild(name);
+    info.appendChild(detailList);
+    info.appendChild(audit);
+    card.appendChild(info);
+
+    if(canEditCurrentStore()){
+        const actions = document.createElement("div");
+        actions.className = "figure-actions";
+
+        actions.appendChild(createAdminButton("박스사진", ()=>{
+            uploadFigureCatalogImage(entry.id, "boxPhoto");
+        }));
+
+        actions.appendChild(createAdminButton("정답사진", ()=>{
+            uploadFigureCatalogImage(entry.id, "figurePhoto");
+        }));
+
+        actions.appendChild(createAdminButton("정보수정", ()=>{
+            editFigureCatalogEntry(entry.id);
+        }));
+
+        const deleteButton = createAdminButton("삭제", ()=>{
+            deleteFigureCatalogEntry(entry.id);
+        });
+        deleteButton.style.background = "#d9534f";
+        deleteButton.style.color = "white";
+        actions.appendChild(deleteButton);
+
+        card.appendChild(actions);
+    }
+
+    return card;
+}
+
+function addFigureCatalogEntry(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    openFigureCatalogForm({
+        id:createFigureCatalogId(),
+        name:"",
+        keywords:"",
+        nw:"",
+        gw:"",
+        code:"",
+        extraKeywords:"",
+        memo:"",
+        boxPhoto:"",
+        figurePhoto:"",
+        createdAt:new Date().toISOString(),
+        updatedAt:"",
+        updatedBy:"",
+        updatedRole:"",
+        updatedStoreId:"",
+        updatedStoreName:""
+    }, true);
+}
+
+function editFigureCatalogEntry(entryId){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const entry = getFigureEntry(entryId);
+
+    if(!entry){
+        return;
+    }
+
+    openFigureCatalogForm(entry, false);
+}
+
+function createFigureFormField(form, key, labelText, value, placeholder, multiline = false){
+    const wrap = document.createElement("div");
+    wrap.className = "figure-form-field" + (multiline ? " full" : "");
+
+    const label = document.createElement("label");
+    label.innerText = labelText;
+
+    const input = multiline ? document.createElement("textarea") : document.createElement("input");
+    input.value = value || "";
+    input.placeholder = placeholder || "";
+    input.dataset.figureField = key;
+
+    wrap.appendChild(label);
+    wrap.appendChild(input);
+    form.appendChild(wrap);
+
+    return input;
+}
+
+function openFigureCatalogForm(entry, isNew){
+    const { modal, panel } = createFolderModal(isNew ? "피규어 등록" : "피규어 정보 수정");
+
+    const guide = document.createElement("p");
+    guide.className = "sub-text";
+    guide.innerText = "박스에 적힌 정보를 빈칸에 채워두면 나중에 N/W, G/W, 코드, 일본어 단서로 검색할 수 있습니다.";
+    panel.appendChild(guide);
+
+    const form = document.createElement("div");
+    form.className = "figure-form-grid";
+
+    createFigureFormField(form, "name", "피규어 이름", entry.name, "예: 루피 기어5, 미쿠, 렘");
+    createFigureFormField(form, "code", "숫자 코드 / C/No", entry.code, "예: 349, 47, 116-01-...");
+    createFigureFormField(form, "nw", "N/W", entry.nw, "예: 12.1 KGS");
+    createFigureFormField(form, "gw", "G/W", entry.gw, "예: 16.3 KGS");
+    createFigureFormField(form, "extraKeywords", "그 외 검색 단서", entry.extraKeywords || entry.keywords, "일본어 이름, 브랜드, 박스 문구, 작품명", true);
+    createFigureFormField(form, "memo", "메모", entry.memo, "어떤 박스에서 들어왔는지, 구분 팁, 주의점", true);
+
+    panel.appendChild(form);
+
+    panel.appendChild(createButton("btn-save", "저장", ()=>{
+        const values = {};
+
+        form.querySelectorAll("[data-figure-field]").forEach((input)=>{
+            values[input.dataset.figureField] = sanitizeText(input.value);
+        });
+
+        if(!values.name){
+            alert("피규어 이름을 입력하세요.");
+            return;
+        }
+
+        entry.name = values.name;
+        entry.code = values.code;
+        entry.nw = values.nw;
+        entry.gw = values.gw;
+        entry.extraKeywords = values.extraKeywords;
+        entry.memo = values.memo;
+        entry.keywords = [
+            values.nw,
+            values.gw,
+            values.code,
+            values.extraKeywords
+        ].filter(Boolean).join(" ");
+
+        updateFigureEntryAudit(entry);
+
+        if(isNew){
+            appData.figureCatalog.push(entry);
+        }
+
+        modal.remove();
+        saveData(()=>render(false));
+    }));
+
+    panel.appendChild(createButton("btn-back", "닫기", ()=>modal.remove()));
+}
+
+function deleteFigureCatalogEntry(entryId){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const entry = getFigureEntry(entryId);
+
+    if(!entry){
+        return;
+    }
+
+    if(!confirm((entry.name || "피규어") + " 도감 항목을 삭제할까요?")){
+        return;
+    }
+
+    appData.figureCatalog = appData.figureCatalog.filter((item)=>item.id !== entryId);
+    saveData(()=>render(false));
+}
+
+function uploadFigureCatalogImage(entryId, field){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const entry = getFigureEntry(entryId);
+
+    if(!entry){
+        return;
+    }
+
+    const input = createPhotoInput(0);
+
+    const cleanupInput = ()=>{
+        setTimeout(()=>{
+            if(input.parentNode){
+                input.parentNode.removeChild(input);
+            }
+        }, 500);
+    };
+
+    input.onchange = async(event)=>{
+        const file = event.target.files && event.target.files[0];
+
+        if(!file){
+            cleanupInput();
+            return;
+        }
+
+        const interval = showLoading("🎁 도감 사진 업로드 중...");
+
+        try{
+            entry[field] = await compressAndUploadImage(
+                file,
+                field === "boxPhoto" ? "figure_box" : "figure_answer"
+            );
+            updateFigureEntryAudit(entry);
+            await saveData(()=>render(false));
+        }catch(err){
+            console.error(err);
+            alert("도감 사진 업로드 실패: " + err.message);
+        }finally{
+            hideLoading(interval);
+            cleanupInput();
+        }
+    };
+
+    input.oncancel = cleanupInput;
+    input.click();
 }
 
 function getRoleLabel(role){
@@ -5666,6 +6835,15 @@ document.getElementById("trash-menu").onclick = ()=>{
     goToTrash();
 };
 
+document.getElementById("figure-catalog-menu").onclick = ()=>{
+    currentView = "figureCatalog";
+    currentGenre = null;
+    currentGenreGroup = null;
+    currentMachine = null;
+    render();
+    toggleMenu(false);
+};
+
 document.getElementById("logo-menu").onclick = ()=>{
     if(!requireStoreManage()){
         return;
@@ -5700,6 +6878,15 @@ document.getElementById("compression-menu").onclick = ()=>{
 
 document.getElementById("manage-role-menu").onclick = ()=>{
     manageUserRole();
+};
+
+document.getElementById("help-menu").onclick = ()=>{
+    currentView = "help";
+    currentGenre = null;
+    currentGenreGroup = null;
+    currentMachine = null;
+    render();
+    toggleMenu(false);
 };
 
 document.getElementById("compression-quality").oninput = ()=>{
