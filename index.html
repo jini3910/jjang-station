@@ -298,6 +298,7 @@ select{
     display:block;
     -webkit-line-clamp:unset;
     max-height:none;
+    white-space:pre-wrap;
 }
 
 .machine-card.memo-card:not(.memo-expanded) .info-box{
@@ -621,6 +622,38 @@ textarea.scroll-mode{
     line-height:28px;
 }
 
+.evidence-order-controls{
+    position:absolute;
+    left:4px;
+    bottom:4px;
+    z-index:4;
+    display:flex;
+    gap:4px;
+}
+
+.evidence-order-controls button{
+    width:30px;
+    height:28px;
+    margin:0;
+    padding:0;
+    border-radius:8px;
+    background:rgba(0,0,0,0.24);
+    color:white;
+    line-height:28px;
+    font-size:13px;
+    transition:0.15s;
+}
+
+.evidence-order-controls button:hover,
+.evidence-order-controls button:active{
+    background:rgba(0,0,0,0.68);
+}
+
+.evidence-order-controls button:disabled{
+    background:rgba(0,0,0,0.12);
+    opacity:0.45;
+}
+
 .evidence-memo{
     width:100%;
     min-height:58px;
@@ -640,7 +673,38 @@ textarea.scroll-mode{
 
 .evidence-memo[readonly]{
     background:#fafafa;
-    pointer-events:none;
+    overflow:auto;
+    pointer-events:auto;
+}
+
+.evidence-memo-actions{
+    display:flex;
+    justify-content:flex-end;
+    padding:0 8px 8px;
+    background:white;
+}
+
+.evidence-memo-actions .btn-mini{
+    width:auto;
+    margin:0;
+    padding:6px 10px;
+    font-size:11px;
+}
+
+.admin-private-section{
+    margin-top:16px;
+    padding:12px;
+    border:1px solid rgba(217,83,79,0.24);
+    border-radius:12px;
+    background:rgba(217,83,79,0.045);
+}
+
+.private-section-title{
+    display:block;
+    margin-bottom:10px;
+    color:#a94442;
+    font-size:13px;
+    font-weight:800;
 }
 
 .modal{
@@ -835,6 +899,26 @@ textarea.scroll-mode{
     background:#f5f5f5;
 }
 
+.submenu{
+    display:none;
+    background:#fafafa;
+    border-bottom:1px solid #eee;
+}
+
+.submenu.active{
+    display:block;
+}
+
+.submenu .menu-item{
+    padding:14px 20px 14px 34px;
+    font-size:14px;
+    background:#fafafa;
+}
+
+.submenu .menu-item:active{
+    background:#eee;
+}
+
 .login-panel{
     display:none;
     padding:14px;
@@ -1017,6 +1101,31 @@ textarea.scroll-mode{
     display:flex;
     flex-shrink:0;
     gap:6px;
+}
+
+.trash-bulk-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin:10px 0 12px;
+}
+
+.trash-bulk-actions .btn-mini{
+    width:auto;
+    margin:0;
+}
+
+.trash-select{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    width:100%;
+}
+
+.trash-select input{
+    width:auto;
+    margin-top:3px;
+    flex-shrink:0;
 }
 
 .empty-message{
@@ -1336,6 +1445,300 @@ textarea.scroll-mode{
     resize:vertical;
 }
 
+.board-tabs{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.board-tab{
+    margin:0;
+    padding:11px;
+    border:1px solid #ddd;
+    background:#f7f7f7;
+    color:#333;
+    font-size:13px;
+}
+
+.board-tab.active{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0b63b6;
+}
+
+.board-composer{
+    display:grid;
+    gap:8px;
+    margin-bottom:14px;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fafafa;
+}
+
+.board-composer-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.board-composer input,
+.board-composer textarea,
+.board-composer select{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:10px;
+    background:white;
+    font-size:13px;
+}
+
+.board-composer textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.board-composer button{
+    margin:0;
+}
+
+.board-admin-option{
+    justify-self:end;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    width:auto;
+    padding:6px 8px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:white;
+    color:#555;
+    font-size:12px;
+    font-weight:700;
+}
+
+.board-admin-option input{
+    width:auto;
+    min-width:0;
+    margin:0;
+}
+
+.board-list{
+    display:grid;
+    gap:8px;
+}
+
+.board-post{
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:12px;
+    background:white;
+    cursor:pointer;
+}
+
+.board-post:active{
+    transform:scale(0.99);
+}
+
+.board-post.title-only{
+    padding:11px 12px;
+}
+
+.board-post.thumbnail-mode{
+    display:grid;
+    grid-template-columns:88px minmax(0,1fr);
+    gap:10px;
+    align-items:center;
+}
+
+.board-post.thumbnail-mode .board-post-head,
+.board-post.thumbnail-mode .board-body,
+.board-post.thumbnail-mode .board-meta{
+    grid-column:2;
+    min-width:0;
+}
+
+.board-post.thumbnail-mode .board-body{
+    margin-top:0;
+}
+
+.board-post.thumbnail-mode .board-meta{
+    margin-top:0;
+}
+
+.board-thumb{
+    width:88px;
+    aspect-ratio:1;
+    border:1px solid #eee;
+    border-radius:8px;
+    background:#fafafa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    color:#aaa;
+    font-size:11px;
+}
+
+.board-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:white;
+}
+
+.board-post-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.board-post h3{
+    margin:0;
+    font-size:15px;
+    line-height:1.35;
+}
+
+.board-badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:7px;
+}
+
+.board-badge{
+    padding:4px 7px;
+    border-radius:999px;
+    background:#eee;
+    color:#555;
+    font-size:11px;
+    font-weight:700;
+}
+
+.board-badge.global{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+.board-badge.daily{
+    background:#fff3cd;
+    color:#8a6d1d;
+}
+
+.board-badge.admin{
+    background:#ffe3e3;
+    color:#b52b27;
+}
+
+.board-body{
+    margin:10px 0 0;
+    color:#333;
+    font-size:13px;
+    line-height:1.65;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.board-summary{
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
+    overflow:hidden;
+}
+
+.board-image-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    margin-top:10px;
+}
+
+.board-image-grid img{
+    width:100%;
+    aspect-ratio:1;
+    object-fit:contain;
+    border:1px solid #eee;
+    border-radius:8px;
+    background:#fafafa;
+    cursor:pointer;
+}
+
+.board-attachment-tools{
+    display:grid;
+    gap:8px;
+}
+
+.board-attachment-list{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+}
+
+.board-attachment-item{
+    position:relative;
+    border:1px solid #ddd;
+    border-radius:8px;
+    overflow:hidden;
+    background:white;
+}
+
+.board-attachment-item img{
+    width:100%;
+    aspect-ratio:1;
+    object-fit:contain;
+    background:white;
+    display:block;
+}
+
+.board-attachment-item button{
+    position:absolute;
+    top:4px;
+    right:4px;
+    width:26px;
+    height:26px;
+    margin:0;
+    padding:0;
+    border-radius:50%;
+    background:rgba(0,0,0,0.65);
+    color:white;
+    line-height:26px;
+}
+
+.board-meta{
+    margin-top:10px;
+    color:#888;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.board-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:10px;
+}
+
+.board-actions .btn-mini{
+    width:auto;
+    margin:0;
+    padding:7px 10px;
+}
+
+.board-bottom-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:6px;
+    margin-top:12px;
+}
+
+.board-bottom-actions .btn-mini{
+    width:auto;
+    margin:0;
+    padding:8px 11px;
+}
+
 @media(max-width:600px){
     .grid-3{
         grid-template-columns:repeat(2,1fr);
@@ -1352,6 +1755,18 @@ textarea.scroll-mode{
 
     .figure-form-grid{
         grid-template-columns:1fr;
+    }
+
+    .board-composer-row{
+        grid-template-columns:1fr;
+    }
+
+    .board-post.thumbnail-mode{
+        grid-template-columns:72px minmax(0,1fr);
+    }
+
+    .board-thumb{
+        width:72px;
     }
 }
 </style>
@@ -1380,17 +1795,20 @@ textarea.scroll-mode{
         <button class="btn-save" id="login-submit">로그인</button>
         <button class="btn-back" id="logout-submit">로그아웃</button>
     </div>
-    <div class="menu-item" id="trash-menu">🗑️ 휴지통</div>
+    <div class="menu-item" id="board-menu">📌 게시판</div>
     <div class="menu-item" id="figure-catalog-menu">🎁 피규어 도감</div>
-    <div class="menu-item" id="logo-menu">🖼️ 타이틀 변경</div>
-    <div class="menu-item" id="migrate-menu">🧹 사진 용량 정리</div>
-    <div class="menu-item" id="recount-storage-menu">📊 사진 용량 다시 계산</div>
-    <div class="menu-item" id="rename-store-menu">✏️ 지점명 수정</div>
-    <div class="menu-item" id="delete-store-menu">🗑️ 지점 삭제</div>
-    <div class="menu-item" id="restore-store-menu">♻️ 지점 복구</div>
-    <div class="menu-item" id="compression-menu">🧪 압축 설정</div>
-    <div class="menu-item" id="manage-role-menu">👤 권한 관리</div>
-    <div class="menu-item" id="help-menu">❔ 도움말</div>
+    <div class="menu-item" id="admin-menu-toggle">⚙️ 관리</div>
+    <div class="submenu" id="admin-submenu">
+        <div class="menu-item" id="logo-menu">🖼️ 타이틀 변경</div>
+        <div class="menu-item" id="migrate-menu">🧹 사진 용량 정리</div>
+        <div class="menu-item" id="recount-storage-menu">📊 사진 용량 다시 계산</div>
+        <div class="menu-item" id="rename-store-menu">✏️ 지점명 수정</div>
+        <div class="menu-item" id="delete-store-menu">🗑️ 지점 삭제</div>
+        <div class="menu-item" id="restore-store-menu">♻️ 지점 복구</div>
+        <div class="menu-item" id="compression-menu">🧪 압축 설정</div>
+        <div class="menu-item" id="manage-role-menu">👤 권한 관리</div>
+    </div>
+    <div class="menu-item" id="trash-menu">🗑️ 휴지통</div>
     <input type="file" id="logo-upload" accept="image/*" style="display:none">
 </div>
 
@@ -1531,6 +1949,7 @@ let appData = {
     storageUsageBytes:0,
     storeTrash:[],
     figureCatalog:[],
+    boardPosts:[],
     accounts:{},
     userRoles:{},
     userPasswords:{}
@@ -1555,7 +1974,11 @@ let queuedCallbacks = [];
 let rendering = false;
 let adminOnlySelectMode = null;
 let figureCatalogSearch = "";
+let boardCategory = localStorage.getItem("boardCategory") || "notice";
+let boardListMode = localStorage.getItem("boardListMode") || "title";
+let currentBoardPostId = null;
 let memoEditMode = false;
+let adminMemoEditMode = false;
 let memoInputListener = null;
 let currentLoginId = "";
 let currentAccountCode = "";
@@ -1570,6 +1993,52 @@ function sanitizeText(text){
 
 function isValidDataKey(text){
     return !/[.#$/[\]]/.test(text);
+}
+
+function normalizeEvidencePhotoList(list){
+    if(!Array.isArray(list)){
+        return [];
+    }
+
+    return list
+    .filter((photoItem)=>photoItem)
+    .map((photoItem)=>{
+        if(typeof photoItem === "string"){
+            return {
+                photo:photoItem,
+                memo:"",
+                createdAt:"",
+                memoUpdatedAt:""
+            };
+        }
+
+        if(typeof photoItem !== "object"){
+            return {
+                photo:"",
+                memo:"",
+                createdAt:"",
+                memoUpdatedAt:""
+            };
+        }
+
+        if(typeof photoItem.photo !== "string"){
+            photoItem.photo = "";
+        }
+
+        if(typeof photoItem.memo !== "string"){
+            photoItem.memo = "";
+        }
+
+        if(typeof photoItem.createdAt !== "string"){
+            photoItem.createdAt = "";
+        }
+
+        if(typeof photoItem.memoUpdatedAt !== "string"){
+            photoItem.memoUpdatedAt = "";
+        }
+
+        return photoItem;
+    });
 }
 
 function naturalMachineCompare(a, b){
@@ -1661,6 +2130,7 @@ function initializeAppData(raw){
                 : Number(raw.storageUsageBytes) || 0,
             storeTrash:[],
             figureCatalog:[],
+            boardPosts:[],
             accounts:{},
             userRoles:{},
             userPasswords:{}
@@ -1679,6 +2149,7 @@ function initializeAppData(raw){
                 : Number(raw.storageUsageBytes) || 0,
             storeTrash:Array.isArray(raw.storeTrash) ? raw.storeTrash : [],
             figureCatalog:Array.isArray(raw.figureCatalog) ? raw.figureCatalog : [],
+            boardPosts:Array.isArray(raw.boardPosts) ? raw.boardPosts : [],
             accounts:raw.accounts && typeof raw.accounts === "object" ? raw.accounts : {},
             userRoles:raw.userRoles && typeof raw.userRoles === "object" ? raw.userRoles : {},
             userPasswords:raw.userPasswords && typeof raw.userPasswords === "object" ? raw.userPasswords : {}
@@ -1765,6 +2236,79 @@ function initializeAppData(raw){
         });
 
         return entry;
+    });
+
+    if(!Array.isArray(appData.boardPosts)){
+        appData.boardPosts = [];
+    }
+
+    appData.boardPosts = appData.boardPosts
+    .filter((post)=>post && typeof post === "object")
+    .map((post, index)=>{
+        if(typeof post.id !== "string" || !post.id){
+            post.id = "post_" + Date.now() + "_" + index;
+        }
+
+        if(post.category !== "daily"){
+            post.category = "notice";
+        }
+
+        if(post.scope !== "all"){
+            post.scope = "store";
+        }
+
+        [
+            "storeId",
+            "title",
+            "body",
+            "createdAt",
+            "updatedAt",
+            "authorId",
+            "authorRole",
+            "authorStoreId",
+            "authorStoreName"
+        ].forEach((key)=>{
+            if(typeof post[key] !== "string"){
+                post[key] = "";
+            }
+        });
+
+        post.adminOnly = post.adminOnly === true;
+
+        if(!Array.isArray(post.images)){
+            post.images = [];
+        }
+
+        post.images = post.images
+        .filter((image)=>image)
+        .map((image)=>{
+            if(typeof image === "string"){
+                return {
+                    url:image,
+                    createdAt:""
+                };
+            }
+
+            if(typeof image !== "object"){
+                return {
+                    url:"",
+                    createdAt:""
+                };
+            }
+
+            if(typeof image.url !== "string"){
+                image.url = "";
+            }
+
+            if(typeof image.createdAt !== "string"){
+                image.createdAt = "";
+            }
+
+            return image;
+        })
+        .filter((image)=>image.url);
+
+        return post;
     });
 
     if(!appData.accounts || typeof appData.accounts !== "object"){
@@ -2093,6 +2637,22 @@ function updateAuthUI(){
             element.style.display = canManageStores() ? "block" : "none";
         }
     });
+
+    const adminMenuToggle = document.getElementById("admin-menu-toggle");
+    const adminSubmenu = document.getElementById("admin-submenu");
+    const showAdminMenu = canEditCurrentStore() || canManageStores();
+
+    if(adminMenuToggle){
+        adminMenuToggle.style.display = showAdminMenu ? "block" : "none";
+    }
+
+    if(adminSubmenu){
+        adminSubmenu.style.display = showAdminMenu ? "" : "none";
+
+        if(!showAdminMenu){
+            adminSubmenu.classList.remove("active");
+        }
+    }
 
     document.body.classList.toggle("auth-locked", !getLoginId());
 }
@@ -2966,7 +3526,10 @@ function initializeData(){
                 data.machines[genre][machine] = {
                     photo:"",
                     memo:"",
-                    evidencePhotos:[]
+                    adminMemo:"",
+                    adminMemoUpdatedAt:"",
+                    evidencePhotos:[],
+                    adminEvidencePhotos:[]
                 };
                 return;
             }
@@ -2979,6 +3542,10 @@ function initializeData(){
                 machineData.memo = "";
             }
 
+            if(typeof machineData.adminMemo !== "string"){
+                machineData.adminMemo = "";
+            }
+
             if(typeof machineData.photoUpdatedAt !== "string"){
                 machineData.photoUpdatedAt = "";
             }
@@ -2987,51 +3554,14 @@ function initializeData(){
                 machineData.memoUpdatedAt = "";
             }
 
-            machineData.adminOnly = machineData.adminOnly === true;
-
-            if(!Array.isArray(machineData.evidencePhotos)){
-                machineData.evidencePhotos = [];
+            if(typeof machineData.adminMemoUpdatedAt !== "string"){
+                machineData.adminMemoUpdatedAt = "";
             }
 
-            machineData.evidencePhotos = machineData.evidencePhotos
-            .filter((photoItem)=>photoItem)
-            .map((photoItem)=>{
-                if(typeof photoItem === "string"){
-                    return {
-                        photo:photoItem,
-                        memo:"",
-                        createdAt:"",
-                        memoUpdatedAt:""
-                    };
-                }
+            machineData.adminOnly = machineData.adminOnly === true;
 
-                if(typeof photoItem !== "object"){
-                    return {
-                        photo:"",
-                        memo:"",
-                        createdAt:"",
-                        memoUpdatedAt:""
-                    };
-                }
-
-                if(typeof photoItem.photo !== "string"){
-                    photoItem.photo = "";
-                }
-
-                if(typeof photoItem.memo !== "string"){
-                    photoItem.memo = "";
-                }
-
-                if(typeof photoItem.createdAt !== "string"){
-                    photoItem.createdAt = "";
-                }
-
-                if(typeof photoItem.memoUpdatedAt !== "string"){
-                    photoItem.memoUpdatedAt = "";
-                }
-
-                return photoItem;
-            });
+            machineData.evidencePhotos = normalizeEvidencePhotoList(machineData.evidencePhotos);
+            machineData.adminEvidencePhotos = normalizeEvidencePhotoList(machineData.adminEvidencePhotos);
         });
     });
 }
@@ -3718,11 +4248,21 @@ async function listSupabaseObjectPaths(prefix = ""){
 }
 
 function collectReferencedSupabasePaths(targetData){
-    return new Set(
-        collectPhotoReferences(targetData)
-        .map((refItem)=>getSupabaseObjectPath(refItem.parent[refItem.key]))
-        .filter(Boolean)
-    );
+    const paths = collectPhotoReferences(targetData)
+    .map((refItem)=>getSupabaseObjectPath(refItem.parent[refItem.key]))
+    .filter(Boolean);
+
+    (appData.boardPosts || []).forEach((post)=>{
+        getBoardPostImages(post).forEach((image)=>{
+            const path = getSupabaseObjectPath(image.url);
+
+            if(path){
+                paths.push(path);
+            }
+        });
+    });
+
+    return new Set(paths);
 }
 
 async function removeUnreferencedCurrentStoreFiles(){
@@ -3784,6 +4324,16 @@ function collectPhotoReferences(targetData){
                     });
                 }
             });
+
+            (machine.adminEvidencePhotos || []).forEach((photoItem)=>{
+                if(photoItem && photoItem.photo){
+                    refs.push({
+                        parent:photoItem,
+                        key:"photo",
+                        kind:"admin-evidence"
+                    });
+                }
+            });
         });
     });
 
@@ -3814,6 +4364,16 @@ function collectPhotoReferences(targetData){
                     });
                 }
             });
+
+            (item.data.adminEvidencePhotos || []).forEach((photoItem)=>{
+                if(photoItem && photoItem.photo){
+                    refs.push({
+                        parent:photoItem,
+                        key:"photo",
+                        kind:"trash-admin-evidence"
+                    });
+                }
+            });
         }
 
         if(item && item.type === "genre" && item.data){
@@ -3838,6 +4398,16 @@ function collectPhotoReferences(targetData){
                             parent:photoItem,
                             key:"photo",
                             kind:"trash-genre-evidence"
+                        });
+                    }
+                });
+
+                (machine.adminEvidencePhotos || []).forEach((photoItem)=>{
+                    if(photoItem && photoItem.photo){
+                        refs.push({
+                            parent:photoItem,
+                            key:"photo",
+                            kind:"trash-genre-admin-evidence"
                         });
                     }
                 });
@@ -4075,6 +4645,7 @@ function pushHistory(){
         genre:currentGenre,
         group:currentGenreGroup,
         machine:currentMachine,
+        boardPost:currentBoardPostId,
         store:currentStoreId
     }, "");
 }
@@ -4114,6 +4685,12 @@ function render(push = true){
             renderAccounts(root);
         }else if(currentView === "figureCatalog"){
             renderFigureCatalog(root);
+        }else if(currentView === "board"){
+            renderBoard(root);
+        }else if(currentView === "boardDetail"){
+            renderBoardDetail(root);
+        }else if(currentView === "boardCompose"){
+            renderBoardCompose(root);
         }else if(currentView === "help"){
             renderHelp(root);
         }else{
@@ -4223,6 +4800,77 @@ function createMemoExpandControl(checked){
     label.appendChild(text);
 
     return label;
+}
+
+function getMemoPreviewScope(){
+    const savedScope = localStorage.getItem("machineMemoPreviewScope") || "public";
+    const allowedScopes = canEditCurrentStore()
+        ? ["both", "public", "admin"]
+        : ["public"];
+
+    return allowedScopes.includes(savedScope) ? savedScope : "public";
+}
+
+function createMemoPreviewScopeSelect(value){
+    const select = document.createElement("select");
+    select.title = "펼친 메모 표시 범위";
+
+    [
+        {
+            value:"both",
+            label:"전체+관리자"
+        },
+        {
+            value:"public",
+            label:"전체공개만"
+        },
+        {
+            value:"admin",
+            label:"관리자만"
+        }
+    ]
+    .filter((option)=>canEditCurrentStore() || option.value === "public")
+    .forEach((option)=>{
+        const item = document.createElement("option");
+        item.value = option.value;
+        item.innerText = option.label;
+        select.appendChild(item);
+    });
+
+    select.value = value;
+    select.onchange = ()=>{
+        localStorage.setItem("machineMemoPreviewScope", select.value);
+        render(false);
+    };
+
+    return select;
+}
+
+function getMachineMemoPreviewText(machineData, expanded, scope){
+    const publicMemo = String(machineData.memo || "").trim();
+    const adminMemo = String(machineData.adminMemo || "").trim();
+
+    if(!expanded || !canEditCurrentStore()){
+        return publicMemo || "메모 없음";
+    }
+
+    if(scope === "admin"){
+        return adminMemo
+            ? "[관리자 메모]\n" + adminMemo
+            : "관리자 메모 없음";
+    }
+
+    if(scope === "both"){
+        return [
+            "[전체 공개 메모]",
+            publicMemo || "메모 없음",
+            "",
+            "[관리자 메모]",
+            adminMemo || "관리자 메모 없음"
+        ].join("\n");
+    }
+
+    return publicMemo || "메모 없음";
 }
 
 const PASTEL_FOLDER_COLORS = [
@@ -4888,6 +5536,7 @@ function renderMachines(root){
     const showMemo = layout.includes("memo");
     const tileColumns = getTileColumns("machineTileColumns");
     const memoPreviewExpanded = localStorage.getItem("machineMemoExpanded") === "1";
+    const memoPreviewScope = getMemoPreviewScope();
 
     const header = document.createElement("div");
     header.className = "header-row";
@@ -4922,6 +5571,10 @@ function renderMachines(root){
 
     if(showMemo){
         options.appendChild(createMemoExpandControl(memoPreviewExpanded));
+
+        if(memoPreviewExpanded){
+            options.appendChild(createMemoPreviewScopeSelect(memoPreviewScope));
+        }
     }
 
     if(canEditCurrentStore()){
@@ -4994,8 +5647,13 @@ function renderMachines(root){
         if(showMemo){
             const memo = document.createElement("p");
             memo.className = "memo-preview" + (memoPreviewExpanded ? " expanded" : "");
-            memo.innerText = machineData.memo || "메모 없음";
-            memo.title = machineData.memo || "";
+            const memoText = getMachineMemoPreviewText(
+                machineData,
+                memoPreviewExpanded,
+                memoPreviewScope
+            );
+            memo.innerText = memoText;
+            memo.title = memoText;
             info.appendChild(memo);
         }
 
@@ -5120,8 +5778,11 @@ function renderMachines(root){
         data.machines[currentGenre][number] = {
             photo:"",
             memo:"",
+            adminMemo:"",
+            adminMemoUpdatedAt:"",
             adminOnly:false,
-            evidencePhotos:[]
+            evidencePhotos:[],
+            adminEvidencePhotos:[]
         };
 
         saveData(()=>render(false));
@@ -5131,6 +5792,147 @@ function renderMachines(root){
     root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
         history.back();
     }));
+}
+
+function getEvidenceCollection(machine, collectionKey){
+    const safeKey = collectionKey === "adminEvidencePhotos"
+        ? "adminEvidencePhotos"
+        : "evidencePhotos";
+
+    if(!machine || typeof machine !== "object"){
+        return [];
+    }
+
+    if(!Array.isArray(machine[safeKey])){
+        machine[safeKey] = [];
+    }
+
+    return machine[safeKey];
+}
+
+function createEvidenceSection(machine, options){
+    const collectionKey = options.collectionKey || "evidencePhotos";
+    const photos = getEvidenceCollection(machine, collectionKey);
+    const detailSection = document.createElement("div");
+    detailSection.className = "detail-section" + (options.private ? " admin-private-section" : "");
+
+    const sectionTitle = document.createElement("span");
+    sectionTitle.className = options.private ? "private-section-title" : "section-title";
+    sectionTitle.innerText = options.title;
+    detailSection.appendChild(sectionTitle);
+
+    const evidenceGrid = document.createElement("div");
+    evidenceGrid.className = "evidence-grid";
+
+    photos.forEach((photoItem, index)=>{
+        const evidence = document.createElement("div");
+        evidence.className = "evidence-item";
+        evidence.dataset.evidenceIndex = String(index);
+        evidence.dataset.evidenceCollection = collectionKey;
+
+        const photoBox = document.createElement("div");
+        photoBox.className = "evidence-photo-box";
+
+        const img = document.createElement("img");
+        img.src = photoItem.photo || "";
+        img.alt = currentMachine + "번 " + options.photoAlt;
+        img.onclick = ()=>{
+            openModal(photoItem.photo);
+        };
+
+        photoBox.appendChild(img);
+
+        if(canEditCurrentStore()){
+            const orderControls = document.createElement("div");
+            orderControls.className = "evidence-order-controls";
+
+            const upButton = document.createElement("button");
+            upButton.type = "button";
+            upButton.innerText = "↑";
+            upButton.title = "앞으로 이동";
+            upButton.disabled = index === 0;
+            upButton.onclick = (event)=>{
+                event.preventDefault();
+                event.stopPropagation();
+                moveEvidencePhoto(index, index - 1, collectionKey);
+            };
+
+            const downButton = document.createElement("button");
+            downButton.type = "button";
+            downButton.innerText = "↓";
+            downButton.title = "뒤로 이동";
+            downButton.disabled = index >= photos.length - 1;
+            downButton.onclick = (event)=>{
+                event.preventDefault();
+                event.stopPropagation();
+                moveEvidencePhoto(index, index + 1, collectionKey);
+            };
+
+            orderControls.appendChild(upButton);
+            orderControls.appendChild(downButton);
+            photoBox.appendChild(orderControls);
+        }
+
+        const photoTime = createActionTimeBadge("등록", photoItem.createdAt, "floating-time");
+
+        if(photoTime){
+            photoBox.appendChild(photoTime);
+        }
+
+        if(canEditCurrentStore()){
+            const deleteButton = createButton("evidence-delete", "×", ()=>{
+                deleteEvidencePhoto(index, collectionKey);
+            });
+            photoBox.appendChild(deleteButton);
+        }
+
+        const photoMemoTime = createActionTimeBadge("메모 저장", photoItem.memoUpdatedAt, "evidence-memo-time");
+
+        const photoMemo = document.createElement("textarea");
+        photoMemo.className = "evidence-memo";
+        photoMemo.placeholder = options.memoPlaceholder;
+        photoMemo.value = photoItem.memo || "";
+        photoMemo.readOnly = true;
+
+        evidence.appendChild(photoBox);
+        if(photoMemoTime){
+            evidence.appendChild(photoMemoTime);
+        }
+        evidence.appendChild(photoMemo);
+
+        if(canEditCurrentStore()){
+            const memoActions = document.createElement("div");
+            memoActions.className = "evidence-memo-actions";
+
+            const memoButton = createAdminButton("수정", ()=>{
+                if(photoMemo.readOnly){
+                    photoMemo.readOnly = false;
+                    photoMemo.focus();
+                    memoButton.innerText = "저장";
+                    return;
+                }
+
+                updateEvidenceMemo(index, photoMemo.value, collectionKey);
+                photoMemo.readOnly = true;
+                memoButton.innerText = "수정";
+            });
+
+            memoActions.appendChild(memoButton);
+            evidence.appendChild(memoActions);
+        }
+
+        evidenceGrid.appendChild(evidence);
+    });
+
+    detailSection.appendChild(evidenceGrid);
+
+    if(canEditCurrentStore()){
+        detailSection.appendChild(createButton("btn-save", options.uploadText, ()=>{
+            uploadPhoto(options.uploadType);
+        }));
+    }
+
+    return detailSection;
 }
 
 function renderDetail(root){
@@ -5149,6 +5951,7 @@ function renderDetail(root){
     }
 
     memoEditMode = false;
+    adminMemoEditMode = false;
     memoInputListener = null;
 
     const title = document.createElement("h2");
@@ -5185,6 +5988,10 @@ function renderDetail(root){
     const memoSection = document.createElement("div");
     memoSection.className = "memo-section";
 
+    const publicMemoTitle = document.createElement("span");
+    publicMemoTitle.className = "section-title";
+    publicMemoTitle.innerText = "전체 공개 메모";
+
     const memoToggle = createButton("memo-toggle", "📋 스크롤 모드", ()=>{
         toggleMemoMode();
     });
@@ -5204,6 +6011,7 @@ function renderDetail(root){
     });
     memoButton.id = "memo-btn";
 
+    memoSection.appendChild(publicMemoTitle);
     memoSection.appendChild(memoToggle);
     if(memoTime){
         memoSection.appendChild(memoTime);
@@ -5214,79 +6022,74 @@ function renderDetail(root){
     }
     root.appendChild(memoSection);
 
-    const detailSection = document.createElement("div");
-    detailSection.className = "detail-section";
-
-    const sectionTitle = document.createElement("span");
-    sectionTitle.className = "section-title";
-    sectionTitle.innerText = "📸 추가 사진";
-    detailSection.appendChild(sectionTitle);
-
-    const evidenceGrid = document.createElement("div");
-    evidenceGrid.className = "evidence-grid";
-
-    (machine.evidencePhotos || []).forEach((photoItem, index)=>{
-        const evidence = document.createElement("div");
-        evidence.className = "evidence-item";
-
-        const photoBox = document.createElement("div");
-        photoBox.className = "evidence-photo-box";
-
-        const img = document.createElement("img");
-        img.src = photoItem.photo || "";
-        img.alt = currentMachine + "번 추가 사진";
-        img.onclick = ()=>{
-            openModal(photoItem.photo);
-        };
-
-        const deleteButton = createButton("evidence-delete", "×", ()=>{
-            deleteEvidencePhoto(index);
-        });
-
-        photoBox.appendChild(img);
-
-        const photoTime = createActionTimeBadge("등록", photoItem.createdAt, "floating-time");
-
-        if(photoTime){
-            photoBox.appendChild(photoTime);
-        }
-
-        if(canEditCurrentStore()){
-            photoBox.appendChild(deleteButton);
-        }
-
-        const photoMemoTime = createActionTimeBadge("메모 저장", photoItem.memoUpdatedAt, "evidence-memo-time");
-
-        const photoMemo = document.createElement("textarea");
-        photoMemo.className = "evidence-memo";
-        photoMemo.placeholder = "사진 메모";
-        photoMemo.value = photoItem.memo || "";
-        photoMemo.readOnly = !canEditCurrentStore();
-        photoMemo.onblur = ()=>{
-            updateEvidenceMemo(index, photoMemo.value);
-        };
-
-        evidence.appendChild(photoBox);
-        if(photoMemoTime){
-            evidence.appendChild(photoMemoTime);
-        }
-        evidence.appendChild(photoMemo);
-        evidenceGrid.appendChild(evidence);
-    });
-
-    detailSection.appendChild(evidenceGrid);
     if(canEditCurrentStore()){
-        detailSection.appendChild(createButton("btn-save", "+ 추가 사진 등록", ()=>{
-            uploadPhoto(1);
+        const adminMemoSection = document.createElement("div");
+        adminMemoSection.className = "memo-section admin-private-section";
+
+        const adminMemoTitle = document.createElement("span");
+        adminMemoTitle.className = "private-section-title";
+        adminMemoTitle.innerText = "관리자 전용 메모";
+
+        const adminMemoTime = createActionTimeBadge("관리자 메모 저장", machine.adminMemoUpdatedAt, "memo-time");
+
+        const adminMemoToggle = createButton("memo-toggle", "📋 스크롤 모드", ()=>{
+            toggleAdminMemoMode();
+        });
+        adminMemoToggle.id = "admin-memo-mode-toggle";
+
+        const adminTextarea = document.createElement("textarea");
+        adminTextarea.id = "admin-memo";
+        adminTextarea.className = "expanded-mode";
+        adminTextarea.placeholder = "관리자 메모 입력";
+        adminTextarea.value = machine.adminMemo || "";
+        adminTextarea.readOnly = true;
+        adminTextarea.oninput = ()=>{
+            adjustAdminMemoHeight();
+        };
+
+        const adminMemoButton = createButton("btn-add", "✏️ 관리자 메모 수정", ()=>{
+            toggleAdminMemoEdit();
+        });
+        adminMemoButton.id = "admin-memo-btn";
+
+        adminMemoSection.appendChild(adminMemoTitle);
+        adminMemoSection.appendChild(adminMemoToggle);
+        if(adminMemoTime){
+            adminMemoSection.appendChild(adminMemoTime);
+        }
+        adminMemoSection.appendChild(adminTextarea);
+        adminMemoSection.appendChild(adminMemoButton);
+        root.appendChild(adminMemoSection);
+    }
+
+    root.appendChild(createEvidenceSection(machine, {
+        collectionKey:"evidencePhotos",
+        title:"📸 전체 공개 추가 사진",
+        photoAlt:"전체 공개 추가 사진",
+        memoPlaceholder:"전체 공개 사진 메모",
+        uploadText:"+ 전체 공개 추가 사진 등록",
+        uploadType:1,
+        private:false
+    }));
+
+    if(canEditCurrentStore()){
+        root.appendChild(createEvidenceSection(machine, {
+            collectionKey:"adminEvidencePhotos",
+            title:"관리자 전용 추가 사진",
+            photoAlt:"관리자 전용 추가 사진",
+            memoPlaceholder:"관리자 전용 사진 메모",
+            uploadText:"+ 관리자 전용 추가 사진 등록",
+            uploadType:2,
+            private:true
         }));
     }
-    root.appendChild(detailSection);
 
     root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
         history.back();
     }));
 
     applyMemoDisplayMode();
+    applyAdminMemoDisplayMode();
 }
 
 function renderTrash(root){
@@ -5309,6 +6112,35 @@ function renderTrash(root){
     }else{
         const trashContainer = document.createElement("div");
 
+        if(canEditCurrentStore()){
+            const bulkActions = document.createElement("div");
+            bulkActions.className = "trash-bulk-actions";
+
+            bulkActions.appendChild(createAdminButton("선택 복구", ()=>{
+                restoreSelectedTrashItems(false);
+            }));
+
+            bulkActions.appendChild(createAdminButton("전체 복구", ()=>{
+                restoreSelectedTrashItems(true);
+            }));
+
+            const selectedDeleteButton = createAdminButton("선택 영구삭제", ()=>{
+                deleteSelectedTrashItems(false);
+            });
+            selectedDeleteButton.style.background = "#d9534f";
+            selectedDeleteButton.style.color = "white";
+            bulkActions.appendChild(selectedDeleteButton);
+
+            const allDeleteButton = createAdminButton("전체 영구삭제", ()=>{
+                deleteSelectedTrashItems(true);
+            });
+            allDeleteButton.style.background = "#b52b27";
+            allDeleteButton.style.color = "white";
+            bulkActions.appendChild(allDeleteButton);
+
+            root.appendChild(bulkActions);
+        }
+
         data.trash.forEach((item, index)=>{
             const deletedTime = new Date(item.deletedAt).getTime();
             const daysLeft = Math.max(0, Math.ceil((TRASH_LIMIT_MS - (now - deletedTime)) / (24 * 60 * 60 * 1000)));
@@ -5323,6 +6155,14 @@ function renderTrash(root){
 
             const trashItem = document.createElement("div");
             trashItem.className = "trash-item";
+
+            const selectWrap = document.createElement("label");
+            selectWrap.className = "trash-select";
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "trash-check";
+            checkbox.value = String(index);
 
             const info = document.createElement("div");
 
@@ -5341,6 +6181,8 @@ function renderTrash(root){
             info.appendChild(itemTitle);
             info.appendChild(date);
             info.appendChild(dday);
+            selectWrap.appendChild(checkbox);
+            selectWrap.appendChild(info);
 
             const buttons = document.createElement("div");
             buttons.className = "trash-buttons";
@@ -5356,7 +6198,11 @@ function renderTrash(root){
             deleteButton.style.color = "white";
             buttons.appendChild(deleteButton);
 
-            trashItem.appendChild(info);
+            if(canEditCurrentStore()){
+                trashItem.appendChild(selectWrap);
+            }else{
+                trashItem.appendChild(info);
+            }
             if(canEditCurrentStore()){
                 trashItem.appendChild(buttons);
             }
@@ -5447,7 +6293,7 @@ function renderHelpLegacy(root){
                 <li>폴더 타일: 폴더가 많을 때 한눈에 보기 좋습니다.</li>
                 <li>썸네일 타일: 사진을 보고 빠르게 정답지를 찾을 때 좋습니다.</li>
                 <li>메모 타일/메모 일렬: 메모 내용으로 찾을 때 좋습니다.</li>
-                <li>메모 펼치기: 기본은 2줄 미리보기이고, 체크하면 전체 메모가 펼쳐집니다.</li>
+                <li>메모 펼치기: 기본은 공개 메모 2줄 미리보기이고, 체크하면 전체공개만/관리자만/전체+관리자 중 골라 펼쳐봅니다.</li>
             </ul>
         </div>
 
@@ -5563,7 +6409,7 @@ function renderHelp(root){
                 <li>일렬/타일/썸네일/메모 보기: 정답지를 어떤 방식으로 볼지 정합니다.</li>
                 <li>썸네일 일렬/썸네일 타일: 사진을 보면서 정답지를 찾을 때 씁니다.</li>
                 <li>메모 일렬/메모 타일: 메모 내용으로 정답지를 찾을 때 씁니다.</li>
-                <li>메모 펼치기: 꺼져 있으면 2줄만 보이고, 켜면 전체 메모가 보입니다.</li>
+                <li>메모 펼치기: 꺼져 있으면 공개 메모 2줄만 보이고, 켜면 전체공개만/관리자만/전체+관리자 중 골라 봅니다.</li>
                 <li>+ 기계 추가: 새 정답지 번호를 만듭니다.</li>
                 <li>⚙️ 설정: 해당 정답지의 관리 메뉴를 엽니다.</li>
                 <li>이름 수정: 정답지 번호를 바꿉니다. 예: 10_1, 10_2.</li>
@@ -5583,7 +6429,7 @@ function renderHelp(root){
                 <li>+ 추가 사진 등록: 참고 사진을 여러 장 붙입니다.</li>
                 <li>추가 사진: 누르면 크게 확대됩니다.</li>
                 <li>×: 추가 사진을 삭제해 휴지통으로 보냅니다.</li>
-                <li>추가 사진 메모: 사진마다 설명을 적습니다. 칸을 벗어나면 자동 저장됩니다.</li>
+                <li>추가 사진 메모: 수정 버튼을 누른 뒤 사진마다 설명을 적고 저장합니다.</li>
                 <li>회색 시간 배지: 사진 등록, 메모 저장, 사진 수정이 언제 됐는지 표시합니다.</li>
             </ul>
         </div>
@@ -5784,6 +6630,643 @@ function renderFigureCatalog(root){
 
     root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
         currentView = "genres";
+        render();
+    }));
+}
+
+function getBoardCategoryLabel(category){
+    return category === "daily" ? "일일공지" : "공지";
+}
+
+function getBoardScopeLabel(post){
+    return post.scope === "all"
+        ? "전지점"
+        : (appData.storeNames[post.storeId] || getCurrentStoreName());
+}
+
+function canWriteBoard(){
+    return canEditCurrentStore();
+}
+
+function canEditBoardPost(post){
+    if(isGameMaster()){
+        return true;
+    }
+
+    return canEditCurrentStore() &&
+        post.scope !== "all" &&
+        (!post.storeId || post.storeId === currentStoreId);
+}
+
+function getBoardPost(postId){
+    return (appData.boardPosts || []).find((item)=>item.id === postId) || null;
+}
+
+function getVisibleBoardPosts(){
+    return (appData.boardPosts || [])
+    .filter((post)=>{
+        if(post.category !== boardCategory){
+            return false;
+        }
+
+        if(post.adminOnly && !canViewAdminOnlyItems()){
+            return false;
+        }
+
+        return post.scope === "all" || post.storeId === currentStoreId;
+    })
+    .sort((a,b)=>{
+        return new Date(b.updatedAt || b.createdAt).getTime() -
+            new Date(a.updatedAt || a.createdAt).getTime();
+    });
+}
+
+function createBoardPostId(){
+    return "post_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 8);
+}
+
+function getBoardPostImages(post){
+    return Array.isArray(post && post.images) ? post.images : [];
+}
+
+function createBoardImageGrid(images){
+    const grid = document.createElement("div");
+    grid.className = "board-image-grid";
+
+    images.forEach((image)=>{
+        if(!image || !image.url){
+            return;
+        }
+
+        const img = document.createElement("img");
+        img.src = image.url;
+        img.alt = "게시글 첨부 이미지";
+        img.onclick = (event)=>{
+            event.stopPropagation();
+            openModal(image.url);
+        };
+        grid.appendChild(img);
+    });
+
+    return grid;
+}
+
+function createBoardComposer(post = null){
+    const form = document.createElement("div");
+    form.className = "board-composer";
+
+    const row = document.createElement("div");
+    row.className = "board-composer-row";
+
+    const category = document.createElement("select");
+    category.innerHTML = `
+        <option value="notice">공지</option>
+        <option value="daily">일일공지</option>
+    `;
+    category.value = post ? post.category : boardCategory;
+
+    const scope = document.createElement("select");
+    scope.innerHTML = `
+        <option value="store">현재 지점</option>
+        <option value="all">전지점</option>
+    `;
+    scope.value = post ? post.scope : (isGameMaster() ? "all" : "store");
+    scope.disabled = !isGameMaster();
+
+    row.appendChild(category);
+    row.appendChild(scope);
+
+    const adminOnlyLabel = document.createElement("label");
+    adminOnlyLabel.className = "board-admin-option";
+
+    const adminOnlyInput = document.createElement("input");
+    adminOnlyInput.type = "checkbox";
+    adminOnlyInput.checked = post ? post.adminOnly === true : false;
+
+    const adminOnlyText = document.createElement("span");
+    adminOnlyText.innerText = "관리자만 보기";
+
+    adminOnlyLabel.appendChild(adminOnlyInput);
+    adminOnlyLabel.appendChild(adminOnlyText);
+
+    const title = document.createElement("input");
+    title.type = "text";
+    title.placeholder = "제목";
+    title.value = post ? post.title : "";
+
+    const body = document.createElement("textarea");
+    body.placeholder = category.value === "daily"
+        ? "오늘 처리할 일, 전달사항, 마감 전 확인할 내용을 적어주세요."
+        : "중요한 룰, 고정 공지, 운영 기준을 적어주세요.";
+    body.value = post ? post.body : "";
+
+    const attachmentTools = document.createElement("div");
+    attachmentTools.className = "board-attachment-tools";
+
+    const existingImages = getBoardPostImages(post).map((image)=>({...image}));
+    const attachmentList = document.createElement("div");
+    attachmentList.className = "board-attachment-list";
+
+    const renderAttachments = ()=>{
+        attachmentList.innerHTML = "";
+
+        existingImages.forEach((image, index)=>{
+            const item = document.createElement("div");
+            item.className = "board-attachment-item";
+
+            const img = document.createElement("img");
+            img.src = image.url;
+            img.alt = "첨부 이미지";
+            img.onclick = ()=>openModal(image.url);
+
+            const remove = createButton("", "×", ()=>{
+                existingImages.splice(index, 1);
+                renderAttachments();
+            });
+
+            item.appendChild(img);
+            item.appendChild(remove);
+            attachmentList.appendChild(item);
+        });
+    };
+
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.multiple = true;
+
+    attachmentTools.appendChild(fileInput);
+    attachmentTools.appendChild(attachmentList);
+    renderAttachments();
+
+    category.onchange = ()=>{
+        body.placeholder = category.value === "daily"
+            ? "오늘 처리할 일, 전달사항, 마감 전 확인할 내용을 적어주세요."
+            : "중요한 룰, 고정 공지, 운영 기준을 적어주세요.";
+    };
+
+    const saveButton = createButton("btn-save", post ? "게시글 저장" : "게시글 등록", async()=>{
+        const nextTitle = sanitizeText(title.value);
+        const nextBody = String(body.value || "").trim();
+
+        if(!nextTitle){
+            alert("제목을 입력하세요.");
+            return;
+        }
+
+        if(!nextBody){
+            alert("내용을 입력하세요.");
+            return;
+        }
+
+        await saveBoardPost({
+            post,
+            category:category.value,
+            scope:scope.value,
+            adminOnly:adminOnlyInput.checked,
+            title:nextTitle,
+            body:nextBody,
+            existingImages,
+            files:Array.from(fileInput.files || [])
+        });
+    });
+
+    form.appendChild(row);
+    form.appendChild(adminOnlyLabel);
+    form.appendChild(title);
+    form.appendChild(body);
+    form.appendChild(attachmentTools);
+    form.appendChild(saveButton);
+
+    return form;
+}
+
+async function saveBoardPost(values){
+    if(!canWriteBoard()){
+        alert("게시글 작성 권한이 없습니다.");
+        return;
+    }
+
+    const now = new Date().toISOString();
+    const account = getCurrentAccount();
+    const scope = isGameMaster() && values.scope === "all" ? "all" : "store";
+    const storeId = scope === "all" ? "" : currentStoreId;
+    const images = (values.existingImages || []).filter((image)=>image && image.url);
+    const files = values.files || [];
+    let interval = null;
+
+    try{
+        if(files.length > 0){
+            interval = showLoading("게시글 이미지 업로드 중... 0%");
+
+            for(let i = 0; i < files.length; i++){
+                const url = await compressAndUploadImage(files[i], "board");
+                images.push({
+                    url,
+                    createdAt:new Date().toISOString()
+                });
+
+                const percent = Math.round(((i + 1) / files.length) * 100);
+                document.getElementById("progress-fill").style.width = percent + "%";
+                document.getElementById("loading-text").innerText =
+                    "게시글 이미지 업로드 중... " + percent + "%";
+            }
+        }
+
+        if(values.post){
+            if(!canEditBoardPost(values.post)){
+                alert("게시글 수정 권한이 없습니다.");
+                return;
+            }
+
+            values.post.category = values.category === "daily" ? "daily" : "notice";
+            values.post.scope = scope;
+            values.post.storeId = storeId;
+            values.post.adminOnly = values.adminOnly === true;
+            values.post.title = values.title;
+            values.post.body = values.body;
+            values.post.images = images;
+            values.post.updatedAt = now;
+            currentBoardPostId = values.post.id;
+        }else{
+            const post = {
+                id:createBoardPostId(),
+                category:values.category === "daily" ? "daily" : "notice",
+                scope:scope,
+                storeId:storeId,
+                adminOnly:values.adminOnly === true,
+                title:values.title,
+                body:values.body,
+                images,
+                createdAt:now,
+                updatedAt:now,
+                authorId:getLoginId() || (account && account.loginId) || "unknown",
+                authorRole:getCurrentUserRole().role || "",
+                authorStoreId:currentStoreId,
+                authorStoreName:getCurrentStoreName()
+            };
+
+            appData.boardPosts.push(post);
+            currentBoardPostId = post.id;
+        }
+
+        boardCategory = values.category === "daily" ? "daily" : "notice";
+        localStorage.setItem("boardCategory", boardCategory);
+        currentView = "boardDetail";
+
+        await saveData(()=>render(false));
+    }catch(err){
+        console.error(err);
+        alert("게시글 저장 실패: " + err.message);
+    }finally{
+        if(interval){
+            hideLoading(interval);
+        }
+    }
+}
+
+function editBoardPost(postId){
+    const post = getBoardPost(postId);
+
+    if(!post || !canEditBoardPost(post)){
+        alert("게시글 수정 권한이 없습니다.");
+        return;
+    }
+
+    currentBoardPostId = postId;
+    currentView = "boardCompose";
+    render();
+}
+
+function deleteBoardPost(postId){
+    const post = getBoardPost(postId);
+
+    if(!post || !canEditBoardPost(post)){
+        alert("게시글 삭제 권한이 없습니다.");
+        return;
+    }
+
+    if(!confirm("게시글을 삭제할까요?")){
+        return;
+    }
+
+    appData.boardPosts = appData.boardPosts.filter((item)=>item.id !== postId);
+    currentBoardPostId = null;
+    currentView = "board";
+    saveData(()=>render(false));
+}
+
+function openBoardPost(postId){
+    currentBoardPostId = postId;
+    currentView = "boardDetail";
+    render();
+}
+
+function createBoardPostCard(post){
+    const card = document.createElement("div");
+    card.className = [
+        "board-post",
+        boardListMode === "title" ? "title-only" : "",
+        boardListMode === "thumbnail" || boardListMode === "thumbnailSummary" ? "thumbnail-mode" : ""
+    ].filter(Boolean).join(" ");
+    card.onclick = ()=>openBoardPost(post.id);
+    const images = getBoardPostImages(post);
+
+    if(boardListMode === "thumbnail" || boardListMode === "thumbnailSummary"){
+        const thumb = document.createElement("div");
+        thumb.className = "board-thumb";
+
+        if(images[0] && images[0].url){
+            const img = document.createElement("img");
+            img.src = images[0].url;
+            img.alt = "게시글 썸네일";
+            thumb.appendChild(img);
+        }else{
+            thumb.innerText = "사진 없음";
+        }
+
+        card.appendChild(thumb);
+    }
+
+    const head = document.createElement("div");
+    head.className = "board-post-head";
+
+    const titleWrap = document.createElement("div");
+
+    const title = document.createElement("h3");
+    title.innerText = post.title || "제목 없음";
+    titleWrap.appendChild(title);
+
+    const badges = document.createElement("div");
+    badges.className = "board-badges";
+
+    const categoryBadge = document.createElement("span");
+    categoryBadge.className = "board-badge" + (post.category === "daily" ? " daily" : "");
+    categoryBadge.innerText = getBoardCategoryLabel(post.category);
+    badges.appendChild(categoryBadge);
+
+    const scopeBadge = document.createElement("span");
+    scopeBadge.className = "board-badge" + (post.scope === "all" ? " global" : "");
+    scopeBadge.innerText = getBoardScopeLabel(post);
+    badges.appendChild(scopeBadge);
+
+    if(post.adminOnly && canViewAdminOnlyItems()){
+        const adminBadge = document.createElement("span");
+        adminBadge.className = "board-badge admin";
+        adminBadge.innerText = "관리자만";
+        badges.appendChild(adminBadge);
+    }
+
+    const imageCount = images.length;
+
+    if(imageCount > 0){
+        const imageBadge = document.createElement("span");
+        imageBadge.className = "board-badge";
+        imageBadge.innerText = "사진 " + imageCount;
+        badges.appendChild(imageBadge);
+    }
+
+    if(boardListMode === "summary" || boardListMode === "thumbnail" || boardListMode === "thumbnailSummary"){
+        titleWrap.appendChild(badges);
+    }
+    head.appendChild(titleWrap);
+    card.appendChild(head);
+
+    if(boardListMode === "summary" || boardListMode === "thumbnailSummary"){
+        const body = document.createElement("div");
+        body.className = "board-body board-summary";
+        body.innerText = post.body || "";
+        card.appendChild(body);
+    }
+
+    if(boardListMode === "summary" || boardListMode === "thumbnail" || boardListMode === "thumbnailSummary"){
+        const meta = document.createElement("div");
+        meta.className = "board-meta";
+        meta.innerText =
+            (post.authorId || "unknown") +
+            " / " +
+            formatActionTime(post.updatedAt || post.createdAt);
+        card.appendChild(meta);
+    }
+
+    return card;
+}
+
+function renderBoardToolbar(root){
+    const tabs = document.createElement("div");
+    tabs.className = "board-tabs";
+
+    [
+        {
+            category:"notice",
+            label:"공지"
+        },
+        {
+            category:"daily",
+            label:"일일공지"
+        }
+    ].forEach((item)=>{
+        const button = document.createElement("button");
+        button.className = "board-tab" + (boardCategory === item.category ? " active" : "");
+        button.innerText = item.label;
+        button.onclick = ()=>{
+            boardCategory = item.category;
+            localStorage.setItem("boardCategory", boardCategory);
+            currentBoardPostId = null;
+            currentView = "board";
+            render(false);
+        };
+        tabs.appendChild(button);
+    });
+
+    root.appendChild(tabs);
+
+    const options = document.createElement("div");
+    options.className = "view-options";
+
+    const listMode = document.createElement("select");
+    listMode.innerHTML = `
+        <option value="title">제목만</option>
+        <option value="summary">제목+내용</option>
+        <option value="thumbnail">썸네일</option>
+        <option value="thumbnailSummary">썸네일+내용</option>
+    `;
+    listMode.value = ["title", "summary", "thumbnail", "thumbnailSummary"].includes(boardListMode)
+        ? boardListMode
+        : "title";
+    listMode.onchange = ()=>{
+        boardListMode = listMode.value;
+        localStorage.setItem("boardListMode", boardListMode);
+        render(false);
+    };
+
+    options.appendChild(listMode);
+    root.appendChild(options);
+}
+
+function renderBoard(root){
+    if(boardCategory !== "daily"){
+        boardCategory = "notice";
+    }
+
+    currentBoardPostId = null;
+
+    const header = document.createElement("div");
+    header.className = "header-row";
+
+    const title = document.createElement("h2");
+    title.innerText = "게시판";
+
+    header.appendChild(title);
+    root.appendChild(header);
+
+    renderBoardToolbar(root);
+
+    const list = document.createElement("div");
+    list.className = "board-list";
+
+    const posts = getVisibleBoardPosts();
+
+    if(posts.length === 0){
+        const empty = document.createElement("p");
+        empty.className = "empty-message";
+        empty.innerText = "게시글이 없습니다.";
+        root.appendChild(empty);
+    }else{
+        posts.forEach((post)=>{
+            list.appendChild(createBoardPostCard(post));
+        });
+    }
+
+    root.appendChild(list);
+
+    const bottom = document.createElement("div");
+    bottom.className = "board-bottom-actions";
+
+    if(canWriteBoard()){
+        bottom.appendChild(createAdminButton("게시글 작성", ()=>{
+            currentBoardPostId = null;
+            currentView = "boardCompose";
+            render();
+        }));
+    }
+
+    bottom.appendChild(createAdminButton("뒤로가기", ()=>{
+        currentView = "genres";
+        render();
+    }));
+
+    root.appendChild(bottom);
+}
+
+function renderBoardDetail(root){
+    const post = getBoardPost(currentBoardPostId);
+
+    if(!post || (post.scope !== "all" && post.storeId !== currentStoreId)){
+        currentView = "board";
+        currentBoardPostId = null;
+        render(false);
+        return;
+    }
+
+    if(post.adminOnly && !canViewAdminOnlyItems()){
+        currentView = "board";
+        currentBoardPostId = null;
+        render(false);
+        return;
+    }
+
+    const title = document.createElement("h2");
+    title.innerText = post.title || "제목 없음";
+    root.appendChild(title);
+
+    const badges = document.createElement("div");
+    badges.className = "board-badges";
+
+    const categoryBadge = document.createElement("span");
+    categoryBadge.className = "board-badge" + (post.category === "daily" ? " daily" : "");
+    categoryBadge.innerText = getBoardCategoryLabel(post.category);
+    badges.appendChild(categoryBadge);
+
+    const scopeBadge = document.createElement("span");
+    scopeBadge.className = "board-badge" + (post.scope === "all" ? " global" : "");
+    scopeBadge.innerText = getBoardScopeLabel(post);
+    badges.appendChild(scopeBadge);
+
+    if(post.adminOnly && canViewAdminOnlyItems()){
+        const adminBadge = document.createElement("span");
+        adminBadge.className = "board-badge admin";
+        adminBadge.innerText = "관리자만";
+        badges.appendChild(adminBadge);
+    }
+    root.appendChild(badges);
+
+    const meta = document.createElement("div");
+    meta.className = "board-meta";
+    meta.innerText =
+        "작성: " +
+        (post.authorId || "unknown") +
+        " / " +
+        (post.authorStoreName || post.authorStoreId || "지점 없음") +
+        " / " +
+        formatActionTime(post.updatedAt || post.createdAt);
+    root.appendChild(meta);
+
+    const body = document.createElement("div");
+    body.className = "board-body";
+    body.innerText = post.body || "";
+    root.appendChild(body);
+
+    const images = getBoardPostImages(post);
+
+    if(images.length > 0){
+        root.appendChild(createBoardImageGrid(images));
+    }
+
+    if(canEditBoardPost(post)){
+        const actions = document.createElement("div");
+        actions.className = "board-actions";
+        actions.appendChild(createAdminButton("수정", ()=>editBoardPost(post.id)));
+
+        const deleteButton = createAdminButton("삭제", ()=>deleteBoardPost(post.id));
+        deleteButton.style.background = "#d9534f";
+        deleteButton.style.color = "white";
+        actions.appendChild(deleteButton);
+        root.appendChild(actions);
+    }
+
+    root.appendChild(createButton("btn-back", "목록으로", ()=>{
+        currentView = "board";
+        currentBoardPostId = null;
+        render();
+    }));
+}
+
+function renderBoardCompose(root){
+    const post = currentBoardPostId ? getBoardPost(currentBoardPostId) : null;
+
+    if(post && !canEditBoardPost(post)){
+        currentView = "board";
+        currentBoardPostId = null;
+        render(false);
+        return;
+    }
+
+    if(!post && !canWriteBoard()){
+        currentView = "board";
+        render(false);
+        return;
+    }
+
+    const title = document.createElement("h2");
+    title.innerText = post ? "게시글 수정" : "게시글 작성";
+    root.appendChild(title);
+    root.appendChild(createBoardComposer(post));
+    root.appendChild(createButton("btn-back", "취소", ()=>{
+        currentView = post ? "boardDetail" : "board";
         render();
     }));
 }
@@ -6361,6 +7844,17 @@ function adjustMemoHeight(){
     textarea.style.height = textarea.scrollHeight + "px";
 }
 
+function adjustAdminMemoHeight(){
+    const textarea = document.getElementById("admin-memo");
+
+    if(!textarea || textarea.classList.contains("scroll-mode")){
+        return;
+    }
+
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+}
+
 function applyMemoDisplayMode(){
     setTimeout(()=>{
         const textarea = document.getElementById("memo");
@@ -6388,6 +7882,37 @@ function applyMemoDisplayMode(){
             }
 
             adjustMemoHeight();
+        }
+    }, 0);
+}
+
+function applyAdminMemoDisplayMode(){
+    setTimeout(()=>{
+        const textarea = document.getElementById("admin-memo");
+        const button = document.getElementById("admin-memo-mode-toggle");
+
+        if(!textarea){
+            return;
+        }
+
+        const savedMode = localStorage.getItem("adminMemoDisplayMode") || "expanded";
+
+        if(savedMode === "scroll"){
+            textarea.classList.remove("expanded-mode");
+            textarea.classList.add("scroll-mode");
+
+            if(button){
+                button.innerText = "📖 펼침 모드";
+            }
+        }else{
+            textarea.classList.remove("scroll-mode");
+            textarea.classList.add("expanded-mode");
+
+            if(button){
+                button.innerText = "📋 스크롤 모드";
+            }
+
+            adjustAdminMemoHeight();
         }
     }, 0);
 }
@@ -6421,6 +7946,38 @@ function toggleMemoMode(){
         }
 
         adjustMemoHeight();
+    }
+}
+
+function toggleAdminMemoMode(){
+    const textarea = document.getElementById("admin-memo");
+    const button = document.getElementById("admin-memo-mode-toggle");
+
+    if(!textarea){
+        return;
+    }
+
+    const isExpanded = textarea.classList.contains("expanded-mode");
+
+    if(isExpanded){
+        textarea.classList.remove("expanded-mode");
+        textarea.classList.add("scroll-mode");
+        textarea.style.height = "";
+        localStorage.setItem("adminMemoDisplayMode", "scroll");
+
+        if(button){
+            button.innerText = "📖 펼침 모드";
+        }
+    }else{
+        textarea.classList.remove("scroll-mode");
+        textarea.classList.add("expanded-mode");
+        localStorage.setItem("adminMemoDisplayMode", "expanded");
+
+        if(button){
+            button.innerText = "📋 스크롤 모드";
+        }
+
+        adjustAdminMemoHeight();
     }
 }
 
@@ -6476,6 +8033,61 @@ function toggleMemoEdit(){
     });
 }
 
+function updateAdminMemo(memo){
+    if(!canEditCurrentStore()){
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+
+    if(!machine){
+        return;
+    }
+
+    const nextMemo = String(memo || "");
+
+    if(machine.adminMemo === nextMemo){
+        return;
+    }
+
+    machine.adminMemo = nextMemo;
+    machine.adminMemoUpdatedAt = new Date().toISOString();
+    saveData(()=>render(false));
+}
+
+function toggleAdminMemoEdit(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const textarea = document.getElementById("admin-memo");
+    const button = document.getElementById("admin-memo-btn");
+
+    if(!textarea || !button){
+        return;
+    }
+
+    if(!adminMemoEditMode){
+        adminMemoEditMode = true;
+        textarea.readOnly = false;
+        textarea.style.pointerEvents = "auto";
+        textarea.focus();
+        button.innerText = "💾 저장";
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+
+    if(machine && machine.adminMemo === textarea.value){
+        textarea.readOnly = true;
+        button.innerText = "✏️ 관리자 메모 수정";
+        adminMemoEditMode = false;
+        return;
+    }
+
+    updateAdminMemo(textarea.value);
+}
+
 function openModal(src){
     if(!src){
         return;
@@ -6485,18 +8097,43 @@ function openModal(src){
     document.getElementById("modal").style.display = "flex";
 }
 
-function updateEvidenceMemo(index, memo){
+function moveEvidencePhoto(fromIndex, toIndex, collectionKey = "evidencePhotos"){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+    const photos = getEvidenceCollection(machine, collectionKey);
+
+    if(
+        !machine ||
+        fromIndex === toIndex ||
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= photos.length ||
+        toIndex >= photos.length
+    ){
+        return;
+    }
+
+    const moved = photos.splice(fromIndex, 1)[0];
+    photos.splice(toIndex, 0, moved);
+    saveData(()=>render(false));
+}
+
+function updateEvidenceMemo(index, memo, collectionKey = "evidencePhotos"){
     if(!canEditCurrentStore()){
         return;
     }
 
     const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+    const photos = getEvidenceCollection(machine, collectionKey);
 
-    if(!machine || !Array.isArray(machine.evidencePhotos) || !machine.evidencePhotos[index]){
+    if(!machine || !photos[index]){
         return;
     }
 
-    const photoItem = machine.evidencePhotos[index];
+    const photoItem = photos[index];
     const nextMemo = String(memo || "");
 
     if(photoItem.memo === nextMemo){
@@ -6508,7 +8145,7 @@ function updateEvidenceMemo(index, memo){
     saveData(()=>render(false));
 }
 
-function deleteEvidencePhoto(index){
+function deleteEvidencePhoto(index, collectionKey = "evidencePhotos"){
     if(!requireStoreEdit()){
         return;
     }
@@ -6518,13 +8155,14 @@ function deleteEvidencePhoto(index){
     }
 
     const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+    const photos = getEvidenceCollection(machine, collectionKey);
 
-    if(!machine || !Array.isArray(machine.evidencePhotos)){
+    if(!machine){
         alert("사진 데이터 오류");
         return;
     }
 
-    const deletedPhoto = machine.evidencePhotos[index];
+    const deletedPhoto = photos[index];
 
     if(!deletedPhoto){
         alert("사진 데이터 오류");
@@ -6535,28 +8173,23 @@ function deleteEvidencePhoto(index){
         type:"photo",
         genre:currentGenre,
         machine:currentMachine,
-        name:currentMachine + "번 추가사진",
+        collectionKey:collectionKey,
+        name:currentMachine +
+            "번 " +
+            (collectionKey === "adminEvidencePhotos" ? "관리자 전용 추가사진" : "추가사진"),
         data:deletedPhoto,
         deletedAt:new Date().toISOString()
     });
 
-    machine.evidencePhotos.splice(index, 1);
+    photos.splice(index, 1);
     saveData(()=>render(false));
 }
 
-function restoreTrashItem(index){
-    if(!requireStoreEdit()){
-        return;
-    }
-
-    if(!confirm("복구하시겠습니까?")){
-        return;
-    }
-
+function restoreTrashEntry(index, showAlerts = true){
     const item = data.trash[index];
 
     if(!item){
-        return;
+        return false;
     }
 
     if(item.type === "genre"){
@@ -6566,8 +8199,10 @@ function restoreTrashItem(index){
         }
     }else if(item.type === "machine"){
         if(!item.genre){
-            alert("원본 폴더 정보 없음");
-            return;
+            if(showAlerts){
+                alert("원본 폴더 정보 없음");
+            }
+            return false;
         }
 
         if(!data.genres.includes(item.genre)){
@@ -6581,27 +8216,58 @@ function restoreTrashItem(index){
         data.machines[item.genre][item.name] = item.data || {
             photo:"",
             memo:"",
-            evidencePhotos:[]
+            adminMemo:"",
+            adminMemoUpdatedAt:"",
+            evidencePhotos:[],
+            adminEvidencePhotos:[]
         };
     }else if(item.type === "photo"){
         if(!data.machines[item.genre] || !data.machines[item.genre][item.machine]){
-            alert("원본 기계 없음");
-            return;
+            if(showAlerts){
+                alert("원본 기계 없음");
+            }
+            return false;
         }
 
-        if(!Array.isArray(data.machines[item.genre][item.machine].evidencePhotos)){
-            data.machines[item.genre][item.machine].evidencePhotos = [];
-        }
+        const collectionKey = item.collectionKey === "adminEvidencePhotos"
+            ? "adminEvidencePhotos"
+            : "evidencePhotos";
+        const photos = getEvidenceCollection(
+            data.machines[item.genre][item.machine],
+            collectionKey
+        );
 
-        data.machines[item.genre][item.machine].evidencePhotos.push(item.data);
+        photos.push(item.data);
     }
 
     data.trash.splice(index, 1);
+    return true;
+}
+
+function restoreTrashItem(index){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!confirm("복구하시겠습니까?")){
+        return;
+    }
+
+    const restored = restoreTrashEntry(index, true);
 
     saveData(()=>{
         render(false);
-        alert("복구 완료");
+        alert(restored ? "복구 완료" : "복구할 수 없는 항목입니다.");
     });
+}
+
+function deleteTrashEntry(index){
+    if(!data.trash[index]){
+        return false;
+    }
+
+    data.trash.splice(index, 1);
+    return true;
 }
 
 function deleteTrashItem(index){
@@ -6613,11 +8279,88 @@ function deleteTrashItem(index){
         return;
     }
 
-    data.trash.splice(index, 1);
+    deleteTrashEntry(index);
 
     saveData(()=>{
         render(false);
         alert("영구 삭제 완료");
+    });
+}
+
+function getSelectedTrashIndices(allItems){
+    if(allItems){
+        return data.trash.map((_, index)=>index);
+    }
+
+    return Array.from(document.querySelectorAll(".trash-check:checked"))
+    .map((checkbox)=>Number(checkbox.value))
+    .filter((index)=>Number.isInteger(index) && index >= 0 && index < data.trash.length);
+}
+
+function restoreSelectedTrashItems(allItems){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const indices = getSelectedTrashIndices(allItems);
+
+    if(indices.length === 0){
+        alert("선택된 항목이 없습니다.");
+        return;
+    }
+
+    if(!confirm((allItems ? "휴지통 전체" : "선택한 항목") + "를 복구할까요?")){
+        return;
+    }
+
+    let successCount = 0;
+    let failCount = 0;
+
+    indices
+    .sort((a,b)=>b-a)
+    .forEach((index)=>{
+        if(restoreTrashEntry(index, false)){
+            successCount++;
+        }else{
+            failCount++;
+        }
+    });
+
+    saveData(()=>{
+        render(false);
+        alert("복구 완료: " + successCount + "개" + (failCount ? "\n복구 실패: " + failCount + "개" : ""));
+    });
+}
+
+function deleteSelectedTrashItems(allItems){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const indices = getSelectedTrashIndices(allItems);
+
+    if(indices.length === 0){
+        alert("선택된 항목이 없습니다.");
+        return;
+    }
+
+    if(!confirm((allItems ? "휴지통 전체" : "선택한 항목") + "를 영구 삭제할까요?\n되돌릴 수 없습니다.")){
+        return;
+    }
+
+    let successCount = 0;
+
+    indices
+    .sort((a,b)=>b-a)
+    .forEach((index)=>{
+        if(deleteTrashEntry(index)){
+            successCount++;
+        }
+    });
+
+    saveData(()=>{
+        render(false);
+        alert("영구 삭제 완료: " + successCount + "개");
     });
 }
 
@@ -6645,10 +8388,10 @@ function createPhotoInput(type){
             input.setAttribute("capture", "environment");
             input.multiple = false;
         }else{
-            input.multiple = type === 1;
+            input.multiple = type !== 0;
         }
     }else{
-        input.multiple = type === 1;
+        input.multiple = type !== 0;
     }
 
     document.body.appendChild(input);
@@ -6698,13 +8441,13 @@ function uploadPhoto(type){
                 machine.photo = await compressAndUploadImage(files[0], "main");
                 machine.photoUpdatedAt = new Date().toISOString();
             }else{
-                if(!Array.isArray(machine.evidencePhotos)){
-                    machine.evidencePhotos = [];
-                }
+                const collectionKey = type === 2 ? "adminEvidencePhotos" : "evidencePhotos";
+                const storageKind = type === 2 ? "admin_evidence" : "evidence";
+                const photos = getEvidenceCollection(machine, collectionKey);
 
                 for(let i = 0; i < files.length; i++){
-                    const url = await compressAndUploadImage(files[i], "evidence");
-                    machine.evidencePhotos.push({
+                    const url = await compressAndUploadImage(files[i], storageKind);
+                    photos.push({
                         photo:url,
                         memo:"",
                         createdAt:new Date().toISOString(),
@@ -6844,6 +8587,20 @@ document.getElementById("figure-catalog-menu").onclick = ()=>{
     toggleMenu(false);
 };
 
+document.getElementById("admin-menu-toggle").onclick = ()=>{
+    document.getElementById("admin-submenu").classList.toggle("active");
+};
+
+document.getElementById("board-menu").onclick = ()=>{
+    currentView = "board";
+    currentGenre = null;
+    currentGenreGroup = null;
+    currentMachine = null;
+    currentBoardPostId = null;
+    render();
+    toggleMenu(false);
+};
+
 document.getElementById("logo-menu").onclick = ()=>{
     if(!requireStoreManage()){
         return;
@@ -6880,15 +8637,6 @@ document.getElementById("manage-role-menu").onclick = ()=>{
     manageUserRole();
 };
 
-document.getElementById("help-menu").onclick = ()=>{
-    currentView = "help";
-    currentGenre = null;
-    currentGenreGroup = null;
-    currentMachine = null;
-    render();
-    toggleMenu(false);
-};
-
 document.getElementById("compression-quality").oninput = ()=>{
     updateCompressionQualityLabel();
 };
@@ -6918,6 +8666,7 @@ document.getElementById("logo-wrap").onclick = ()=>{
     currentGenre = null;
     currentGenreGroup = null;
     currentMachine = null;
+    currentBoardPostId = null;
     render();
 };
 
@@ -6968,11 +8717,13 @@ window.addEventListener("popstate", (event)=>{
         currentGenre = event.state.genre || null;
         currentGenreGroup = event.state.group || null;
         currentMachine = event.state.machine || null;
+        currentBoardPostId = event.state.boardPost || null;
     }else{
         currentView = "genres";
         currentGenre = null;
         currentGenreGroup = null;
         currentMachine = null;
+        currentBoardPostId = null;
     }
 
     render(false);
