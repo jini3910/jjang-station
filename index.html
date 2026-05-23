@@ -718,12 +718,27 @@ textarea.scroll-mode{
     justify-content:center;
     align-items:center;
     z-index:40000;
+    overflow:hidden;
+    touch-action:none;
 }
 
 .modal img{
     max-width:95%;
     max-height:92%;
     object-fit:contain;
+    cursor:zoom-in;
+    user-select:none;
+    -webkit-user-drag:none;
+    will-change:transform;
+    transform:translate3d(0,0,0) scale(1);
+}
+
+.modal.zoomed img{
+    cursor:grab;
+}
+
+.modal.zoomed img:active{
+    cursor:grabbing;
 }
 
 .settings-modal{
@@ -1980,6 +1995,17 @@ let currentBoardPostId = null;
 let memoEditMode = false;
 let adminMemoEditMode = false;
 let memoInputListener = null;
+let modalScale = 1;
+let modalTranslateX = 0;
+let modalTranslateY = 0;
+let modalStartScale = 1;
+let modalStartDistance = 0;
+let modalStartTranslateX = 0;
+let modalStartTranslateY = 0;
+let modalPanStartX = 0;
+let modalPanStartY = 0;
+let modalMoved = false;
+const modalPointers = new Map();
 let currentLoginId = "";
 let currentAccountCode = "";
 let autoLoginAttempted = false;
@@ -8088,11 +8114,235 @@ function toggleAdminMemoEdit(){
     updateAdminMemo(textarea.value);
 }
 
+function clampModalScale(value){
+    return Math.min(6, Math.max(1, value));
+}
+
+function applyModalTransform(){
+    const modal = document.getElementById("modal");
+    const img = document.getElementById("modal-img");
+
+    if(!img || !modal){
+        return;
+    }
+
+    if(modalScale <= 1){
+        modalScale = 1;
+        modalTranslateX = 0;
+        modalTranslateY = 0;
+    }
+
+    img.style.transform =
+        "translate3d(" +
+        modalTranslateX +
+        "px," +
+        modalTranslateY +
+        "px,0) scale(" +
+        modalScale +
+        ")";
+
+    modal.classList.toggle("zoomed", modalScale > 1);
+}
+
+function resetModalZoom(){
+    modalScale = 1;
+    modalTranslateX = 0;
+    modalTranslateY = 0;
+    modalStartScale = 1;
+    modalStartDistance = 0;
+    modalStartTranslateX = 0;
+    modalStartTranslateY = 0;
+    modalPanStartX = 0;
+    modalPanStartY = 0;
+    modalMoved = false;
+    modalPointers.clear();
+    applyModalTransform();
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+    resetModalZoom();
+}
+
+function getPointerDistance(){
+    const points = Array.from(modalPointers.values());
+
+    if(points.length < 2){
+        return 0;
+    }
+
+    return Math.hypot(
+        points[0].clientX - points[1].clientX,
+        points[0].clientY - points[1].clientY
+    );
+}
+
+function bindModalZoomEvents(){
+    const modal = document.getElementById("modal");
+    const img = document.getElementById("modal-img");
+
+    if(!modal || !img){
+        return;
+    }
+
+    modal.addEventListener("wheel", (event)=>{
+        if(modal.style.display !== "flex"){
+            return;
+        }
+
+        event.preventDefault();
+
+        const nextScale = clampModalScale(
+            modalScale * (event.deltaY < 0 ? 1.12 : 0.88)
+        );
+
+        modalScale = nextScale;
+        applyModalTransform();
+    }, { passive:false });
+
+    img.addEventListener("dblclick", (event)=>{
+        event.preventDefault();
+        event.stopPropagation();
+
+        modalScale = modalScale > 1 ? 1 : 2;
+        applyModalTransform();
+    });
+
+    img.addEventListener("pointerdown", (event)=>{
+        event.preventDefault();
+        event.stopPropagation();
+
+        modalMoved = false;
+        modalPointers.set(event.pointerId, {
+            clientX:event.clientX,
+            clientY:event.clientY
+        });
+
+        if(img.setPointerCapture){
+            img.setPointerCapture(event.pointerId);
+        }
+
+        if(modalPointers.size === 1){
+            modalPanStartX = event.clientX;
+            modalPanStartY = event.clientY;
+            modalStartTranslateX = modalTranslateX;
+            modalStartTranslateY = modalTranslateY;
+        }else if(modalPointers.size === 2){
+            modalStartDistance = getPointerDistance();
+            modalStartScale = modalScale;
+        }
+    });
+
+    img.addEventListener("pointermove", (event)=>{
+        if(!modalPointers.has(event.pointerId)){
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        modalPointers.set(event.pointerId, {
+            clientX:event.clientX,
+            clientY:event.clientY
+        });
+
+        if(modalPointers.size >= 2 && modalStartDistance > 0){
+            const nextDistance = getPointerDistance();
+            modalScale = clampModalScale(
+                modalStartScale * (nextDistance / modalStartDistance)
+            );
+            modalMoved = true;
+            applyModalTransform();
+            return;
+        }
+
+        if(modalScale > 1){
+            const dx = event.clientX - modalPanStartX;
+            const dy = event.clientY - modalPanStartY;
+
+            if(Math.abs(dx) > 2 || Math.abs(dy) > 2){
+                modalMoved = true;
+            }
+
+            modalTranslateX = modalStartTranslateX + dx;
+            modalTranslateY = modalStartTranslateY + dy;
+            applyModalTransform();
+        }
+    });
+
+    const clearPointer = (event)=>{
+        modalPointers.delete(event.pointerId);
+
+        if(modalPointers.size < 2){
+            modalStartDistance = 0;
+            modalStartScale = modalScale;
+        }
+    };
+
+    img.addEventListener("pointerup", clearPointer);
+    img.addEventListener("pointercancel", clearPointer);
+    img.addEventListener("lostpointercapture", clearPointer);
+
+    if(!window.PointerEvent){
+        img.addEventListener("touchstart", (event)=>{
+            event.preventDefault();
+            modalMoved = false;
+
+            if(event.touches.length === 1){
+                modalPanStartX = event.touches[0].clientX;
+                modalPanStartY = event.touches[0].clientY;
+                modalStartTranslateX = modalTranslateX;
+                modalStartTranslateY = modalTranslateY;
+            }else if(event.touches.length >= 2){
+                modalStartDistance = Math.hypot(
+                    event.touches[0].clientX - event.touches[1].clientX,
+                    event.touches[0].clientY - event.touches[1].clientY
+                );
+                modalStartScale = modalScale;
+            }
+        }, { passive:false });
+
+        img.addEventListener("touchmove", (event)=>{
+            event.preventDefault();
+
+            if(event.touches.length >= 2 && modalStartDistance > 0){
+                const nextDistance = Math.hypot(
+                    event.touches[0].clientX - event.touches[1].clientX,
+                    event.touches[0].clientY - event.touches[1].clientY
+                );
+
+                modalScale = clampModalScale(
+                    modalStartScale * (nextDistance / modalStartDistance)
+                );
+                modalMoved = true;
+                applyModalTransform();
+                return;
+            }
+
+            if(event.touches.length === 1 && modalScale > 1){
+                const dx = event.touches[0].clientX - modalPanStartX;
+                const dy = event.touches[0].clientY - modalPanStartY;
+
+                modalTranslateX = modalStartTranslateX + dx;
+                modalTranslateY = modalStartTranslateY + dy;
+                modalMoved = true;
+                applyModalTransform();
+            }
+        }, { passive:false });
+
+        img.addEventListener("touchend", ()=>{
+            modalStartDistance = 0;
+            modalStartScale = modalScale;
+        });
+    }
+}
+
 function openModal(src){
     if(!src){
         return;
     }
 
+    resetModalZoom();
     document.getElementById("modal-img").src = src;
     document.getElementById("modal").style.display = "flex";
 }
@@ -8670,9 +8920,13 @@ document.getElementById("logo-wrap").onclick = ()=>{
     render();
 };
 
-document.getElementById("modal").onclick = ()=>{
-    document.getElementById("modal").style.display = "none";
+document.getElementById("modal").onclick = (event)=>{
+    if(event.target === document.getElementById("modal")){
+        closeModal();
+    }
 };
+
+bindModalZoomEvents();
 
 document.getElementById("logo-upload").onchange = async(event)=>{
     if(!requireStoreManage()){
