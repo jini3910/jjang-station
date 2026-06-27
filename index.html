@@ -583,6 +583,43 @@ textarea.scroll-mode{
     margin-top:12px;
 }
 
+.evidence-grid.evidence-list{
+    display:flex;
+    flex-direction:column;
+}
+
+.evidence-grid.evidence-list .evidence-item{
+    display:grid;
+    grid-template-columns:minmax(120px, 180px) minmax(0, 1fr);
+    grid-template-rows:auto minmax(0, 1fr) auto;
+    column-gap:10px;
+    align-items:stretch;
+    min-height:180px;
+}
+
+.evidence-grid.evidence-list .evidence-photo-box{
+    grid-row:1 / 4;
+    padding-top:0;
+    height:180px;
+}
+
+.evidence-grid.evidence-list .evidence-memo-time{
+    grid-column:2;
+    grid-row:1;
+}
+
+.evidence-grid.evidence-list .evidence-memo{
+    grid-column:2;
+    grid-row:2;
+    min-height:120px;
+    height:100%;
+}
+
+.evidence-grid.evidence-list .evidence-memo-actions{
+    grid-column:2;
+    grid-row:3;
+}
+
 .evidence-item{
     position:relative;
     border:1px solid #ddd;
@@ -620,6 +657,22 @@ textarea.scroll-mode{
     color:white;
     border-radius:50%;
     line-height:28px;
+}
+
+.evidence-draw{
+    position:absolute;
+    right:4px;
+    bottom:4px;
+    width:auto;
+    min-width:58px;
+    height:28px;
+    margin:0;
+    padding:0 8px;
+    background:rgba(33,150,243,0.72);
+    color:white;
+    border-radius:8px;
+    line-height:28px;
+    font-size:11px;
 }
 
 .evidence-order-controls{
@@ -767,6 +820,130 @@ textarea.scroll-mode{
 
 .settings-panel h3{
     margin:0 0 12px;
+}
+
+.detail-action-grid,
+.main-photo-actions{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    align-items:center;
+    gap:8px;
+}
+
+.detail-action-grid{
+    margin-top:10px;
+}
+
+.detail-action-grid button,
+.main-photo-actions button{
+    width:auto;
+    min-width:74px;
+    min-height:32px;
+    margin-top:0;
+    padding:7px 10px;
+    border-radius:7px;
+    font-size:12px;
+    line-height:1.25;
+    white-space:normal;
+}
+
+.photo-source-actions{
+    display:none;
+    flex-basis:100%;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.photo-source-actions.active{
+    display:flex;
+}
+
+.photo-source-actions button{
+    min-height:30px;
+    min-width:78px;
+    padding:6px 9px;
+    font-size:12px;
+}
+
+.draw-panel{
+    width:100%;
+    max-width:920px;
+    max-height:94vh;
+    background:white;
+    border-radius:12px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.draw-panel h3{
+    margin:0;
+    font-size:16px;
+}
+
+.draw-tools{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+}
+
+.draw-tools label{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    color:#333;
+    font-size:12px;
+    font-weight:700;
+}
+
+.draw-tools input[type="color"]{
+    width:34px;
+    height:34px;
+    padding:0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:white;
+}
+
+.draw-tools input[type="range"]{
+    width:110px;
+}
+
+.draw-tools .btn-mini{
+    width:auto;
+    margin:0;
+}
+
+.draw-tools .btn-mini.active{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0b67b2;
+}
+
+.draw-canvas-wrap{
+    width:100%;
+    min-height:260px;
+    max-height:68vh;
+    overflow:auto;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#f4f4f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    touch-action:none;
+}
+
+#draw-canvas{
+    max-width:100%;
+    height:auto;
+    background:white;
+    cursor:crosshair;
+    touch-action:none;
 }
 
 .setting-row{
@@ -1057,19 +1234,27 @@ textarea.scroll-mode{
     position:relative;
 }
 
-.memo-toggle{
-    position:absolute;
-    top:-36px;
-    right:0;
+.memo-expand-toggle{
+    display:block;
     width:auto;
-    margin-top:0;
-    padding:7px 10px;
-    font-size:12px;
-    border-radius:8px;
-    background:#f2f2f2;
-    color:#222;
-    border:1px solid #ccc;
+    min-width:34px;
+    height:24px;
+    margin:4px auto 0;
+    padding:0 9px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    background:rgba(245,245,245,0.86);
+    color:#555;
+    font-size:13px;
+    line-height:22px;
     cursor:pointer;
+}
+
+.memo-expand-toggle:hover,
+.memo-expand-toggle:active{
+    background:#eaf4ff;
+    border-color:#9ac7f4;
+    color:#0b63b6;
 }
 
 .detail-section{
@@ -1155,6 +1340,53 @@ textarea.scroll-mode{
     margin-bottom:15px;
 }
 
+.folder-search-wrap{
+    display:grid;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.folder-search{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:11px;
+    background:white;
+    font-size:14px;
+}
+
+.folder-search-results{
+    display:grid;
+    gap:6px;
+}
+
+.folder-search-item{
+    width:100%;
+    margin:0;
+    padding:10px 12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fafafa;
+    color:#222;
+    text-align:left;
+    font-size:13px;
+    font-weight:600;
+}
+
+.folder-search-item:active{
+    background:#eee;
+}
+
+.folder-path{
+    display:block;
+    margin-top:4px;
+    color:#777;
+    font-size:11px;
+    font-weight:400;
+    line-height:1.45;
+    word-break:break-word;
+}
+
 .account-table-wrap{
     width:100%;
     overflow-x:auto;
@@ -1165,17 +1397,19 @@ textarea.scroll-mode{
 
 .account-table{
     width:100%;
-    min-width:920px;
+    min-width:0;
+    table-layout:fixed;
     border-collapse:collapse;
-    font-size:13px;
+    font-size:11px;
 }
 
 .account-table th,
 .account-table td{
-    padding:9px;
+    padding:5px;
     border-bottom:1px solid #eee;
     text-align:left;
     vertical-align:top;
+    word-break:break-word;
 }
 
 .account-table th{
@@ -1186,37 +1420,78 @@ textarea.scroll-mode{
 .account-table input,
 .account-table select{
     width:100%;
-    min-width:90px;
-    padding:7px;
+    min-width:0;
+    padding:5px;
     border:1px solid #ccc;
-    border-radius:7px;
-    font-size:12px;
+    border-radius:6px;
+    font-size:11px;
 }
 
 .account-table textarea{
     width:100%;
-    min-width:150px;
-    min-height:54px;
-    padding:7px;
+    min-width:0;
+    min-height:42px;
+    padding:5px;
     border:1px solid #ccc;
-    border-radius:7px;
+    border-radius:6px;
     background:white;
-    font-size:12px;
-    line-height:1.4;
+    font-size:11px;
+    line-height:1.3;
     resize:vertical;
+}
+
+.account-table th:nth-child(1),
+.account-table td:nth-child(1){
+    width:14%;
+}
+
+.account-table th:nth-child(2),
+.account-table td:nth-child(2){
+    width:13%;
+}
+
+.account-table th:nth-child(3),
+.account-table td:nth-child(3){
+    width:10%;
+}
+
+.account-table th:nth-child(4),
+.account-table td:nth-child(4){
+    width:11%;
+}
+
+.account-table th:nth-child(5),
+.account-table td:nth-child(5){
+    width:10%;
+}
+
+.account-table th:nth-child(6),
+.account-table td:nth-child(6){
+    width:10%;
+}
+
+.account-table th:nth-child(7),
+.account-table td:nth-child(7){
+    width:24%;
+}
+
+.account-table th:nth-child(8),
+.account-table td:nth-child(8){
+    width:8%;
 }
 
 .store-checks{
     display:grid;
-    grid-template-columns:repeat(2,minmax(120px,1fr));
-    gap:5px 8px;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:4px 6px;
 }
 
 .store-checks label{
     display:flex;
     align-items:center;
-    gap:5px;
-    white-space:nowrap;
+    gap:3px;
+    white-space:normal;
+    line-height:1.25;
 }
 
 .store-checks input{
@@ -1226,11 +1501,14 @@ textarea.scroll-mode{
 
 .account-actions{
     display:flex;
-    gap:6px;
+    flex-direction:column;
+    gap:4px;
 }
 
 .account-actions .btn-mini{
-    padding:7px 9px;
+    width:100%;
+    padding:6px 4px;
+    font-size:10px;
 }
 
 .help-page{
@@ -1460,26 +1738,61 @@ textarea.scroll-mode{
     resize:vertical;
 }
 
-.board-tabs{
+.board-layout{
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px;
-    margin-bottom:12px;
+    grid-template-columns:180px minmax(0,1fr);
+    gap:12px;
+    align-items:start;
 }
 
-.board-tab{
-    margin:0;
-    padding:11px;
+.board-sidebar{
     border:1px solid #ddd;
-    background:#f7f7f7;
-    color:#333;
-    font-size:13px;
+    border-radius:8px;
+    background:#fafafa;
+    overflow:hidden;
 }
 
-.board-tab.active{
-    border-color:#2196F3;
+.board-sidebar-title{
+    padding:10px 12px;
+    border-bottom:1px solid #e5e5e5;
+    background:#f1f3f5;
+    font-size:13px;
+    font-weight:800;
+}
+
+.board-category-btn{
+    width:100%;
+    margin:0;
+    padding:10px 12px;
+    border-radius:0;
+    border-bottom:1px solid #eee;
+    background:white;
+    color:#333;
+    text-align:left;
+    font-size:13px;
+    font-weight:700;
+}
+
+.board-category-btn.active{
     background:#eaf4ff;
     color:#0b63b6;
+}
+
+.board-category-manage{
+    display:grid;
+    gap:5px;
+    padding:8px;
+    border-top:1px solid #e5e5e5;
+}
+
+.board-category-manage .btn-mini{
+    width:100%;
+    margin:0;
+    padding:7px 8px;
+}
+
+.board-main{
+    min-width:0;
 }
 
 .board-composer{
@@ -1540,16 +1853,25 @@ textarea.scroll-mode{
 }
 
 .board-list{
+    display:block;
+    border-top:2px solid #333;
+    background:white;
+}
+
+.board-list.board-tile{
     display:grid;
-    gap:8px;
+    border-top:0;
 }
 
 .board-post{
-    border:1px solid #ddd;
-    border-radius:12px;
-    padding:12px;
+    display:block;
+    border:0;
+    border-bottom:1px solid #eee;
+    border-radius:0;
+    padding:10px 6px;
     background:white;
     cursor:pointer;
+    min-width:0;
 }
 
 .board-post:active{
@@ -1557,36 +1879,34 @@ textarea.scroll-mode{
 }
 
 .board-post.title-only{
-    padding:11px 12px;
+    padding:10px 6px;
 }
 
-.board-post.thumbnail-mode{
-    display:grid;
-    grid-template-columns:88px minmax(0,1fr);
-    gap:10px;
-    align-items:center;
+.board-post.board-tile-card{
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:0;
+    overflow:hidden;
+    height:100%;
 }
 
-.board-post.thumbnail-mode .board-post-head,
-.board-post.thumbnail-mode .board-body,
-.board-post.thumbnail-mode .board-meta{
-    grid-column:2;
-    min-width:0;
+.board-post.admin-only-post{
+    border-color:rgba(217,83,79,0.62);
+    box-shadow:inset 0 0 0 2px rgba(217,83,79,0.18);
+    background:#fffafa;
 }
 
-.board-post.thumbnail-mode .board-body{
-    margin-top:0;
-}
-
-.board-post.thumbnail-mode .board-meta{
-    margin-top:0;
+.board-post.title-only.admin-only-post{
+    border-left:4px solid #d9534f;
+    padding-left:8px;
 }
 
 .board-thumb{
-    width:88px;
+    width:100%;
     aspect-ratio:1;
     border:1px solid #eee;
-    border-radius:8px;
+    border-width:0 0 1px;
+    border-radius:0;
     background:#fafafa;
     display:flex;
     align-items:center;
@@ -1594,6 +1914,11 @@ textarea.scroll-mode{
     overflow:hidden;
     color:#aaa;
     font-size:11px;
+}
+
+.board-post-content{
+    padding:10px;
+    min-width:0;
 }
 
 .board-thumb img{
@@ -1608,12 +1933,50 @@ textarea.scroll-mode{
     align-items:flex-start;
     justify-content:space-between;
     gap:10px;
+    min-width:0;
+}
+
+.board-post-head>div{
+    min-width:0;
 }
 
 .board-post h3{
     margin:0;
-    font-size:15px;
+    font-size:13px;
     line-height:1.35;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.board-title-meta{
+    margin-top:4px;
+    color:#888;
+    font-size:11px;
+    line-height:1.4;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.board-row-category,
+.board-row-author,
+.board-row-date,
+.board-row-count{
+    color:#666;
+    font-size:12px;
+    line-height:1.35;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.board-row-category{
+    font-weight:700;
+}
+
+.board-row-count{
+    text-align:center;
 }
 
 .board-badges{
@@ -1661,6 +2024,13 @@ textarea.scroll-mode{
     -webkit-box-orient:vertical;
     -webkit-line-clamp:3;
     overflow:hidden;
+}
+
+.board-post .board-summary{
+    margin-top:8px;
+    color:#666;
+    font-size:12px;
+    -webkit-line-clamp:2;
 }
 
 .board-image-grid{
@@ -1776,12 +2146,39 @@ textarea.scroll-mode{
         grid-template-columns:1fr;
     }
 
-    .board-post.thumbnail-mode{
-        grid-template-columns:72px minmax(0,1fr);
+    .board-layout{
+        grid-template-columns:1fr;
+    }
+
+    .board-post,
+    .board-post.board-tile-card{
+        grid-template-columns:minmax(0,1fr);
+        gap:4px;
+    }
+
+    .board-row-category,
+    .board-row-author,
+    .board-row-date,
+    .board-row-count{
+        font-size:11px;
+    }
+
+    .board-post .board-summary,
+    .board-post.board-tile-card .board-summary{
+        grid-column:auto;
     }
 
     .board-thumb{
         width:72px;
+    }
+
+    .evidence-grid.evidence-list .evidence-item{
+        display:block;
+    }
+
+    .evidence-grid.evidence-list .evidence-photo-box{
+        height:auto;
+        padding-top:100%;
     }
 }
 </style>
@@ -1913,6 +2310,31 @@ textarea.scroll-mode{
     </div>
 </div>
 
+<div class="settings-modal" id="draw-modal">
+    <div class="draw-panel">
+        <h3>메인 사진 그림 표시</h3>
+        <div class="draw-tools">
+            <label>
+                색상
+                <input type="color" id="draw-color" value="#ff2d2d">
+            </label>
+            <button class="btn-mini active" id="draw-brush-btn">붓</button>
+            <button class="btn-mini" id="draw-eraser-btn">지우개</button>
+            <label>
+                굵기
+                <input type="range" id="draw-size" min="2" max="28" step="1" value="7">
+            </label>
+            <button class="btn-mini" id="draw-undo-btn">되돌리기</button>
+            <button class="btn-mini" id="draw-clear-btn">그림 지우기</button>
+            <button class="btn-mini" id="draw-close-btn">닫기</button>
+        </div>
+        <div class="draw-canvas-wrap">
+            <canvas id="draw-canvas"></canvas>
+        </div>
+        <button class="btn-save" id="draw-save-btn">그림 저장</button>
+    </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -1964,6 +2386,7 @@ let appData = {
     storageUsageBytes:0,
     storeTrash:[],
     figureCatalog:[],
+    boardCategories:[],
     boardPosts:[],
     accounts:{},
     userRoles:{},
@@ -1988,6 +2411,7 @@ let saveQueued = false;
 let queuedCallbacks = [];
 let rendering = false;
 let adminOnlySelectMode = null;
+let machineSearchQuery = "";
 let figureCatalogSearch = "";
 let boardCategory = localStorage.getItem("boardCategory") || "notice";
 let boardListMode = localStorage.getItem("boardListMode") || "title";
@@ -2006,6 +2430,13 @@ let modalPanStartX = 0;
 let modalPanStartY = 0;
 let modalMoved = false;
 const modalPointers = new Map();
+let drawBaseImage = null;
+let drawBaseDataUrl = "";
+let drawStrokes = [];
+let currentDrawStroke = null;
+let drawingActive = false;
+let drawToolMode = "brush";
+let drawTarget = null;
 let currentLoginId = "";
 let currentAccountCode = "";
 let autoLoginAttempted = false;
@@ -2034,7 +2465,14 @@ function normalizeEvidencePhotoList(list){
                 photo:photoItem,
                 memo:"",
                 createdAt:"",
-                memoUpdatedAt:""
+                createdBy:"",
+                createdByName:"",
+                memoUpdatedAt:"",
+                memoUpdatedBy:"",
+                memoUpdatedByName:"",
+                photoUpdatedAt:"",
+                photoUpdatedBy:"",
+                photoUpdatedByName:""
             };
         }
 
@@ -2043,7 +2481,14 @@ function normalizeEvidencePhotoList(list){
                 photo:"",
                 memo:"",
                 createdAt:"",
-                memoUpdatedAt:""
+                createdBy:"",
+                createdByName:"",
+                memoUpdatedAt:"",
+                memoUpdatedBy:"",
+                memoUpdatedByName:"",
+                photoUpdatedAt:"",
+                photoUpdatedBy:"",
+                photoUpdatedByName:""
             };
         }
 
@@ -2059,8 +2504,36 @@ function normalizeEvidencePhotoList(list){
             photoItem.createdAt = "";
         }
 
+        if(typeof photoItem.createdBy !== "string"){
+            photoItem.createdBy = "";
+        }
+
+        if(typeof photoItem.createdByName !== "string"){
+            photoItem.createdByName = "";
+        }
+
         if(typeof photoItem.memoUpdatedAt !== "string"){
             photoItem.memoUpdatedAt = "";
+        }
+
+        if(typeof photoItem.memoUpdatedBy !== "string"){
+            photoItem.memoUpdatedBy = "";
+        }
+
+        if(typeof photoItem.memoUpdatedByName !== "string"){
+            photoItem.memoUpdatedByName = "";
+        }
+
+        if(typeof photoItem.photoUpdatedAt !== "string"){
+            photoItem.photoUpdatedAt = "";
+        }
+
+        if(typeof photoItem.photoUpdatedBy !== "string"){
+            photoItem.photoUpdatedBy = "";
+        }
+
+        if(typeof photoItem.photoUpdatedByName !== "string"){
+            photoItem.photoUpdatedByName = "";
         }
 
         return photoItem;
@@ -2156,6 +2629,7 @@ function initializeAppData(raw){
                 : Number(raw.storageUsageBytes) || 0,
             storeTrash:[],
             figureCatalog:[],
+            boardCategories:[],
             boardPosts:[],
             accounts:{},
             userRoles:{},
@@ -2175,6 +2649,7 @@ function initializeAppData(raw){
                 : Number(raw.storageUsageBytes) || 0,
             storeTrash:Array.isArray(raw.storeTrash) ? raw.storeTrash : [],
             figureCatalog:Array.isArray(raw.figureCatalog) ? raw.figureCatalog : [],
+            boardCategories:Array.isArray(raw.boardCategories) ? raw.boardCategories : [],
             boardPosts:Array.isArray(raw.boardPosts) ? raw.boardPosts : [],
             accounts:raw.accounts && typeof raw.accounts === "object" ? raw.accounts : {},
             userRoles:raw.userRoles && typeof raw.userRoles === "object" ? raw.userRoles : {},
@@ -2232,6 +2707,53 @@ function initializeAppData(raw){
         appData.figureCatalog = [];
     }
 
+    if(!Array.isArray(appData.boardCategories)){
+        appData.boardCategories = [];
+    }
+
+    const defaultBoardCategories = [
+        {
+            id:"notice",
+            name:"공지"
+        },
+        {
+            id:"daily",
+            name:"일일공지"
+        }
+    ];
+
+    const normalizedBoardCategories = appData.boardCategories
+    .filter((category)=>category && typeof category === "object")
+    .map((category, index)=>{
+        const id = typeof category.id === "string" && category.id
+            ? category.id
+            : "board_" + Date.now() + "_" + index;
+
+        return {
+            id:id,
+            name:typeof category.name === "string" && category.name
+                ? category.name
+                : id,
+            locked:id === "notice" || id === "daily"
+        };
+    });
+
+    defaultBoardCategories.forEach((defaultCategory)=>{
+        const existing = normalizedBoardCategories.find((category)=>category.id === defaultCategory.id);
+
+        if(existing){
+            existing.name = existing.name || defaultCategory.name;
+            existing.locked = true;
+        }else{
+            normalizedBoardCategories.push({
+                ...defaultCategory,
+                locked:true
+            });
+        }
+    });
+
+    appData.boardCategories = normalizedBoardCategories;
+
     appData.figureCatalog = appData.figureCatalog
     .filter((entry)=>entry && typeof entry === "object")
     .map((entry, index)=>{
@@ -2252,6 +2774,7 @@ function initializeAppData(raw){
             "createdAt",
             "updatedAt",
             "updatedBy",
+            "updatedByName",
             "updatedRole",
             "updatedStoreId",
             "updatedStoreName"
@@ -2275,7 +2798,10 @@ function initializeAppData(raw){
             post.id = "post_" + Date.now() + "_" + index;
         }
 
-        if(post.category !== "daily"){
+        if(
+            typeof post.category !== "string" ||
+            !appData.boardCategories.some((category)=>category.id === post.category)
+        ){
             post.category = "notice";
         }
 
@@ -2290,6 +2816,9 @@ function initializeAppData(raw){
             "createdAt",
             "updatedAt",
             "authorId",
+            "authorName",
+            "updatedBy",
+            "updatedByName",
             "authorRole",
             "authorStoreId",
             "authorStoreName"
@@ -2345,6 +2874,10 @@ function initializeAppData(raw){
         if(account && typeof account.memo !== "string"){
             account.memo = "";
         }
+
+        if(account && typeof account.displayName !== "string"){
+            account.displayName = account.loginId || "";
+        }
     });
 
     if(!appData.userRoles || typeof appData.userRoles !== "object"){
@@ -2367,6 +2900,7 @@ function initializeAppData(raw){
         appData.accounts[legacyCode] = {
             code:legacyCode,
             memo:"",
+            displayName:normalizeLoginId(loginId),
             loginId:normalizeLoginId(loginId),
             passwordHash:appData.userPasswords[loginId] || "",
             role:legacyRole.role === "master" ? "master" : legacyRole.role === "manager" ? "manager" : "staff",
@@ -2534,12 +3068,33 @@ function getCurrentAccount(){
         return {
             code:"__default_master",
             loginId:DEFAULT_MASTER_ID,
+            displayName:"게임마스터",
             role:"master",
             storeIds:["*"]
         };
     }
 
     return appData.accounts[currentAccountCode] || null;
+}
+
+function getAccountDisplayName(account){
+    if(!account){
+        return "";
+    }
+
+    return String(account.displayName || account.loginId || "").trim();
+}
+
+function getCurrentDisplayName(){
+    const account = getCurrentAccount();
+    return getAccountDisplayName(account) || getLoginId() || "unknown";
+}
+
+function getCurrentAuditUser(){
+    return {
+        id:getLoginId() || "unknown",
+        name:getCurrentDisplayName()
+    };
 }
 
 function getCurrentUserRole(){
@@ -2625,8 +3180,10 @@ function updateAuthUI(){
             roleName = "일반 직원";
         }
 
+        const displayName = getCurrentDisplayName();
+
         status.innerText = loginId
-            ? loginId + "\n" + roleName
+            ? displayName + "\n" + roleName + "\n@" + loginId
             : "로그인하지 않음\n보기 전용";
     }
 
@@ -2969,7 +3526,16 @@ function describeAccount(account){
 
     const memoText = account.memo ? " / " + account.memo : "";
 
-    return account.code + memoText + " / " + account.loginId + " / " + roleName + " / " + (storeNames || "접속 지점 없음");
+    return account.code +
+        memoText +
+        " / " +
+        (account.displayName || account.loginId || "이름 없음") +
+        " / " +
+        account.loginId +
+        " / " +
+        roleName +
+        " / " +
+        (storeNames || "접속 지점 없음");
 }
 
 async function createManagedAccount(){
@@ -2988,6 +3554,19 @@ async function createManagedAccount(){
 
     if(loginId === DEFAULT_MASTER_ID || findAccountCodeByLoginId(loginId)){
         alert("이미 사용 중인 아이디입니다.");
+        return;
+    }
+
+    let displayName = prompt("표시이름을 입력하세요.\n예: 홍길동, 용산 오전 관리자");
+
+    if(displayName === null){
+        return;
+    }
+
+    displayName = sanitizeText(displayName);
+
+    if(!displayName){
+        alert("표시이름을 입력하세요.");
         return;
     }
 
@@ -3037,6 +3616,7 @@ async function createManagedAccount(){
     appData.accounts[code] = {
         code:code,
         loginId:loginId,
+        displayName:displayName,
         passwordHash:await hashPassword(password),
         role:role,
         storeIds:storeIds,
@@ -3076,10 +3656,11 @@ async function editManagedAccount(){
     const action = prompt(
         "수정 항목을 선택하세요.\n" +
         "1. 아이디 변경\n" +
-        "2. 비밀번호 변경\n" +
-        "3. 권한 변경\n" +
-        "4. 접속 지점 변경\n" +
-        "5. 계정 삭제"
+        "2. 표시이름 변경\n" +
+        "3. 비밀번호 변경\n" +
+        "4. 권한 변경\n" +
+        "5. 접속 지점 변경\n" +
+        "6. 계정 삭제"
     );
 
     if(action === null){
@@ -3109,6 +3690,21 @@ async function editManagedAccount(){
 
         account.loginId = newLoginId;
     }else if(action === "2"){
+        let newDisplayName = prompt("새 표시이름을 입력하세요.", account.displayName || account.loginId || "");
+
+        if(newDisplayName === null){
+            return;
+        }
+
+        newDisplayName = sanitizeText(newDisplayName);
+
+        if(!newDisplayName){
+            alert("표시이름을 입력하세요.");
+            return;
+        }
+
+        account.displayName = newDisplayName;
+    }else if(action === "3"){
         let newPassword = prompt("새 비밀번호를 입력하세요.");
 
         if(newPassword === null){
@@ -3123,7 +3719,7 @@ async function editManagedAccount(){
         }
 
         account.passwordHash = await hashPassword(newPassword);
-    }else if(action === "3"){
+    }else if(action === "4"){
         const roleChoice = prompt(
             "권한을 선택하세요.\n" +
             "1. 지점 관리자 (수정 가능)\n" +
@@ -3136,7 +3732,7 @@ async function editManagedAccount(){
         }
 
         account.role = roleChoice === "1" ? "manager" : "staff";
-    }else if(action === "4"){
+    }else if(action === "5"){
         const storeInput = prompt(
             "접속 가능한 지점 번호를 입력하세요.\n" +
             "여러 지점은 쉼표로 구분, 전체는 all 입력\n\n" +
@@ -3155,7 +3751,7 @@ async function editManagedAccount(){
         }
 
         account.storeIds = storeIds;
-    }else if(action === "5"){
+    }else if(action === "6"){
         if(!confirm(account.loginId + " 계정을 삭제할까요?")){
             return;
         }
@@ -3551,9 +4147,17 @@ function initializeData(){
             if(!machineData || typeof machineData !== "object" || Array.isArray(machineData)){
                 data.machines[genre][machine] = {
                     photo:"",
+                    photoUpdatedAt:"",
+                    photoUpdatedBy:"",
+                    photoUpdatedByName:"",
                     memo:"",
+                    memoUpdatedAt:"",
+                    memoUpdatedBy:"",
+                    memoUpdatedByName:"",
                     adminMemo:"",
                     adminMemoUpdatedAt:"",
+                    adminMemoUpdatedBy:"",
+                    adminMemoUpdatedByName:"",
                     evidencePhotos:[],
                     adminEvidencePhotos:[]
                 };
@@ -3576,12 +4180,36 @@ function initializeData(){
                 machineData.photoUpdatedAt = "";
             }
 
+            if(typeof machineData.photoUpdatedBy !== "string"){
+                machineData.photoUpdatedBy = "";
+            }
+
+            if(typeof machineData.photoUpdatedByName !== "string"){
+                machineData.photoUpdatedByName = "";
+            }
+
             if(typeof machineData.memoUpdatedAt !== "string"){
                 machineData.memoUpdatedAt = "";
             }
 
+            if(typeof machineData.memoUpdatedBy !== "string"){
+                machineData.memoUpdatedBy = "";
+            }
+
+            if(typeof machineData.memoUpdatedByName !== "string"){
+                machineData.memoUpdatedByName = "";
+            }
+
             if(typeof machineData.adminMemoUpdatedAt !== "string"){
                 machineData.adminMemoUpdatedAt = "";
+            }
+
+            if(typeof machineData.adminMemoUpdatedBy !== "string"){
+                machineData.adminMemoUpdatedBy = "";
+            }
+
+            if(typeof machineData.adminMemoUpdatedByName !== "string"){
+                machineData.adminMemoUpdatedByName = "";
             }
 
             machineData.adminOnly = machineData.adminOnly === true;
@@ -4761,7 +5389,7 @@ function formatActionTime(value){
         pad(date.getSeconds());
 }
 
-function createActionTimeBadge(label, value, extraClass = ""){
+function createActionTimeBadge(label, value, extraClass = "", actorName = ""){
     const timeText = formatActionTime(value);
 
     if(!timeText){
@@ -4770,19 +5398,69 @@ function createActionTimeBadge(label, value, extraClass = ""){
 
     const badge = document.createElement("div");
     badge.className = ("action-time " + extraClass).trim();
-    badge.innerText = label + ": " + timeText;
+    badge.innerText = label + ": " + timeText + (actorName ? " / " + actorName : "");
 
     return badge;
 }
 
+function applyAuditFields(target, prefix = "updated"){
+    if(!target || typeof target !== "object"){
+        return;
+    }
+
+    const auditUser = getCurrentAuditUser();
+
+    target[prefix + "At"] = new Date().toISOString();
+    target[prefix + "By"] = auditUser.id;
+    target[prefix + "ByName"] = auditUser.name;
+}
+
 const TILE_COLUMN_OPTIONS = ["2", "3", "4"];
+
+function getViewPreferenceOwner(){
+    return normalizeLoginId(getLoginId() || "viewer");
+}
+
+function createViewPreferenceKey(area, key, target = ""){
+    return [
+        "jjangView",
+        getViewPreferenceOwner(),
+        currentStoreId || DEFAULT_STORE_ID,
+        area || "global",
+        target || "default",
+        key
+    ]
+    .map((part)=>encodeURIComponent(String(part)))
+    .join(":");
+}
+
+function getViewPreference(area, key, defaultValue, target = ""){
+    const value = localStorage.getItem(createViewPreferenceKey(area, key, target));
+    return value === null ? defaultValue : value;
+}
+
+function setViewPreference(area, key, value, target = ""){
+    localStorage.setItem(
+        createViewPreferenceKey(area, key, target),
+        String(value)
+    );
+}
+
+function getCurrentMachineViewTarget(){
+    return currentGenre || "no-folder";
+}
 
 function getTileColumns(storageKey){
     const value = localStorage.getItem(storageKey);
     return TILE_COLUMN_OPTIONS.includes(value) ? value : "3";
 }
 
-function createTileColumnSelect(storageKey, value){
+function getScopedTileColumns(area, key, target){
+    const value = getViewPreference(area, key, "3", target);
+    return TILE_COLUMN_OPTIONS.includes(value) ? value : "3";
+}
+
+function createTileColumnSelect(storageKey, value, viewScope = null){
     const select = document.createElement("select");
 
     TILE_COLUMN_OPTIONS.forEach((column)=>{
@@ -4795,7 +5473,16 @@ function createTileColumnSelect(storageKey, value){
     select.value = value;
 
     select.onchange = ()=>{
-        localStorage.setItem(storageKey, select.value);
+        if(viewScope){
+            setViewPreference(
+                viewScope.area,
+                viewScope.key,
+                select.value,
+                viewScope.target
+            );
+        }else{
+            localStorage.setItem(storageKey, select.value);
+        }
         render(false);
     };
 
@@ -4807,7 +5494,7 @@ function applyTileColumns(container, columnCount){
     container.className = "grid-tile grid-cols-" + safeColumnCount;
 }
 
-function createMemoExpandControl(checked){
+function createMemoExpandControl(checked, viewScope = null){
     const label = document.createElement("label");
     label.className = "memo-expand-option";
 
@@ -4815,7 +5502,18 @@ function createMemoExpandControl(checked){
     input.type = "checkbox";
     input.checked = checked;
     input.onchange = ()=>{
-        localStorage.setItem("machineMemoExpanded", input.checked ? "1" : "0");
+        const value = input.checked ? "1" : "0";
+
+        if(viewScope){
+            setViewPreference(
+                viewScope.area,
+                viewScope.key,
+                value,
+                viewScope.target
+            );
+        }else{
+            localStorage.setItem("machineMemoExpanded", value);
+        }
         render(false);
     };
 
@@ -4828,8 +5526,13 @@ function createMemoExpandControl(checked){
     return label;
 }
 
-function getMemoPreviewScope(){
-    const savedScope = localStorage.getItem("machineMemoPreviewScope") || "public";
+function getMemoPreviewScope(target = ""){
+    const savedScope = getViewPreference(
+        "machines",
+        "machineMemoPreviewScope",
+        "public",
+        target
+    );
     const allowedScopes = canEditCurrentStore()
         ? ["both", "public", "admin"]
         : ["public"];
@@ -4837,7 +5540,7 @@ function getMemoPreviewScope(){
     return allowedScopes.includes(savedScope) ? savedScope : "public";
 }
 
-function createMemoPreviewScopeSelect(value){
+function createMemoPreviewScopeSelect(value, target = ""){
     const select = document.createElement("select");
     select.title = "펼친 메모 표시 범위";
 
@@ -4865,7 +5568,12 @@ function createMemoPreviewScopeSelect(value){
 
     select.value = value;
     select.onchange = ()=>{
-        localStorage.setItem("machineMemoPreviewScope", select.value);
+        setViewPreference(
+            "machines",
+            "machineMemoPreviewScope",
+            select.value,
+            target
+        );
         render(false);
     };
 
@@ -5181,6 +5889,159 @@ function deleteGenreGroup(groupId){
     saveData(()=>render(false));
 }
 
+function moveGenreByVisibleOrder(genre, direction, visibleGenres, activeGroup){
+    const currentVisibleIndex = visibleGenres.indexOf(genre);
+    const targetGenre = visibleGenres[currentVisibleIndex + direction];
+
+    if(!targetGenre){
+        return;
+    }
+
+    const orderList = activeGroup ? activeGroup.genres : data.genres;
+    const currentIndex = orderList.indexOf(genre);
+    const targetIndex = orderList.indexOf(targetGenre);
+
+    if(currentIndex < 0 || targetIndex < 0){
+        return;
+    }
+
+    [orderList[currentIndex], orderList[targetIndex]] =
+        [orderList[targetIndex], orderList[currentIndex]];
+
+    saveData(()=>render(false));
+}
+
+function normalizeMachineSearchText(value){
+    return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, "");
+}
+
+function getMachineSearchText(machineData){
+    const parts = [
+        machineData.memo
+    ];
+
+    (machineData.evidencePhotos || []).forEach((photoItem)=>{
+        parts.push(photoItem && photoItem.memo);
+    });
+
+    if(canViewAdminOnlyItems()){
+        parts.push(machineData.adminMemo);
+
+        (machineData.adminEvidencePhotos || []).forEach((photoItem)=>{
+            parts.push(photoItem && photoItem.memo);
+        });
+    }
+
+    return parts.filter(Boolean).join(" ");
+}
+
+function getMachineSearchResults(query){
+    const keyword = normalizeMachineSearchText(query);
+
+    if(!keyword){
+        return [];
+    }
+
+    const results = [];
+
+    data.genres.forEach((genre)=>{
+        if(!canViewAdminOnlyItems() && isAdminOnlyGenre(genre)){
+            return;
+        }
+
+        const machines = data.machines[genre] || {};
+        const group = (data.genreGroups || []).find((item)=>{
+            return (item.genres || []).includes(genre);
+        });
+
+        if(group && group.adminOnly && !canViewAdminOnlyItems()){
+            return;
+        }
+
+        Object.keys(machines)
+        .sort(naturalMachineCompare)
+        .forEach((machine)=>{
+            const machineData = machines[machine] || {};
+
+            if(!canViewAdminOnlyItems() && isAdminOnlyMachine(machineData)){
+                return;
+            }
+
+            const memoText = getMachineSearchText(machineData);
+            const searchable = normalizeMachineSearchText(memoText);
+
+            if(!searchable.includes(keyword)){
+                return;
+            }
+
+            const path = group
+                ? "폴더 목록 > " + group.name + " > " + genre + " > " + machine + "번"
+                : "폴더 목록 > " + genre + " > " + machine + "번";
+
+            results.push({
+                label:machine + "번",
+                path:path,
+                genre:genre,
+                machine:machine,
+                memo:memoText
+            });
+        });
+    });
+
+    return results;
+}
+
+function openMachineSearchResult(result){
+    currentGenre = result.genre;
+    currentMachine = result.machine;
+    currentGenreGroup = null;
+    currentView = "detail";
+    render();
+}
+
+function renderMachineSearchResults(container, query){
+    container.innerHTML = "";
+
+    const results = getMachineSearchResults(query);
+
+    if(!query){
+        return;
+    }
+
+    if(results.length === 0){
+        const empty = document.createElement("p");
+        empty.className = "sub-text";
+        empty.innerText = "검색 결과가 없습니다.";
+        container.appendChild(empty);
+        return;
+    }
+
+    results.slice(0, 50).forEach((result)=>{
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "folder-search-item";
+        item.innerText = "정답지: " + result.label;
+
+        const path = document.createElement("span");
+        path.className = "folder-path";
+        path.innerText = result.path;
+        item.appendChild(path);
+
+        const memo = document.createElement("span");
+        memo.className = "folder-path";
+        memo.innerText = result.memo.slice(0, 120);
+        item.appendChild(memo);
+
+        item.onclick = ()=>{
+            openMachineSearchResult(result);
+        };
+
+        container.appendChild(item);
+    });
+}
+
 function renderGenres(root){
     const layout = localStorage.getItem("genreLayout") || "list";
     const tileColumns = getTileColumns("genreTileColumns");
@@ -5233,6 +6094,28 @@ function renderGenres(root){
     header.appendChild(title);
     header.appendChild(options);
     root.appendChild(header);
+
+    const searchWrap = document.createElement("div");
+    searchWrap.className = "folder-search-wrap";
+
+    const searchInput = document.createElement("input");
+    searchInput.className = "folder-search";
+    searchInput.type = "search";
+    searchInput.placeholder = "상품명, 캐릭터명, 메모 내용으로 정답지 검색";
+    searchInput.value = machineSearchQuery;
+
+    const searchResults = document.createElement("div");
+    searchResults.className = "folder-search-results";
+
+    searchInput.oninput = ()=>{
+        machineSearchQuery = searchInput.value;
+        renderMachineSearchResults(searchResults, machineSearchQuery);
+    };
+
+    searchWrap.appendChild(searchInput);
+    searchWrap.appendChild(searchResults);
+    root.appendChild(searchWrap);
+    renderMachineSearchResults(searchResults, machineSearchQuery);
 
     const container = document.createElement("div");
     if(layout === "tile"){
@@ -5378,24 +6261,12 @@ function renderGenres(root){
 
         admin.appendChild(createAdminButton("⬆️", (event)=>{
             event.stopPropagation();
-
-            if(index <= 0){
-                return;
-            }
-
-            [data.genres[index - 1], data.genres[index]] = [data.genres[index], data.genres[index - 1]];
-            saveData(()=>render(false));
+            moveGenreByVisibleOrder(genre, -1, visibleGenresToRender, activeGroup);
         }));
 
         admin.appendChild(createAdminButton("⬇️", (event)=>{
             event.stopPropagation();
-
-            if(index >= data.genres.length - 1){
-                return;
-            }
-
-            [data.genres[index + 1], data.genres[index]] = [data.genres[index], data.genres[index + 1]];
-            saveData(()=>render(false));
+            moveGenreByVisibleOrder(genre, 1, visibleGenresToRender, activeGroup);
         }));
 
         admin.appendChild(createAdminButton("색상", (event)=>{
@@ -5556,13 +6427,28 @@ function renderMachines(root){
         return;
     }
 
-    const layout = localStorage.getItem("machineLayout") || "thumb-tile";
+    const machineViewTarget = getCurrentMachineViewTarget();
+    const layout = getViewPreference(
+        "machines",
+        "machineLayout",
+        "thumb-tile",
+        machineViewTarget
+    );
     const isTile = layout.includes("tile");
     const showThumb = layout.includes("thumb") || layout.includes("memo");
     const showMemo = layout.includes("memo");
-    const tileColumns = getTileColumns("machineTileColumns");
-    const memoPreviewExpanded = localStorage.getItem("machineMemoExpanded") === "1";
-    const memoPreviewScope = getMemoPreviewScope();
+    const tileColumns = getScopedTileColumns(
+        "machines",
+        "machineTileColumns",
+        machineViewTarget
+    );
+    const memoPreviewExpanded = getViewPreference(
+        "machines",
+        "machineMemoExpanded",
+        "0",
+        machineViewTarget
+    ) === "1";
+    const memoPreviewScope = getMemoPreviewScope(machineViewTarget);
 
     const header = document.createElement("div");
     header.className = "header-row";
@@ -5583,7 +6469,12 @@ function renderMachines(root){
     `;
     select.value = layout;
     select.onchange = ()=>{
-        localStorage.setItem("machineLayout", select.value);
+        setViewPreference(
+            "machines",
+            "machineLayout",
+            select.value,
+            machineViewTarget
+        );
         render(false);
     };
 
@@ -5592,14 +6483,32 @@ function renderMachines(root){
     options.appendChild(select);
 
     if(isTile){
-        options.appendChild(createTileColumnSelect("machineTileColumns", tileColumns));
+        options.appendChild(createTileColumnSelect(
+            "machineTileColumns",
+            tileColumns,
+            {
+                area:"machines",
+                key:"machineTileColumns",
+                target:machineViewTarget
+            }
+        ));
     }
 
     if(showMemo){
-        options.appendChild(createMemoExpandControl(memoPreviewExpanded));
+        options.appendChild(createMemoExpandControl(
+            memoPreviewExpanded,
+            {
+                area:"machines",
+                key:"machineMemoExpanded",
+                target:machineViewTarget
+            }
+        ));
 
         if(memoPreviewExpanded){
-            options.appendChild(createMemoPreviewScopeSelect(memoPreviewScope));
+            options.appendChild(createMemoPreviewScopeSelect(
+                memoPreviewScope,
+                machineViewTarget
+            ));
         }
     }
 
@@ -5803,9 +6712,17 @@ function renderMachines(root){
 
         data.machines[currentGenre][number] = {
             photo:"",
+            photoUpdatedAt:"",
+            photoUpdatedBy:"",
+            photoUpdatedByName:"",
             memo:"",
+            memoUpdatedAt:"",
+            memoUpdatedBy:"",
+            memoUpdatedByName:"",
             adminMemo:"",
             adminMemoUpdatedAt:"",
+            adminMemoUpdatedBy:"",
+            adminMemoUpdatedByName:"",
             adminOnly:false,
             evidencePhotos:[],
             adminEvidencePhotos:[]
@@ -5836,19 +6753,65 @@ function getEvidenceCollection(machine, collectionKey){
     return machine[safeKey];
 }
 
+function getEvidenceViewTarget(collectionKey){
+    return [
+        currentGenre || "no-folder",
+        currentMachine || "no-machine",
+        collectionKey === "adminEvidencePhotos" ? "admin" : "public"
+    ].join("/");
+}
+
+function getEvidenceLayout(collectionKey){
+    const layout = getViewPreference(
+        "evidence",
+        "layout",
+        "tile",
+        getEvidenceViewTarget(collectionKey)
+    );
+
+    return layout === "list" ? "list" : "tile";
+}
+
+function createEvidenceLayoutSelect(collectionKey){
+    const select = document.createElement("select");
+    select.innerHTML = `
+        <option value="tile">타일형</option>
+        <option value="list">일렬형</option>
+    `;
+    select.value = getEvidenceLayout(collectionKey);
+    select.onchange = ()=>{
+        setViewPreference(
+            "evidence",
+            "layout",
+            select.value,
+            getEvidenceViewTarget(collectionKey)
+        );
+        render(false);
+    };
+
+    return select;
+}
+
 function createEvidenceSection(machine, options){
     const collectionKey = options.collectionKey || "evidencePhotos";
     const photos = getEvidenceCollection(machine, collectionKey);
+    const evidenceLayout = getEvidenceLayout(collectionKey);
     const detailSection = document.createElement("div");
     detailSection.className = "detail-section" + (options.private ? " admin-private-section" : "");
+
+    const sectionHeader = document.createElement("div");
+    sectionHeader.className = "header-row";
 
     const sectionTitle = document.createElement("span");
     sectionTitle.className = options.private ? "private-section-title" : "section-title";
     sectionTitle.innerText = options.title;
-    detailSection.appendChild(sectionTitle);
+
+    sectionHeader.appendChild(sectionTitle);
+    sectionHeader.appendChild(createEvidenceLayoutSelect(collectionKey));
+    detailSection.appendChild(sectionHeader);
 
     const evidenceGrid = document.createElement("div");
-    evidenceGrid.className = "evidence-grid";
+    evidenceGrid.className = "evidence-grid" + (evidenceLayout === "list" ? " evidence-list" : "");
 
     photos.forEach((photoItem, index)=>{
         const evidence = document.createElement("div");
@@ -5899,7 +6862,14 @@ function createEvidenceSection(machine, options){
             photoBox.appendChild(orderControls);
         }
 
-        const photoTime = createActionTimeBadge("등록", photoItem.createdAt, "floating-time");
+        const photoTime = createActionTimeBadge(
+            photoItem.photoUpdatedAt ? "사진 수정" : "등록",
+            photoItem.photoUpdatedAt || photoItem.createdAt,
+            "floating-time",
+            photoItem.photoUpdatedAt
+                ? photoItem.photoUpdatedByName
+                : photoItem.createdByName
+        );
 
         if(photoTime){
             photoBox.appendChild(photoTime);
@@ -5910,9 +6880,24 @@ function createEvidenceSection(machine, options){
                 deleteEvidencePhoto(index, collectionKey);
             });
             photoBox.appendChild(deleteButton);
+
+            const drawButton = createButton("evidence-draw", "그림판", (event)=>{
+                if(event){
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                openEvidencePhotoDrawEditor(index, collectionKey);
+            });
+            photoBox.appendChild(drawButton);
         }
 
-        const photoMemoTime = createActionTimeBadge("메모 저장", photoItem.memoUpdatedAt, "evidence-memo-time");
+        const photoMemoTime = createActionTimeBadge(
+            "메모 저장",
+            photoItem.memoUpdatedAt,
+            "evidence-memo-time",
+            photoItem.memoUpdatedByName
+        );
 
         const photoMemo = document.createElement("textarea");
         photoMemo.className = "evidence-memo";
@@ -5953,9 +6938,12 @@ function createEvidenceSection(machine, options){
     detailSection.appendChild(evidenceGrid);
 
     if(canEditCurrentStore()){
-        detailSection.appendChild(createButton("btn-save", options.uploadText, ()=>{
+        const sectionActions = document.createElement("div");
+        sectionActions.className = "detail-action-grid";
+        sectionActions.appendChild(createButton("btn-save", options.uploadText, ()=>{
             uploadPhoto(options.uploadType);
         }));
+        detailSection.appendChild(sectionActions);
     }
 
     return detailSection;
@@ -5997,7 +6985,12 @@ function renderDetail(root){
 
     mainPhotoFrame.appendChild(mainImg);
 
-    const mainPhotoTime = createActionTimeBadge("사진 수정", machine.photoUpdatedAt, "floating-time");
+    const mainPhotoTime = createActionTimeBadge(
+        "사진 수정",
+        machine.photoUpdatedAt,
+        "floating-time",
+        machine.photoUpdatedByName
+    );
 
     if(mainPhotoTime){
         mainPhotoFrame.appendChild(mainPhotoTime);
@@ -6006,9 +6999,36 @@ function renderDetail(root){
     root.appendChild(mainPhotoFrame);
 
     if(canEditCurrentStore()){
-        root.appendChild(createButton("btn-save", "📸 메인 사진 수정", ()=>{
-            uploadPhoto(0);
+        const mainPhotoActions = document.createElement("div");
+        mainPhotoActions.className = "main-photo-actions";
+
+        mainPhotoActions.appendChild(createButton("btn-save", "📸 사진 수정", ()=>{
+            const sourceActions = document.getElementById("main-photo-source-actions");
+
+            if(sourceActions){
+                sourceActions.classList.toggle("active");
+            }
         }));
+
+        mainPhotoActions.appendChild(createButton("btn-save", "🖌️ 그림판", ()=>{
+            openMainPhotoDrawEditor();
+        }));
+
+        const sourceActions = document.createElement("div");
+        sourceActions.className = "photo-source-actions";
+        sourceActions.id = "main-photo-source-actions";
+
+        sourceActions.appendChild(createButton("btn-mini", "📷 카메라", ()=>{
+            uploadPhoto(0, "camera");
+        }));
+
+        sourceActions.appendChild(createButton("btn-mini", "🖼️ 라이브러리", ()=>{
+            uploadPhoto(0, "library");
+        }));
+
+        mainPhotoActions.appendChild(sourceActions);
+
+        root.appendChild(mainPhotoActions);
     }
 
     const memoSection = document.createElement("div");
@@ -6018,10 +7038,11 @@ function renderDetail(root){
     publicMemoTitle.className = "section-title";
     publicMemoTitle.innerText = "전체 공개 메모";
 
-    const memoToggle = createButton("memo-toggle", "📋 스크롤 모드", ()=>{
+    const memoToggle = createButton("memo-expand-toggle", "▼", ()=>{
         toggleMemoMode();
     });
     memoToggle.id = "memo-mode-toggle";
+    memoToggle.title = "메모 펼치기/접기";
 
     const textarea = document.createElement("textarea");
     textarea.id = "memo";
@@ -6030,21 +7051,29 @@ function renderDetail(root){
     textarea.readOnly = true;
     textarea.value = machine.memo || "";
 
-    const memoTime = createActionTimeBadge("메모 저장", machine.memoUpdatedAt, "memo-time");
+    const memoTime = createActionTimeBadge(
+        "메모 저장",
+        machine.memoUpdatedAt,
+        "memo-time",
+        machine.memoUpdatedByName
+    );
 
-    const memoButton = createButton("btn-add", "✏️ 메모 수정", ()=>{
+    const memoButton = createButton("btn-add", "✏️ 수정", ()=>{
         toggleMemoEdit();
     });
     memoButton.id = "memo-btn";
 
     memoSection.appendChild(publicMemoTitle);
-    memoSection.appendChild(memoToggle);
     if(memoTime){
         memoSection.appendChild(memoTime);
     }
     memoSection.appendChild(textarea);
+    memoSection.appendChild(memoToggle);
     if(canEditCurrentStore()){
-        memoSection.appendChild(memoButton);
+        const memoActions = document.createElement("div");
+        memoActions.className = "detail-action-grid";
+        memoActions.appendChild(memoButton);
+        memoSection.appendChild(memoActions);
     }
     root.appendChild(memoSection);
 
@@ -6056,12 +7085,18 @@ function renderDetail(root){
         adminMemoTitle.className = "private-section-title";
         adminMemoTitle.innerText = "관리자 전용 메모";
 
-        const adminMemoTime = createActionTimeBadge("관리자 메모 저장", machine.adminMemoUpdatedAt, "memo-time");
+        const adminMemoTime = createActionTimeBadge(
+            "관리자 메모 저장",
+            machine.adminMemoUpdatedAt,
+            "memo-time",
+            machine.adminMemoUpdatedByName
+        );
 
-        const adminMemoToggle = createButton("memo-toggle", "📋 스크롤 모드", ()=>{
+        const adminMemoToggle = createButton("memo-expand-toggle", "▼", ()=>{
             toggleAdminMemoMode();
         });
         adminMemoToggle.id = "admin-memo-mode-toggle";
+        adminMemoToggle.title = "관리자 메모 펼치기/접기";
 
         const adminTextarea = document.createElement("textarea");
         adminTextarea.id = "admin-memo";
@@ -6073,18 +7108,21 @@ function renderDetail(root){
             adjustAdminMemoHeight();
         };
 
-        const adminMemoButton = createButton("btn-add", "✏️ 관리자 메모 수정", ()=>{
+        const adminMemoButton = createButton("btn-add", "✏️ 수정", ()=>{
             toggleAdminMemoEdit();
         });
         adminMemoButton.id = "admin-memo-btn";
 
         adminMemoSection.appendChild(adminMemoTitle);
-        adminMemoSection.appendChild(adminMemoToggle);
         if(adminMemoTime){
             adminMemoSection.appendChild(adminMemoTime);
         }
         adminMemoSection.appendChild(adminTextarea);
-        adminMemoSection.appendChild(adminMemoButton);
+        adminMemoSection.appendChild(adminMemoToggle);
+        const adminMemoActions = document.createElement("div");
+        adminMemoActions.className = "detail-action-grid";
+        adminMemoActions.appendChild(adminMemoButton);
+        adminMemoSection.appendChild(adminMemoActions);
         root.appendChild(adminMemoSection);
     }
 
@@ -6093,7 +7131,7 @@ function renderDetail(root){
         title:"📸 전체 공개 추가 사진",
         photoAlt:"전체 공개 추가 사진",
         memoPlaceholder:"전체 공개 사진 메모",
-        uploadText:"+ 전체 공개 추가 사진 등록",
+        uploadText:"+ 공개 사진",
         uploadType:1,
         private:false
     }));
@@ -6104,7 +7142,7 @@ function renderDetail(root){
             title:"관리자 전용 추가 사진",
             photoAlt:"관리자 전용 추가 사진",
             memoPlaceholder:"관리자 전용 사진 메모",
-            uploadText:"+ 관리자 전용 추가 사진 등록",
+            uploadText:"+ 관리자 사진",
             uploadType:2,
             private:true
         }));
@@ -6524,8 +7562,11 @@ function getFigureEntry(entryId){
 }
 
 function updateFigureEntryAudit(entry){
+    const auditUser = getCurrentAuditUser();
+
     entry.updatedAt = new Date().toISOString();
-    entry.updatedBy = getLoginId() || "unknown";
+    entry.updatedBy = auditUser.id;
+    entry.updatedByName = auditUser.name;
     entry.updatedRole = getCurrentUserRole().role || "";
     entry.updatedStoreId = currentStoreId;
     entry.updatedStoreName = getCurrentStoreName();
@@ -6551,7 +7592,7 @@ function getFigureAuditText(entry){
 
     return formatActionTime(entry.updatedAt) +
         " / " +
-        (entry.updatedBy || "unknown") +
+        (entry.updatedByName || entry.updatedBy || "unknown") +
         " / " +
         (entry.updatedStoreName || entry.updatedStoreId || "지점 없음");
 }
@@ -6660,8 +7701,52 @@ function renderFigureCatalog(root){
     }));
 }
 
+function getBoardCategories(){
+    if(!Array.isArray(appData.boardCategories) || appData.boardCategories.length === 0){
+        appData.boardCategories = [
+            {
+                id:"notice",
+                name:"공지",
+                locked:true
+            },
+            {
+                id:"daily",
+                name:"일일공지",
+                locked:true
+            }
+        ];
+    }
+
+    return appData.boardCategories;
+}
+
+function getBoardCategory(categoryId){
+    return getBoardCategories().find((category)=>category.id === categoryId) || getBoardCategories()[0];
+}
+
+function hasBoardCategory(categoryId){
+    return getBoardCategories().some((category)=>category.id === categoryId);
+}
+
 function getBoardCategoryLabel(category){
-    return category === "daily" ? "일일공지" : "공지";
+    const item = getBoardCategory(category);
+    return item ? item.name : "공지";
+}
+
+function createBoardCategoryId(){
+    return "board_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 7);
+}
+
+function normalizeCurrentBoardCategory(){
+    const categories = getBoardCategories();
+
+    if(!categories.some((category)=>category.id === boardCategory)){
+        boardCategory = categories[0] ? categories[0].id : "notice";
+        localStorage.setItem("boardCategory", boardCategory);
+    }
 }
 
 function getBoardScopeLabel(post){
@@ -6689,6 +7774,8 @@ function getBoardPost(postId){
 }
 
 function getVisibleBoardPosts(){
+    normalizeCurrentBoardCategory();
+
     return (appData.boardPosts || [])
     .filter((post)=>{
         if(post.category !== boardCategory){
@@ -6705,6 +7792,99 @@ function getVisibleBoardPosts(){
         return new Date(b.updatedAt || b.createdAt).getTime() -
             new Date(a.updatedAt || a.createdAt).getTime();
     });
+}
+
+function addBoardCategory(){
+    if(!canWriteBoard()){
+        return;
+    }
+
+    let name = prompt("새 게시판 카테고리 이름을 입력하세요.");
+
+    if(name === null){
+        return;
+    }
+
+    name = sanitizeText(name);
+
+    if(!name){
+        alert("카테고리 이름을 입력하세요.");
+        return;
+    }
+
+    const exists = getBoardCategories().some((category)=>category.name === name);
+
+    if(exists){
+        alert("이미 있는 카테고리입니다.");
+        return;
+    }
+
+    const category = {
+        id:createBoardCategoryId(),
+        name:name,
+        locked:false
+    };
+
+    appData.boardCategories.push(category);
+    boardCategory = category.id;
+    localStorage.setItem("boardCategory", boardCategory);
+    saveData(()=>render(false));
+}
+
+function renameBoardCategory(){
+    if(!canWriteBoard()){
+        return;
+    }
+
+    const category = getBoardCategory(boardCategory);
+
+    if(!category){
+        return;
+    }
+
+    let name = prompt("카테고리 이름 수정", category.name);
+
+    if(name === null){
+        return;
+    }
+
+    name = sanitizeText(name);
+
+    if(!name){
+        alert("카테고리 이름을 입력하세요.");
+        return;
+    }
+
+    category.name = name;
+    saveData(()=>render(false));
+}
+
+function deleteBoardCategory(){
+    if(!canWriteBoard()){
+        return;
+    }
+
+    const category = getBoardCategory(boardCategory);
+
+    if(!category || category.locked){
+        alert("기본 카테고리는 삭제할 수 없습니다.");
+        return;
+    }
+
+    if(!confirm(category.name + " 카테고리를 삭제할까요?\n이 카테고리의 글은 공지로 이동됩니다.")){
+        return;
+    }
+
+    appData.boardPosts.forEach((post)=>{
+        if(post.category === category.id){
+            post.category = "notice";
+        }
+    });
+
+    appData.boardCategories = getBoardCategories().filter((item)=>item.id !== category.id);
+    boardCategory = "notice";
+    localStorage.setItem("boardCategory", boardCategory);
+    saveData(()=>render(false));
 }
 
 function createBoardPostId(){
@@ -6748,10 +7928,9 @@ function createBoardComposer(post = null){
     row.className = "board-composer-row";
 
     const category = document.createElement("select");
-    category.innerHTML = `
-        <option value="notice">공지</option>
-        <option value="daily">일일공지</option>
-    `;
+    category.innerHTML = getBoardCategories()
+    .map((item)=>`<option value="${item.id}">${item.name}</option>`)
+    .join("");
     category.value = post ? post.category : boardCategory;
 
     const scope = document.createElement("select");
@@ -6784,7 +7963,7 @@ function createBoardComposer(post = null){
     title.value = post ? post.title : "";
 
     const body = document.createElement("textarea");
-    body.placeholder = category.value === "daily"
+    body.placeholder = getBoardCategoryLabel(category.value) === "일일공지"
         ? "오늘 처리할 일, 전달사항, 마감 전 확인할 내용을 적어주세요."
         : "중요한 룰, 고정 공지, 운영 기준을 적어주세요.";
     body.value = post ? post.body : "";
@@ -6829,7 +8008,7 @@ function createBoardComposer(post = null){
     renderAttachments();
 
     category.onchange = ()=>{
-        body.placeholder = category.value === "daily"
+        body.placeholder = getBoardCategoryLabel(category.value) === "일일공지"
             ? "오늘 처리할 일, 전달사항, 마감 전 확인할 내용을 적어주세요."
             : "중요한 룰, 고정 공지, 운영 기준을 적어주세요.";
     };
@@ -6878,6 +8057,7 @@ async function saveBoardPost(values){
 
     const now = new Date().toISOString();
     const account = getCurrentAccount();
+    const auditUser = getCurrentAuditUser();
     const scope = isGameMaster() && values.scope === "all" ? "all" : "store";
     const storeId = scope === "all" ? "" : currentStoreId;
     const images = (values.existingImages || []).filter((image)=>image && image.url);
@@ -6908,7 +8088,7 @@ async function saveBoardPost(values){
                 return;
             }
 
-            values.post.category = values.category === "daily" ? "daily" : "notice";
+            values.post.category = hasBoardCategory(values.category) ? values.category : "notice";
             values.post.scope = scope;
             values.post.storeId = storeId;
             values.post.adminOnly = values.adminOnly === true;
@@ -6916,11 +8096,13 @@ async function saveBoardPost(values){
             values.post.body = values.body;
             values.post.images = images;
             values.post.updatedAt = now;
+            values.post.updatedBy = auditUser.id;
+            values.post.updatedByName = auditUser.name;
             currentBoardPostId = values.post.id;
         }else{
             const post = {
                 id:createBoardPostId(),
-                category:values.category === "daily" ? "daily" : "notice",
+                category:hasBoardCategory(values.category) ? values.category : "notice",
                 scope:scope,
                 storeId:storeId,
                 adminOnly:values.adminOnly === true,
@@ -6929,7 +8111,10 @@ async function saveBoardPost(values){
                 images,
                 createdAt:now,
                 updatedAt:now,
-                authorId:getLoginId() || (account && account.loginId) || "unknown",
+                authorId:auditUser.id || (account && account.loginId) || "unknown",
+                authorName:auditUser.name,
+                updatedBy:auditUser.id,
+                updatedByName:auditUser.name,
                 authorRole:getCurrentUserRole().role || "",
                 authorStoreId:currentStoreId,
                 authorStoreName:getCurrentStoreName()
@@ -6939,7 +8124,7 @@ async function saveBoardPost(values){
             currentBoardPostId = post.id;
         }
 
-        boardCategory = values.category === "daily" ? "daily" : "notice";
+        boardCategory = hasBoardCategory(values.category) ? values.category : "notice";
         localStorage.setItem("boardCategory", boardCategory);
         currentView = "boardDetail";
 
@@ -6993,22 +8178,25 @@ function openBoardPost(postId){
 
 function createBoardPostCard(post){
     const card = document.createElement("div");
-    card.className = [
-        "board-post",
-        boardListMode === "title" ? "title-only" : "",
-        boardListMode === "thumbnail" || boardListMode === "thumbnailSummary" ? "thumbnail-mode" : ""
-    ].filter(Boolean).join(" ");
+    const isTile = boardListMode === "tile";
+    card.className = "board-post " + (isTile ? "board-tile-card" : "title-only");
+
+    if(post.adminOnly){
+        card.classList.add("admin-only-post");
+    }
+
     card.onclick = ()=>openBoardPost(post.id);
     const images = getBoardPostImages(post);
+    const createdTime = formatActionTime(post.createdAt || post.updatedAt);
 
-    if(boardListMode === "thumbnail" || boardListMode === "thumbnailSummary"){
+    if(isTile){
         const thumb = document.createElement("div");
         thumb.className = "board-thumb";
 
         if(images[0] && images[0].url){
             const img = document.createElement("img");
             img.src = images[0].url;
-            img.alt = "게시글 썸네일";
+            img.alt = "게시글 사진";
             thumb.appendChild(img);
         }else{
             thumb.innerText = "사진 없음";
@@ -7017,13 +8205,17 @@ function createBoardPostCard(post){
         card.appendChild(thumb);
     }
 
+    const content = document.createElement("div");
+    content.className = isTile ? "board-post-content" : "";
+
     const head = document.createElement("div");
     head.className = "board-post-head";
 
     const titleWrap = document.createElement("div");
 
     const title = document.createElement("h3");
-    title.innerText = post.title || "제목 없음";
+    title.innerText = (isTile ? "" : "[" + getBoardCategoryLabel(post.category) + "] ") +
+        (post.title || "제목 없음");
     titleWrap.appendChild(title);
 
     const badges = document.createElement("div");
@@ -7055,72 +8247,117 @@ function createBoardPostCard(post){
         badges.appendChild(imageBadge);
     }
 
-    if(boardListMode === "summary" || boardListMode === "thumbnail" || boardListMode === "thumbnailSummary"){
+    if(isTile){
         titleWrap.appendChild(badges);
+    }else if(post.adminOnly && canViewAdminOnlyItems()){
+        const adminBadge = document.createElement("span");
+        adminBadge.className = "board-badge admin";
+        adminBadge.innerText = "관리자만";
+        titleWrap.appendChild(adminBadge);
     }
-    head.appendChild(titleWrap);
-    card.appendChild(head);
 
-    if(boardListMode === "summary" || boardListMode === "thumbnailSummary"){
+    head.appendChild(titleWrap);
+    content.appendChild(head);
+
+    if(!isTile){
+        const titleMeta = document.createElement("div");
+        titleMeta.className = "board-title-meta";
+        titleMeta.innerText =
+            "작성: " +
+            createdTime +
+            " / " +
+            (post.authorName || post.authorId || "unknown");
+        content.appendChild(titleMeta);
+    }
+
+    if(isTile){
         const body = document.createElement("div");
         body.className = "board-body board-summary";
         body.innerText = post.body || "";
-        card.appendChild(body);
+        content.appendChild(body);
     }
 
-    if(boardListMode === "summary" || boardListMode === "thumbnail" || boardListMode === "thumbnailSummary"){
-        const meta = document.createElement("div");
-        meta.className = "board-meta";
-        meta.innerText =
-            (post.authorId || "unknown") +
-            " / " +
-            formatActionTime(post.updatedAt || post.createdAt);
-        card.appendChild(meta);
+    const meta = document.createElement("div");
+    meta.className = "board-meta";
+    meta.innerText =
+        "작성: " +
+        createdTime +
+        " / " +
+        (post.authorName || post.authorId || "unknown") +
+        (isTile && images.length > 0 ? " / 사진 " + images.length : "");
+
+    if(isTile){
+        content.appendChild(meta);
     }
 
+    card.appendChild(content);
     return card;
 }
 
-function renderBoardToolbar(root){
-    const tabs = document.createElement("div");
-    tabs.className = "board-tabs";
+function createBoardSidebar(){
+    normalizeCurrentBoardCategory();
 
-    [
-        {
-            category:"notice",
-            label:"공지"
-        },
-        {
-            category:"daily",
-            label:"일일공지"
-        }
-    ].forEach((item)=>{
+    const sidebar = document.createElement("div");
+    sidebar.className = "board-sidebar";
+
+    const title = document.createElement("div");
+    title.className = "board-sidebar-title";
+    title.innerText = "카테고리";
+    sidebar.appendChild(title);
+
+    getBoardCategories().forEach((item)=>{
         const button = document.createElement("button");
-        button.className = "board-tab" + (boardCategory === item.category ? " active" : "");
-        button.innerText = item.label;
+        const count = (appData.boardPosts || []).filter((post)=>{
+            if(post.category !== item.id){
+                return false;
+            }
+
+            if(post.adminOnly && !canViewAdminOnlyItems()){
+                return false;
+            }
+
+            return post.scope === "all" || post.storeId === currentStoreId;
+        }).length;
+
+        button.className = "board-category-btn" + (boardCategory === item.id ? " active" : "");
+        button.innerText = item.name + " (" + count + ")";
         button.onclick = ()=>{
-            boardCategory = item.category;
+            boardCategory = item.id;
             localStorage.setItem("boardCategory", boardCategory);
             currentBoardPostId = null;
             currentView = "board";
             render(false);
         };
-        tabs.appendChild(button);
+        sidebar.appendChild(button);
     });
 
-    root.appendChild(tabs);
+    if(canWriteBoard()){
+        const manage = document.createElement("div");
+        manage.className = "board-category-manage";
+        manage.appendChild(createAdminButton("+ 카테고리", addBoardCategory));
+        manage.appendChild(createAdminButton("이름수정", renameBoardCategory));
+        manage.appendChild(createAdminButton("삭제", deleteBoardCategory));
+        sidebar.appendChild(manage);
+    }
 
+    return sidebar;
+}
+
+function renderBoardToolbar(root){
     const options = document.createElement("div");
     options.className = "view-options";
+
+    if(boardListMode !== "title" && boardListMode !== "tile"){
+        boardListMode = "tile";
+        localStorage.setItem("boardListMode", boardListMode);
+    }
 
     const listMode = document.createElement("select");
     listMode.innerHTML = `
         <option value="title">제목만</option>
-        <option value="summary">제목+내용</option>
-        <option value="thumbnail">썸네일</option>
-        <option value="thumbnailSummary">썸네일+내용</option>
+        <option value="tile">타일형</option>
     `;
-    listMode.value = ["title", "summary", "thumbnail", "thumbnailSummary"].includes(boardListMode)
+    listMode.value = ["title", "tile"].includes(boardListMode)
         ? boardListMode
         : "title";
     listMode.onchange = ()=>{
@@ -7130,13 +8367,25 @@ function renderBoardToolbar(root){
     };
 
     options.appendChild(listMode);
+
+    if(boardListMode === "tile"){
+        const tileColumns = getScopedTileColumns("board", "boardTileColumns", boardCategory);
+        options.appendChild(createTileColumnSelect(
+            "boardTileColumns",
+            tileColumns,
+            {
+                area:"board",
+                key:"boardTileColumns",
+                target:boardCategory
+            }
+        ));
+    }
+
     root.appendChild(options);
 }
 
 function renderBoard(root){
-    if(boardCategory !== "daily"){
-        boardCategory = "notice";
-    }
+    normalizeCurrentBoardCategory();
 
     currentBoardPostId = null;
 
@@ -7149,10 +8398,23 @@ function renderBoard(root){
     header.appendChild(title);
     root.appendChild(header);
 
-    renderBoardToolbar(root);
+    const layout = document.createElement("div");
+    layout.className = "board-layout";
+
+    layout.appendChild(createBoardSidebar());
+
+    const main = document.createElement("div");
+    main.className = "board-main";
+
+    renderBoardToolbar(main);
 
     const list = document.createElement("div");
-    list.className = "board-list";
+    if(boardListMode === "tile"){
+        const tileColumns = getScopedTileColumns("board", "boardTileColumns", boardCategory);
+        list.className = "board-list board-tile grid-tile grid-cols-" + tileColumns;
+    }else{
+        list.className = "board-list";
+    }
 
     const posts = getVisibleBoardPosts();
 
@@ -7160,14 +8422,14 @@ function renderBoard(root){
         const empty = document.createElement("p");
         empty.className = "empty-message";
         empty.innerText = "게시글이 없습니다.";
-        root.appendChild(empty);
+        main.appendChild(empty);
     }else{
         posts.forEach((post)=>{
             list.appendChild(createBoardPostCard(post));
         });
     }
 
-    root.appendChild(list);
+    main.appendChild(list);
 
     const bottom = document.createElement("div");
     bottom.className = "board-bottom-actions";
@@ -7185,7 +8447,9 @@ function renderBoard(root){
         render();
     }));
 
-    root.appendChild(bottom);
+    main.appendChild(bottom);
+    layout.appendChild(main);
+    root.appendChild(layout);
 }
 
 function renderBoardDetail(root){
@@ -7234,11 +8498,14 @@ function renderBoardDetail(root){
     meta.className = "board-meta";
     meta.innerText =
         "작성: " +
-        (post.authorId || "unknown") +
+        (post.authorName || post.authorId || "unknown") +
         " / " +
         (post.authorStoreName || post.authorStoreId || "지점 없음") +
         " / " +
-        formatActionTime(post.updatedAt || post.createdAt);
+        formatActionTime(post.createdAt) +
+        (post.updatedByName
+            ? "\n마지막 수정: " + post.updatedByName + " / " + formatActionTime(post.updatedAt || post.createdAt)
+            : "");
     root.appendChild(meta);
 
     const body = document.createElement("div");
@@ -7604,9 +8871,18 @@ function renderAccounts(root){
     header.appendChild(title);
     root.appendChild(header);
 
-    root.appendChild(createButton("btn-add", "+ 계정 생성", ()=>{
+    const topActions = document.createElement("div");
+    topActions.className = "detail-action-grid";
+
+    topActions.appendChild(createButton("btn-add", "+ 계정 생성", ()=>{
         addAccountRow();
     }));
+
+    topActions.appendChild(createButton("btn-save", "전체 저장", ()=>{
+        saveAllAccountRows();
+    }));
+
+    root.appendChild(topActions);
 
     const wrap = document.createElement("div");
     wrap.className = "account-table-wrap";
@@ -7619,6 +8895,7 @@ function renderAccounts(root){
         <tr>
             <th>메모</th>
             <th>식별 코드</th>
+            <th>표시이름</th>
             <th>아이디</th>
             <th>비밀번호</th>
             <th>권한</th>
@@ -7633,13 +8910,13 @@ function renderAccounts(root){
     if(accounts.length === 0){
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-        cell.colSpan = 7;
+        cell.colSpan = 8;
         cell.innerText = "생성된 계정이 없습니다.";
         row.appendChild(cell);
         tbody.appendChild(row);
     }else{
         accounts
-        .sort((a,b)=>String(a.loginId || "").localeCompare(String(b.loginId || ""), "ko-KR"))
+        .sort((a,b)=>String(a.displayName || a.loginId || "").localeCompare(String(b.displayName || b.loginId || ""), "ko-KR"))
         .forEach((account)=>{
             tbody.appendChild(createAccountRow(account));
         });
@@ -7668,6 +8945,13 @@ function createAccountRow(account){
 
     const codeCell = document.createElement("td");
     codeCell.innerText = account.code;
+
+    const displayNameCell = document.createElement("td");
+    const displayNameInput = document.createElement("input");
+    displayNameInput.className = "account-display-name";
+    displayNameInput.placeholder = "예: 홍길동";
+    displayNameInput.value = account.displayName || account.loginId || "";
+    displayNameCell.appendChild(displayNameInput);
 
     const idCell = document.createElement("td");
     const idInput = document.createElement("input");
@@ -7713,6 +8997,7 @@ function createAccountRow(account){
 
     row.appendChild(memoCell);
     row.appendChild(codeCell);
+    row.appendChild(displayNameCell);
     row.appendChild(idCell);
     row.appendChild(passwordCell);
     row.appendChild(roleCell);
@@ -7754,6 +9039,7 @@ function getAccountRowValues(code){
     }
 
     const loginId = normalizeLoginId(row.querySelector(".account-login-id").value);
+    const displayName = sanitizeText(row.querySelector(".account-display-name").value);
     const memo = sanitizeText(row.querySelector(".account-memo").value);
     const password = row.querySelector(".account-password").value.trim();
     const role = row.querySelector(".account-role").value;
@@ -7762,6 +9048,7 @@ function getAccountRowValues(code){
 
     return {
         memo,
+        displayName,
         loginId,
         password,
         role,
@@ -7774,6 +9061,7 @@ function addAccountRow(){
     appData.accounts[code] = {
         code,
         memo:"",
+        displayName:"",
         loginId:"new_user_" + Object.keys(appData.accounts || {}).length,
         passwordHash:"",
         role:"staff",
@@ -7781,57 +9069,174 @@ function addAccountRow(){
         createdAt:new Date().toISOString()
     };
 
-    render(false);
+    const tbody = document.querySelector(".account-table tbody");
+
+    if(!tbody){
+        render(false);
+        return;
+    }
+
+    const emptyCell = tbody.querySelector("td[colspan]");
+
+    if(emptyCell){
+        tbody.innerHTML = "";
+    }
+
+    tbody.appendChild(createAccountRow(appData.accounts[code]));
+
+    const title = document.querySelector("#content .header-row h2");
+
+    if(title){
+        title.innerText = "계정 관리 (" + Object.keys(appData.accounts || {}).length + "개)";
+    }
+}
+
+function collectAccountRowUpdates(codes){
+    const updates = [];
+    const usedLoginIds = new Map();
+
+    for(const code of codes){
+        const account = appData.accounts[code];
+        const values = getAccountRowValues(code);
+
+        if(!account || !values){
+            return {
+                error:"계정 정보를 찾을 수 없습니다."
+            };
+        }
+
+        if(!values.loginId){
+            return {
+                error:"아이디를 입력하세요."
+            };
+        }
+
+        if(!values.displayName){
+            return {
+                error:"표시이름을 입력하세요. 예: 홍길동"
+            };
+        }
+
+        if(values.loginId === DEFAULT_MASTER_ID){
+            return {
+                error:"기본 마스터 아이디는 사용할 수 없습니다."
+            };
+        }
+
+        if(usedLoginIds.has(values.loginId)){
+            return {
+                error:"중복된 아이디가 있습니다: " + values.loginId
+            };
+        }
+
+        usedLoginIds.set(values.loginId, code);
+
+        if(values.storeIds.length === 0){
+            return {
+                error:"접속 지점을 1개 이상 선택하세요."
+            };
+        }
+
+        if(!values.password && !account.passwordHash){
+            return {
+                error:"새 계정은 비밀번호를 입력해야 저장할 수 있습니다: " + values.loginId
+            };
+        }
+
+        updates.push({
+            code,
+            account,
+            values
+        });
+    }
+
+    Object.keys(appData.accounts || {}).forEach((code)=>{
+        if(codes.includes(code)){
+            return;
+        }
+
+        const loginId = normalizeLoginId(appData.accounts[code] && appData.accounts[code].loginId);
+
+        if(loginId){
+            usedLoginIds.set(loginId, code);
+        }
+    });
+
+    for(const update of updates){
+        const existingCode = usedLoginIds.get(update.values.loginId);
+
+        if(existingCode && existingCode !== update.code){
+            return {
+                error:"이미 사용 중인 아이디입니다: " + update.values.loginId
+            };
+        }
+    }
+
+    return {
+        updates
+    };
+}
+
+async function applyAccountRowUpdates(updates){
+    for(const update of updates){
+        const account = update.account;
+        const values = update.values;
+
+        account.loginId = values.loginId;
+        account.displayName = values.displayName;
+        account.memo = values.memo;
+        account.role = values.role;
+        account.storeIds = values.storeIds;
+
+        if(values.password){
+            account.passwordHash = await hashPassword(values.password);
+        }
+    }
 }
 
 async function saveAccountRow(code){
     const account = appData.accounts[code];
-    const values = getAccountRowValues(code);
 
-    if(!account || !values){
+    if(!account){
         alert("계정 정보를 찾을 수 없습니다.");
         return;
     }
 
-    if(!values.loginId){
-        alert("아이디를 입력하세요.");
+    const result = collectAccountRowUpdates([code]);
+
+    if(result.error){
+        alert(result.error);
         return;
     }
 
-    if(values.loginId === DEFAULT_MASTER_ID){
-        alert("기본 마스터 아이디는 사용할 수 없습니다.");
-        return;
-    }
-
-    const existingCode = findAccountCodeByLoginId(values.loginId);
-
-    if(existingCode && existingCode !== code){
-        alert("이미 사용 중인 아이디입니다.");
-        return;
-    }
-
-    if(values.storeIds.length === 0){
-        alert("접속 지점을 1개 이상 선택하세요.");
-        return;
-    }
-
-    account.loginId = values.loginId;
-    account.memo = values.memo;
-    account.role = values.role;
-    account.storeIds = values.storeIds;
-
-    if(values.password){
-        account.passwordHash = await hashPassword(values.password);
-    }
-
-    if(!account.passwordHash){
-        alert("새 계정은 비밀번호를 입력해야 저장할 수 있습니다.");
-        return;
-    }
+    await applyAccountRowUpdates(result.updates);
 
     await saveData(()=>{
         render(false);
         alert("계정이 저장되었습니다.");
+    });
+}
+
+async function saveAllAccountRows(){
+    const codes = Array.from(document.querySelectorAll("[data-account-code]"))
+    .map((row)=>row.dataset.accountCode)
+    .filter((code)=>code && appData.accounts[code]);
+
+    if(codes.length > 0){
+        const result = collectAccountRowUpdates(codes);
+
+        if(result.error){
+            alert(result.error);
+            return;
+        }
+
+        await applyAccountRowUpdates(result.updates);
+    }
+
+    await saveData(()=>{
+        render(false);
+        updateAuthUI();
+        alert("전체 계정이 저장되었습니다.");
     });
 }
 
@@ -7853,10 +9258,19 @@ function deleteAccountRow(code){
         currentLoginId = "";
     }
 
-    saveData(()=>{
-        render(false);
-        updateAuthUI();
-    });
+    const row = document.querySelector('[data-account-code="' + code + '"]');
+
+    if(row){
+        row.remove();
+    }
+
+    const title = document.querySelector("#content .header-row h2");
+
+    if(title){
+        title.innerText = "계정 관리 (" + Object.keys(appData.accounts || {}).length + "개)";
+    }
+
+    alert("삭제 표시되었습니다. 전체 저장을 누르면 반영됩니다.");
 }
 
 function adjustMemoHeight(){
@@ -7897,14 +9311,16 @@ function applyMemoDisplayMode(){
             textarea.classList.add("scroll-mode");
 
             if(button){
-                button.innerText = "📖 펼침 모드";
+                button.innerText = "▲";
+                button.title = "메모 펼치기";
             }
         }else{
             textarea.classList.remove("scroll-mode");
             textarea.classList.add("expanded-mode");
 
             if(button){
-                button.innerText = "📋 스크롤 모드";
+                button.innerText = "▼";
+                button.title = "메모 접기";
             }
 
             adjustMemoHeight();
@@ -7928,14 +9344,16 @@ function applyAdminMemoDisplayMode(){
             textarea.classList.add("scroll-mode");
 
             if(button){
-                button.innerText = "📖 펼침 모드";
+                button.innerText = "▲";
+                button.title = "관리자 메모 펼치기";
             }
         }else{
             textarea.classList.remove("scroll-mode");
             textarea.classList.add("expanded-mode");
 
             if(button){
-                button.innerText = "📋 스크롤 모드";
+                button.innerText = "▼";
+                button.title = "관리자 메모 접기";
             }
 
             adjustAdminMemoHeight();
@@ -7960,7 +9378,8 @@ function toggleMemoMode(){
         localStorage.setItem("memoDisplayMode", "scroll");
 
         if(button){
-            button.innerText = "📖 펼침 모드";
+            button.innerText = "▲";
+            button.title = "메모 펼치기";
         }
     }else{
         textarea.classList.remove("scroll-mode");
@@ -7968,7 +9387,8 @@ function toggleMemoMode(){
         localStorage.setItem("memoDisplayMode", "expanded");
 
         if(button){
-            button.innerText = "📋 스크롤 모드";
+            button.innerText = "▼";
+            button.title = "메모 접기";
         }
 
         adjustMemoHeight();
@@ -7992,7 +9412,8 @@ function toggleAdminMemoMode(){
         localStorage.setItem("adminMemoDisplayMode", "scroll");
 
         if(button){
-            button.innerText = "📖 펼침 모드";
+            button.innerText = "▲";
+            button.title = "관리자 메모 펼치기";
         }
     }else{
         textarea.classList.remove("scroll-mode");
@@ -8000,7 +9421,8 @@ function toggleAdminMemoMode(){
         localStorage.setItem("adminMemoDisplayMode", "expanded");
 
         if(button){
-            button.innerText = "📋 스크롤 모드";
+            button.innerText = "▼";
+            button.title = "관리자 메모 접기";
         }
 
         adjustAdminMemoHeight();
@@ -8045,13 +9467,14 @@ function toggleMemoEdit(){
         return;
     }
 
-    data.machines[currentGenre][currentMachine].memo = textarea.value;
-    data.machines[currentGenre][currentMachine].memoUpdatedAt = new Date().toISOString();
+    const machine = data.machines[currentGenre][currentMachine];
+    machine.memo = textarea.value;
+    applyAuditFields(machine, "memoUpdated");
 
     saveData(()=>{
         textarea.readOnly = true;
         textarea.style.pointerEvents = "auto";
-        button.innerText = "✏️ 메모 수정";
+        button.innerText = "✏️ 수정";
         memoEditMode = false;
         render(false);
         adjustMemoHeight();
@@ -8077,7 +9500,7 @@ function updateAdminMemo(memo){
     }
 
     machine.adminMemo = nextMemo;
-    machine.adminMemoUpdatedAt = new Date().toISOString();
+    applyAuditFields(machine, "adminMemoUpdated");
     saveData(()=>render(false));
 }
 
@@ -8106,7 +9529,7 @@ function toggleAdminMemoEdit(){
 
     if(machine && machine.adminMemo === textarea.value){
         textarea.readOnly = true;
-        button.innerText = "✏️ 관리자 메모 수정";
+        button.innerText = "✏️ 수정";
         adminMemoEditMode = false;
         return;
     }
@@ -8347,6 +9770,310 @@ function openModal(src){
     document.getElementById("modal").style.display = "flex";
 }
 
+function getDrawCanvasPoint(event){
+    const canvas = document.getElementById("draw-canvas");
+    const rect = canvas.getBoundingClientRect();
+
+    return {
+        x:(event.clientX - rect.left) * (canvas.width / rect.width),
+        y:(event.clientY - rect.top) * (canvas.height / rect.height)
+    };
+}
+
+function redrawMainPhotoCanvas(){
+    const canvas = document.getElementById("draw-canvas");
+    const ctx = canvas.getContext("2d");
+
+    if(!canvas || !ctx || !drawBaseImage){
+        return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(drawBaseImage, 0, 0, canvas.width, canvas.height);
+
+    const overlay = document.createElement("canvas");
+    overlay.width = canvas.width;
+    overlay.height = canvas.height;
+
+    const overlayCtx = overlay.getContext("2d");
+
+    if(!overlayCtx){
+        return;
+    }
+
+    overlayCtx.lineCap = "round";
+    overlayCtx.lineJoin = "round";
+
+    drawStrokes.forEach((stroke)=>{
+        if(!stroke.points || stroke.points.length === 0){
+            return;
+        }
+
+        overlayCtx.globalCompositeOperation = stroke.mode === "erase"
+            ? "destination-out"
+            : "source-over";
+        overlayCtx.strokeStyle = stroke.color;
+        overlayCtx.lineWidth = stroke.size;
+        overlayCtx.beginPath();
+        overlayCtx.moveTo(stroke.points[0].x, stroke.points[0].y);
+
+        if(stroke.points.length === 1){
+            overlayCtx.lineTo(stroke.points[0].x + 0.1, stroke.points[0].y + 0.1);
+        }else{
+            stroke.points.slice(1).forEach((point)=>{
+                overlayCtx.lineTo(point.x, point.y);
+            });
+        }
+
+        overlayCtx.stroke();
+    });
+
+    ctx.drawImage(overlay, 0, 0);
+}
+
+function updateDrawToolButtons(){
+    const brushBtn = document.getElementById("draw-brush-btn");
+    const eraserBtn = document.getElementById("draw-eraser-btn");
+    const canvas = document.getElementById("draw-canvas");
+
+    if(brushBtn){
+        brushBtn.classList.toggle("active", drawToolMode === "brush");
+    }
+
+    if(eraserBtn){
+        eraserBtn.classList.toggle("active", drawToolMode === "erase");
+    }
+
+    if(canvas){
+        canvas.style.cursor = drawToolMode === "erase" ? "cell" : "crosshair";
+    }
+}
+
+function setDrawToolMode(mode){
+    drawToolMode = mode === "erase" ? "erase" : "brush";
+    updateDrawToolButtons();
+}
+
+async function openMainPhotoDrawEditor(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+
+    if(!machine || !machine.photo){
+        alert("먼저 메인 사진을 등록하세요.");
+        return;
+    }
+
+    const interval = showLoading("그림 편집 준비 중...");
+
+    try{
+        drawBaseDataUrl = await imageSourceToDataUrl(machine.photo);
+        drawStrokes = [];
+        currentDrawStroke = null;
+        drawingActive = false;
+        drawTarget = {
+            type:"main"
+        };
+        setDrawToolMode("brush");
+
+        drawBaseImage = await new Promise((resolve, reject)=>{
+            const img = new Image();
+            img.onload = ()=>resolve(img);
+            img.onerror = ()=>reject(new Error("사진을 불러오지 못했습니다."));
+            img.src = drawBaseDataUrl;
+        });
+
+        const canvas = document.getElementById("draw-canvas");
+        const maxSide = 1600;
+        let width = drawBaseImage.width;
+        let height = drawBaseImage.height;
+
+        if(Math.max(width, height) > maxSide){
+            const ratio = maxSide / Math.max(width, height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        redrawMainPhotoCanvas();
+        document.getElementById("draw-modal").style.display = "flex";
+    }catch(err){
+        console.error(err);
+        alert("그림 편집 준비 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+async function openEvidencePhotoDrawEditor(index, collectionKey = "evidencePhotos"){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+    const photos = getEvidenceCollection(machine, collectionKey);
+    const photoItem = photos[index];
+
+    if(!photoItem || !photoItem.photo){
+        alert("먼저 추가 사진을 등록하세요.");
+        return;
+    }
+
+    const interval = showLoading("그림 편집 준비 중...");
+
+    try{
+        drawBaseDataUrl = await imageSourceToDataUrl(photoItem.photo);
+        drawStrokes = [];
+        currentDrawStroke = null;
+        drawingActive = false;
+        drawTarget = {
+            type:"evidence",
+            collectionKey:collectionKey,
+            index:index
+        };
+        setDrawToolMode("brush");
+
+        drawBaseImage = await new Promise((resolve, reject)=>{
+            const img = new Image();
+            img.onload = ()=>resolve(img);
+            img.onerror = ()=>reject(new Error("사진을 불러오지 못했습니다."));
+            img.src = drawBaseDataUrl;
+        });
+
+        const canvas = document.getElementById("draw-canvas");
+        const maxSide = 1600;
+        let width = drawBaseImage.width;
+        let height = drawBaseImage.height;
+
+        if(Math.max(width, height) > maxSide){
+            const ratio = maxSide / Math.max(width, height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        redrawMainPhotoCanvas();
+        document.getElementById("draw-modal").style.display = "flex";
+    }catch(err){
+        console.error(err);
+        alert("그림 편집 준비 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+function closeDrawModal(){
+    document.getElementById("draw-modal").style.display = "none";
+    drawBaseImage = null;
+    drawBaseDataUrl = "";
+    drawStrokes = [];
+    currentDrawStroke = null;
+    drawingActive = false;
+    drawTarget = null;
+    setDrawToolMode("brush");
+}
+
+function startDraw(event){
+    const canvas = document.getElementById("draw-canvas");
+
+    if(!drawBaseImage){
+        return;
+    }
+
+    event.preventDefault();
+    canvas.setPointerCapture(event.pointerId);
+    drawingActive = true;
+
+    currentDrawStroke = {
+        mode:drawToolMode,
+        color:document.getElementById("draw-color").value || "#ff2d2d",
+        size:Number(document.getElementById("draw-size").value) || 7,
+        points:[getDrawCanvasPoint(event)]
+    };
+
+    drawStrokes.push(currentDrawStroke);
+    redrawMainPhotoCanvas();
+}
+
+function moveDraw(event){
+    if(!drawingActive || !currentDrawStroke){
+        return;
+    }
+
+    event.preventDefault();
+    currentDrawStroke.points.push(getDrawCanvasPoint(event));
+    redrawMainPhotoCanvas();
+}
+
+function endDraw(event){
+    if(event){
+        event.preventDefault();
+    }
+
+    drawingActive = false;
+    currentDrawStroke = null;
+}
+
+async function saveDrawnMainPhoto(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
+    const canvas = document.getElementById("draw-canvas");
+
+    if(!machine || !canvas || !drawBaseImage){
+        return;
+    }
+
+    const interval = showLoading("그림 저장 중...");
+
+    try{
+        const quality = Math.max(0.75, getCompressionSettings().jpegQuality);
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        const target = drawTarget || {
+            type:"main"
+        };
+
+        if(target.type === "evidence"){
+            const collectionKey = target.collectionKey === "adminEvidencePhotos"
+                ? "adminEvidencePhotos"
+                : "evidencePhotos";
+            const photos = getEvidenceCollection(machine, collectionKey);
+            const photoItem = photos[target.index];
+
+            if(!photoItem){
+                throw new Error("수정할 추가 사진을 찾을 수 없습니다.");
+            }
+
+            photoItem.photo = await uploadDataUrlToStorage(
+                dataUrl,
+                storageImagePath(collectionKey === "adminEvidencePhotos"
+                    ? "admin_evidence_draw"
+                    : "evidence_draw")
+            );
+            applyAuditFields(photoItem, "photoUpdated");
+        }else{
+            machine.photo = await uploadDataUrlToStorage(dataUrl, storageImagePath("main_draw"));
+            applyAuditFields(machine, "photoUpdated");
+        }
+
+        await saveData(()=>{
+            closeDrawModal();
+            render(false);
+        });
+    }catch(err){
+        console.error(err);
+        alert("그림 저장 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
 function moveEvidencePhoto(fromIndex, toIndex, collectionKey = "evidencePhotos"){
     if(!requireStoreEdit()){
         return;
@@ -8391,7 +10118,7 @@ function updateEvidenceMemo(index, memo, collectionKey = "evidencePhotos"){
     }
 
     photoItem.memo = nextMemo;
-    photoItem.memoUpdatedAt = new Date().toISOString();
+    applyAuditFields(photoItem, "memoUpdated");
     saveData(()=>render(false));
 }
 
@@ -8465,9 +10192,17 @@ function restoreTrashEntry(index, showAlerts = true){
 
         data.machines[item.genre][item.name] = item.data || {
             photo:"",
+            photoUpdatedAt:"",
+            photoUpdatedBy:"",
+            photoUpdatedByName:"",
             memo:"",
+            memoUpdatedAt:"",
+            memoUpdatedBy:"",
+            memoUpdatedByName:"",
             adminMemo:"",
             adminMemoUpdatedAt:"",
+            adminMemoUpdatedBy:"",
+            adminMemoUpdatedByName:"",
             evidencePhotos:[],
             adminEvidencePhotos:[]
         };
@@ -8618,7 +10353,7 @@ function isMobileDevice(){
     return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "");
 }
 
-function createPhotoInput(type){
+function createPhotoInput(type, sourceMode = "library"){
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -8630,17 +10365,12 @@ function createPhotoInput(type){
     input.style.height = "1px";
     input.style.opacity = "0";
 
-    if(isMobileDevice()){
-        const useCamera = confirm("카메라로 촬영할까요?\n취소하면 앨범에서 선택합니다.");
-
-        if(useCamera){
-            input.capture = "environment";
-            input.setAttribute("capture", "environment");
-            input.multiple = false;
-        }else{
-            input.multiple = type !== 0;
-        }
+    if(sourceMode === "camera"){
+        input.capture = "environment";
+        input.setAttribute("capture", "environment");
+        input.multiple = false;
     }else{
+        input.removeAttribute("capture");
         input.multiple = type !== 0;
     }
 
@@ -8649,7 +10379,7 @@ function createPhotoInput(type){
     return input;
 }
 
-function uploadPhoto(type){
+function uploadPhoto(type, sourceMode = "library"){
     if(!requireStoreEdit()){
         return;
     }
@@ -8666,7 +10396,7 @@ function uploadPhoto(type){
         return;
     }
 
-    const input = createPhotoInput(type);
+    const input = createPhotoInput(type, sourceMode);
 
     const cleanupInput = ()=>{
         setTimeout(()=>{
@@ -8689,7 +10419,7 @@ function uploadPhoto(type){
         try{
             if(type === 0){
                 machine.photo = await compressAndUploadImage(files[0], "main");
-                machine.photoUpdatedAt = new Date().toISOString();
+                applyAuditFields(machine, "photoUpdated");
             }else{
                 const collectionKey = type === 2 ? "adminEvidencePhotos" : "evidencePhotos";
                 const storageKind = type === 2 ? "admin_evidence" : "evidence";
@@ -8697,11 +10427,15 @@ function uploadPhoto(type){
 
                 for(let i = 0; i < files.length; i++){
                     const url = await compressAndUploadImage(files[i], storageKind);
+                    const auditUser = getCurrentAuditUser();
                     photos.push({
                         photo:url,
                         memo:"",
                         createdAt:new Date().toISOString(),
-                        memoUpdatedAt:""
+                        createdBy:auditUser.id,
+                        createdByName:auditUser.name,
+                        memoUpdatedAt:"",
+                        photoUpdatedAt:""
                     });
 
                     const percent = Math.round(((i + 1) / files.length) * 100);
@@ -8927,6 +10661,41 @@ document.getElementById("modal").onclick = (event)=>{
 };
 
 bindModalZoomEvents();
+
+document.getElementById("draw-canvas").addEventListener("pointerdown", startDraw);
+document.getElementById("draw-canvas").addEventListener("pointermove", moveDraw);
+document.getElementById("draw-canvas").addEventListener("pointerup", endDraw);
+document.getElementById("draw-canvas").addEventListener("pointercancel", endDraw);
+
+document.getElementById("draw-brush-btn").onclick = ()=>{
+    setDrawToolMode("brush");
+};
+
+document.getElementById("draw-eraser-btn").onclick = ()=>{
+    setDrawToolMode("erase");
+};
+
+document.getElementById("draw-undo-btn").onclick = ()=>{
+    drawStrokes.pop();
+    redrawMainPhotoCanvas();
+};
+
+document.getElementById("draw-clear-btn").onclick = ()=>{
+    if(!confirm("그림 표시를 모두 지울까요?")){
+        return;
+    }
+
+    drawStrokes = [];
+    redrawMainPhotoCanvas();
+};
+
+document.getElementById("draw-save-btn").onclick = ()=>{
+    saveDrawnMainPhoto();
+};
+
+document.getElementById("draw-close-btn").onclick = ()=>{
+    closeDrawModal();
+};
 
 document.getElementById("logo-upload").onchange = async(event)=>{
     if(!requireStoreManage()){
