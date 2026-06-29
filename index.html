@@ -877,11 +877,28 @@ textarea.scroll-mode{
     display:flex;
     flex-direction:column;
     gap:10px;
+    position:relative;
 }
 
 .draw-panel h3{
-    margin:0;
+    margin:0 36px 0 0;
     font-size:16px;
+}
+
+.draw-close-x{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:30px;
+    height:30px;
+    margin:0;
+    padding:0;
+    border-radius:50%;
+    background:#f2f2f2;
+    color:#333;
+    border:1px solid #ddd;
+    font-size:18px;
+    line-height:28px;
 }
 
 .draw-tools{
@@ -922,6 +939,12 @@ textarea.scroll-mode{
     border-color:#2196F3;
     background:#eaf4ff;
     color:#0b67b2;
+}
+
+.draw-tools .btn-danger{
+    border-color:#d9534f;
+    background:#fff0f0;
+    color:#b52b27;
 }
 
 .draw-canvas-wrap{
@@ -2312,21 +2335,21 @@ textarea.scroll-mode{
 
 <div class="settings-modal" id="draw-modal">
     <div class="draw-panel">
-        <h3>메인 사진 그림 표시</h3>
+        <button class="draw-close-x" id="draw-close-btn">×</button>
+        <h3>사진 그림판</h3>
         <div class="draw-tools">
             <label>
                 색상
                 <input type="color" id="draw-color" value="#ff2d2d">
             </label>
-            <button class="btn-mini active" id="draw-brush-btn">붓</button>
-            <button class="btn-mini" id="draw-eraser-btn">지우개</button>
+            <button class="btn-mini active" id="draw-brush-btn">🖌️ 붓</button>
+            <button class="btn-mini" id="draw-eraser-btn">🧽 지우개</button>
             <label>
                 굵기
                 <input type="range" id="draw-size" min="2" max="28" step="1" value="7">
             </label>
-            <button class="btn-mini" id="draw-undo-btn">되돌리기</button>
-            <button class="btn-mini" id="draw-clear-btn">그림 지우기</button>
-            <button class="btn-mini" id="draw-close-btn">닫기</button>
+            <button class="btn-mini" id="draw-undo-btn">↩️ 되돌리기</button>
+            <button class="btn-mini btn-danger" id="draw-clear-btn">모두 지우기</button>
         </div>
         <div class="draw-canvas-wrap">
             <canvas id="draw-canvas"></canvas>
@@ -2472,7 +2495,8 @@ function normalizeEvidencePhotoList(list){
                 memoUpdatedByName:"",
                 photoUpdatedAt:"",
                 photoUpdatedBy:"",
-                photoUpdatedByName:""
+                photoUpdatedByName:"",
+                photoDrawData:null
             };
         }
 
@@ -2488,7 +2512,8 @@ function normalizeEvidencePhotoList(list){
                 memoUpdatedByName:"",
                 photoUpdatedAt:"",
                 photoUpdatedBy:"",
-                photoUpdatedByName:""
+                photoUpdatedByName:"",
+                photoDrawData:null
             };
         }
 
@@ -2534,6 +2559,10 @@ function normalizeEvidencePhotoList(list){
 
         if(typeof photoItem.photoUpdatedByName !== "string"){
             photoItem.photoUpdatedByName = "";
+        }
+
+        if(!photoItem.photoDrawData || typeof photoItem.photoDrawData !== "object"){
+            photoItem.photoDrawData = null;
         }
 
         return photoItem;
@@ -4150,6 +4179,7 @@ function initializeData(){
                     photoUpdatedAt:"",
                     photoUpdatedBy:"",
                     photoUpdatedByName:"",
+                    photoDrawData:null,
                     memo:"",
                     memoUpdatedAt:"",
                     memoUpdatedBy:"",
@@ -4186,6 +4216,10 @@ function initializeData(){
 
             if(typeof machineData.photoUpdatedByName !== "string"){
                 machineData.photoUpdatedByName = "";
+            }
+
+            if(!machineData.photoDrawData || typeof machineData.photoDrawData !== "object"){
+                machineData.photoDrawData = null;
             }
 
             if(typeof machineData.memoUpdatedAt !== "string"){
@@ -6715,6 +6749,7 @@ function renderMachines(root){
             photoUpdatedAt:"",
             photoUpdatedBy:"",
             photoUpdatedByName:"",
+            photoDrawData:null,
             memo:"",
             memoUpdatedAt:"",
             memoUpdatedBy:"",
@@ -9854,6 +9889,48 @@ function setDrawToolMode(mode){
     updateDrawToolButtons();
 }
 
+function cloneDrawStrokes(strokes){
+    if(!Array.isArray(strokes)){
+        return [];
+    }
+
+    return strokes
+    .filter((stroke)=>stroke && Array.isArray(stroke.points))
+    .map((stroke)=>({
+        mode:stroke.mode === "erase" ? "erase" : "brush",
+        color:typeof stroke.color === "string" ? stroke.color : "#ff2d2d",
+        size:Number(stroke.size) || 7,
+        points:stroke.points
+        .filter((point)=>point && Number.isFinite(Number(point.x)) && Number.isFinite(Number(point.y)))
+        .map((point)=>({
+            x:Math.round(Number(point.x) * 10) / 10,
+            y:Math.round(Number(point.y) * 10) / 10
+        }))
+    }));
+}
+
+function createPhotoDrawData(basePhoto, canvas){
+    const auditUser = getCurrentAuditUser();
+
+    return {
+        basePhoto:basePhoto || "",
+        strokes:cloneDrawStrokes(drawStrokes),
+        canvasWidth:canvas ? canvas.width : 0,
+        canvasHeight:canvas ? canvas.height : 0,
+        updatedAt:new Date().toISOString(),
+        updatedBy:auditUser.id,
+        updatedByName:auditUser.name
+    };
+}
+
+function getStoredDrawData(target){
+    if(target && target.photoDrawData && typeof target.photoDrawData === "object"){
+        return target.photoDrawData;
+    }
+
+    return null;
+}
+
 async function openMainPhotoDrawEditor(){
     if(!requireStoreEdit()){
         return;
@@ -9869,12 +9946,18 @@ async function openMainPhotoDrawEditor(){
     const interval = showLoading("그림 편집 준비 중...");
 
     try{
-        drawBaseDataUrl = await imageSourceToDataUrl(machine.photo);
-        drawStrokes = [];
+        const storedDrawData = getStoredDrawData(machine);
+        const basePhoto = storedDrawData && storedDrawData.basePhoto
+            ? storedDrawData.basePhoto
+            : machine.photo;
+
+        drawBaseDataUrl = await imageSourceToDataUrl(basePhoto);
+        drawStrokes = cloneDrawStrokes(storedDrawData && storedDrawData.strokes);
         currentDrawStroke = null;
         drawingActive = false;
         drawTarget = {
-            type:"main"
+            type:"main",
+            basePhoto:basePhoto
         };
         setDrawToolMode("brush");
 
@@ -9925,14 +10008,20 @@ async function openEvidencePhotoDrawEditor(index, collectionKey = "evidencePhoto
     const interval = showLoading("그림 편집 준비 중...");
 
     try{
-        drawBaseDataUrl = await imageSourceToDataUrl(photoItem.photo);
-        drawStrokes = [];
+        const storedDrawData = getStoredDrawData(photoItem);
+        const basePhoto = storedDrawData && storedDrawData.basePhoto
+            ? storedDrawData.basePhoto
+            : photoItem.photo;
+
+        drawBaseDataUrl = await imageSourceToDataUrl(basePhoto);
+        drawStrokes = cloneDrawStrokes(storedDrawData && storedDrawData.strokes);
         currentDrawStroke = null;
         drawingActive = false;
         drawTarget = {
             type:"evidence",
             collectionKey:collectionKey,
-            index:index
+            index:index,
+            basePhoto:basePhoto
         };
         setDrawToolMode("brush");
 
@@ -10056,9 +10145,11 @@ async function saveDrawnMainPhoto(){
                     ? "admin_evidence_draw"
                     : "evidence_draw")
             );
+            photoItem.photoDrawData = createPhotoDrawData(target.basePhoto || photoItem.photo, canvas);
             applyAuditFields(photoItem, "photoUpdated");
         }else{
             machine.photo = await uploadDataUrlToStorage(dataUrl, storageImagePath("main_draw"));
+            machine.photoDrawData = createPhotoDrawData(target.basePhoto || machine.photo, canvas);
             applyAuditFields(machine, "photoUpdated");
         }
 
@@ -10195,6 +10286,7 @@ function restoreTrashEntry(index, showAlerts = true){
             photoUpdatedAt:"",
             photoUpdatedBy:"",
             photoUpdatedByName:"",
+            photoDrawData:null,
             memo:"",
             memoUpdatedAt:"",
             memoUpdatedBy:"",
@@ -10419,6 +10511,7 @@ function uploadPhoto(type, sourceMode = "library"){
         try{
             if(type === 0){
                 machine.photo = await compressAndUploadImage(files[0], "main");
+                machine.photoDrawData = null;
                 applyAuditFields(machine, "photoUpdated");
             }else{
                 const collectionKey = type === 2 ? "adminEvidencePhotos" : "evidencePhotos";
@@ -10435,7 +10528,8 @@ function uploadPhoto(type, sourceMode = "library"){
                         createdBy:auditUser.id,
                         createdByName:auditUser.name,
                         memoUpdatedAt:"",
-                        photoUpdatedAt:""
+                        photoUpdatedAt:"",
+                        photoDrawData:null
                     });
 
                     const percent = Math.round(((i + 1) / files.length) * 100);
