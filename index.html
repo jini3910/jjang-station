@@ -29,6 +29,21 @@ body{
     box-shadow:0 4px 14px rgba(0,0,0,0.08);
 }
 
+.container.build-container{
+    max-width:none;
+    min-height:calc(100vh - 30px);
+    padding:10px;
+    border-radius:12px;
+}
+
+.container.build-container .logo-wrap{
+    display:none;
+}
+
+.container.build-container .top-bar{
+    margin-bottom:6px;
+}
+
 .top-bar{
     display:flex;
     align-items:center;
@@ -324,10 +339,43 @@ select{
     opacity:0.25;
     transition:0.2s;
     z-index:5;
+    cursor:grab;
+    touch-action:none;
 }
 
 .settings-btn:hover{
     opacity:1;
+}
+
+.settings-btn:active{
+    cursor:grabbing;
+}
+
+.item-wrapper.dragging{
+    visibility:hidden;
+}
+
+.item-wrapper.drag-over-before .item{
+    box-shadow:0 -4px 0 #2196F3;
+}
+
+.item-wrapper.drag-over-after .item{
+    box-shadow:0 4px 0 #2196F3;
+}
+
+.reorder-ghost{
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:50000;
+    pointer-events:none;
+    opacity:0.92;
+    transform:translate3d(0,0,0);
+    filter:drop-shadow(0 14px 24px rgba(0,0,0,0.2));
+}
+
+.reorder-ghost .admin-menu{
+    display:none !important;
 }
 
 .admin-menu{
@@ -927,7 +975,15 @@ textarea.scroll-mode{
 }
 
 .draw-tools input[type="range"]{
-    width:110px;
+    width:150px;
+}
+
+.draw-size-label{
+    min-width:42px;
+    color:#666;
+    font-size:12px;
+    font-weight:800;
+    text-align:right;
 }
 
 .draw-tools .btn-mini{
@@ -959,14 +1015,33 @@ textarea.scroll-mode{
     align-items:center;
     justify-content:center;
     touch-action:none;
+    position:relative;
 }
 
 #draw-canvas{
     max-width:100%;
     height:auto;
     background:white;
-    cursor:crosshair;
+    cursor:none;
     touch-action:none;
+}
+
+.draw-cursor-preview,
+.build-draw-cursor{
+    position:absolute;
+    border:2px solid rgba(33,150,243,0.9);
+    border-radius:50%;
+    background:rgba(33,150,243,0.08);
+    box-shadow:0 0 0 1px rgba(255,255,255,0.9);
+    pointer-events:none;
+    display:none;
+    z-index:50;
+}
+
+.draw-cursor-preview.eraser,
+.build-draw-cursor.eraser{
+    border-color:rgba(217,83,79,0.95);
+    background:rgba(217,83,79,0.1);
 }
 
 .setting-row{
@@ -1418,6 +1493,39 @@ textarea.scroll-mode{
     background:white;
 }
 
+.account-group{
+    margin-top:10px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    overflow:hidden;
+    background:white;
+}
+
+.account-group-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    width:100%;
+    margin:0;
+    padding:10px 12px;
+    border-radius:0;
+    background:#f6f7f8;
+    color:#222;
+    text-align:left;
+    font-size:13px;
+    font-weight:800;
+}
+
+.account-group-header span:last-child{
+    color:#777;
+    font-size:12px;
+}
+
+.account-group.collapsed .account-table-wrap{
+    display:none;
+}
+
 .account-table{
     width:100%;
     min-width:0;
@@ -1448,6 +1556,16 @@ textarea.scroll-mode{
     border:1px solid #ccc;
     border-radius:6px;
     font-size:11px;
+}
+
+.account-cell-text{
+    white-space:pre-wrap;
+    word-break:break-word;
+    line-height:1.45;
+}
+
+.account-cell-muted{
+    color:#777;
 }
 
 .account-table textarea{
@@ -2147,7 +2265,910 @@ textarea.scroll-mode{
     padding:8px 11px;
 }
 
+.build-layout{
+    position:relative;
+    display:grid;
+    grid-template-columns:190px minmax(0,1fr);
+    gap:12px;
+    align-items:start;
+}
+
+.build-title-row{
+    margin-bottom:6px;
+}
+
+.build-title-row h2{
+    margin:0;
+    color:#666;
+    font-size:13px;
+    font-weight:800;
+}
+
+.build-layout.sidebar-collapsed{
+    grid-template-columns:minmax(0,1fr);
+}
+
+.build-sidebar{
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:14px;
+    background:rgba(255,255,255,0.72);
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    backdrop-filter:blur(8px);
+}
+
+.build-layout.sidebar-collapsed .build-sidebar{
+    position:absolute;
+    top:var(--build-folder-toggle-top,48px);
+    left:0;
+    width:42px;
+    z-index:20;
+    transition:top 0.16s ease;
+}
+
+.build-layout.sidebar-collapsed .build-sidebar.dragging{
+    transition:none;
+}
+
+.build-layout.sidebar-collapsed .build-main{
+    grid-column:1;
+}
+
+.build-sidebar-title{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:11px 12px;
+    border-bottom:1px solid rgba(0,0,0,0.08);
+    background:rgba(255,255,255,0.65);
+    font-size:13px;
+    font-weight:800;
+}
+
+.build-folder-toggle{
+    width:22px;
+    height:22px;
+    margin:0;
+    padding:0;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,0.86);
+    cursor:pointer;
+    font-size:12px;
+    line-height:22px;
+    flex-shrink:0;
+    touch-action:none;
+    user-select:none;
+}
+
+.build-folder-title-text{
+    white-space:nowrap;
+}
+
+.build-layout.sidebar-collapsed .build-sidebar-title{
+    justify-content:center;
+    padding:11px 8px;
+}
+
+.build-layout.sidebar-collapsed .build-folder-title-text,
+.build-layout.sidebar-collapsed .build-folder-list{
+    display:none;
+}
+
+.build-folder-list{
+    display:grid;
+    gap:6px;
+    padding:8px;
+    max-height:520px;
+    overflow:auto;
+}
+
+.build-folder-chip{
+    display:grid;
+    grid-template-columns:34px minmax(0,1fr);
+    align-items:center;
+    gap:8px;
+    padding:9px 10px;
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:11px;
+    background:#fff7c8;
+    cursor:grab;
+    font-size:12px;
+    font-weight:700;
+    word-break:break-word;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+.build-chip-icon,
+.build-chip-thumb{
+    width:34px;
+    height:34px;
+    border-radius:9px;
+    background:rgba(255,255,255,0.75);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.build-chip-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.build-chip-text{
+    min-width:0;
+}
+
+.build-chip-title{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.build-chip-sub{
+    margin-top:2px;
+    color:#777;
+    font-size:10px;
+    font-weight:600;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.build-folder-chip:active{
+    cursor:grabbing;
+}
+
+.build-folder-chip.disabled{
+    opacity:0.55;
+    cursor:not-allowed;
+}
+
+.build-main{
+    min-width:0;
+    position:relative;
+}
+
+.build-toolbar{
+    display:grid;
+    grid-template-columns:minmax(240px,0.9fr) minmax(220px,0.7fr) minmax(360px,1.6fr);
+    align-items:stretch;
+    gap:8px;
+    margin-bottom:6px;
+    padding:6px 7px;
+    border:1px solid rgba(0,0,0,0.1);
+    border-radius:14px;
+    background:rgba(255,255,255,0.82);
+    box-shadow:0 8px 22px rgba(0,0,0,0.08);
+    backdrop-filter:blur(8px);
+}
+
+.build-toolbar-section{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:6px;
+    min-width:0;
+    padding:7px;
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:12px;
+    background:rgba(255,255,255,0.68);
+}
+
+.build-toolbar-section.canvas-section{
+    align-content:flex-start;
+}
+
+.build-toolbar-section.mode-section{
+    justify-content:center;
+}
+
+.build-toolbar-section.history-section{
+    justify-content:center;
+}
+
+.build-toolbar-section.tool-section{
+    justify-content:flex-end;
+}
+
+.build-toolbar-label{
+    flex-basis:100%;
+    color:#666;
+    font-size:11px;
+    font-weight:900;
+    line-height:1.1;
+}
+
+.build-toolbar select,
+.build-toolbar input{
+    width:auto;
+    min-height:28px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    padding:6px 8px;
+    font-size:12px;
+}
+
+.build-size-control{
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.build-size-control input{
+    width:76px;
+}
+
+.build-size-control span{
+    color:#777;
+    font-size:12px;
+    font-weight:800;
+}
+
+.build-toolbar .btn-mini{
+    width:auto;
+    margin:0;
+    padding:5px 8px;
+    border-radius:999px;
+    font-size:12px;
+}
+
+.build-toolbar .btn-mini.active{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0b67b2;
+}
+
+.build-toolbar .btn-mini:disabled{
+    opacity:0.34;
+    cursor:not-allowed;
+}
+
+.build-mode-button{
+    flex:1 1 96px;
+    min-width:96px !important;
+    min-height:44px !important;
+    border-radius:10px !important;
+    font-size:14px !important;
+}
+
+.build-tool-group{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:5px;
+    padding:4px 5px;
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:10px;
+    background:rgba(250,250,250,0.82);
+}
+
+.build-tool-label{
+    color:#777;
+    font-size:10px;
+    font-weight:900;
+}
+
+.build-tool-group input[type="color"]{
+    width:32px;
+    height:28px;
+    padding:0;
+}
+
+.build-tool-group input[type="range"]{
+    width:74px;
+    min-height:26px;
+    padding:0;
+}
+
+.build-tool-divider{
+    width:1px;
+    height:24px;
+    background:rgba(0,0,0,0.12);
+    margin:0 3px;
+}
+
+.build-color-swatch{
+    width:24px;
+    height:24px;
+    margin:0;
+    padding:0;
+    border:1px solid rgba(0,0,0,0.18);
+    border-radius:50%;
+    cursor:pointer;
+}
+
+.build-draw-swatch{
+    width:24px;
+    height:24px;
+    margin:0;
+    padding:0;
+    border:2px solid rgba(0,0,0,0.16);
+    border-radius:50%;
+    cursor:pointer;
+}
+
+.build-draw-swatch.active{
+    border-color:#111;
+    box-shadow:0 0 0 2px rgba(33,150,243,0.22);
+}
+
+.build-draw-size{
+    min-width:28px;
+    height:26px;
+    margin:0;
+    padding:0 7px;
+    border:1px solid rgba(0,0,0,0.16);
+    border-radius:999px;
+    background:white;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:800;
+}
+
+.build-draw-size.active{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0b67b2;
+}
+
+.build-draw-palette{
+    position:absolute;
+    top:44px;
+    right:10px;
+    z-index:30;
+    width:170px;
+    padding:10px;
+    border:1px solid rgba(0,0,0,0.12);
+    border-radius:14px;
+    background:rgba(255,255,255,0.9);
+    box-shadow:0 10px 24px rgba(0,0,0,0.14);
+    backdrop-filter:blur(8px);
+}
+
+.build-palette-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+    margin-bottom:8px;
+    font-size:12px;
+    font-weight:900;
+}
+
+.build-palette-toggle{
+    width:28px;
+    min-height:24px;
+    margin:0;
+    padding:0;
+    border:1px solid rgba(0,0,0,0.14);
+    border-radius:999px;
+    background:white;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:900;
+}
+
+.build-palette-body{
+    display:block;
+}
+
+.build-draw-palette.collapsed{
+    width:auto;
+    padding:7px 8px;
+}
+
+.build-draw-palette.collapsed .build-palette-title{
+    margin-bottom:0;
+}
+
+.build-draw-palette.collapsed .build-palette-body{
+    display:none;
+}
+
+.build-create-preview{
+    position:absolute;
+    z-index:80;
+    border:2px dashed #1a73e8;
+    border-radius:10px;
+    background:rgba(26,115,232,0.12);
+    pointer-events:none;
+}
+
+.build-create-preview.line-preview{
+    border:none;
+    background:transparent;
+    border-radius:0;
+}
+
+.build-create-preview.line-preview::after{
+    display:none;
+}
+
+.build-create-line-svg,
+.build-line-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    overflow:visible;
+    pointer-events:none;
+}
+
+.build-palette-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:6px;
+    margin-bottom:8px;
+}
+
+.build-palette-row input[type="color"]{
+    width:34px;
+    height:28px;
+    padding:0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:white;
+}
+
+.build-palette-row input[type="text"]{
+    width:96px;
+    min-height:28px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:4px 7px;
+    font-size:11px;
+}
+
+.build-palette-row input[type="range"]{
+    width:100%;
+}
+
+.build-palette-label{
+    color:#666;
+    font-size:11px;
+    font-weight:800;
+}
+
+.build-sheet-tabs{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin:0 0 6px;
+    overflow-x:auto;
+}
+
+.build-sheet-tab{
+    width:auto;
+    min-height:28px;
+    margin:0;
+    padding:5px 12px;
+    border:1px solid rgba(0,0,0,0.14);
+    border-radius:999px;
+    background:white;
+    color:#555;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:800;
+}
+
+.build-sheet-tab.active{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0b67b2;
+}
+
+.build-sheet-tab.add{
+    min-width:32px;
+    padding:5px 10px;
+}
+
+.build-palette-button{
+    width:auto;
+    min-height:26px;
+    margin:0;
+    padding:4px 8px;
+    border:1px solid #ddd;
+    border-radius:999px;
+    background:white;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:800;
+}
+
+.build-zoom-label{
+    min-width:46px;
+    text-align:center;
+    color:#555;
+    font-size:12px;
+    font-weight:700;
+}
+
+.build-canvas-scroll{
+    width:100%;
+    height:calc(100vh - 116px);
+    min-height:560px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid rgba(0,0,0,0.14);
+    border-radius:16px;
+    background:#d9dde3;
+    cursor:grab;
+    touch-action:none;
+    user-select:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35);
+}
+
+.build-canvas-scroll.panning{
+    cursor:grabbing;
+}
+
+.build-canvas{
+    position:relative;
+    width:1200px;
+    height:800px;
+    background:#fffdf7;
+    border:1px solid #cfd3d8;
+    box-shadow:0 12px 36px rgba(0,0,0,0.22);
+    overflow:hidden;
+    transform-origin:0 0;
+}
+
+.build-drawing-layer{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+    pointer-events:none;
+}
+
+.build-draw-cursor{
+    z-index:9999;
+}
+
+.build-canvas.draw-mode .build-drawing-layer{
+    pointer-events:auto;
+    cursor:none;
+}
+
+.build-canvas.draw-mode .build-item{
+    pointer-events:none;
+}
+
+.build-item{
+    position:absolute;
+    z-index:2;
+    min-width:90px;
+    min-height:42px;
+    padding:9px 10px;
+    border:1px solid rgba(0,0,0,0.1);
+    border-radius:12px;
+    background:rgba(234,244,255,0.96);
+    box-shadow:0 6px 14px rgba(0,0,0,0.12);
+    cursor:default;
+    font-size:12px;
+    font-weight:800;
+    line-height:1.35;
+    word-break:break-word;
+    overflow:visible;
+}
+
+.build-canvas.edit-mode .build-item{
+    cursor:move;
+}
+
+.build-item.selected{
+    border-color:#1a73e8;
+    box-shadow:0 0 0 3px rgba(26,115,232,0.18), 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.build-item.selected::before{
+    content:"";
+    position:absolute;
+    width:8px;
+    height:8px;
+    border:1px solid #1a73e8;
+    background:white;
+    border-radius:50%;
+}
+
+.build-item.selected::before{
+    top:-7px;
+    left:-7px;
+}
+
+.build-item-text{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    height:calc(100% - 18px);
+    overflow:hidden;
+    white-space:pre-wrap;
+}
+
+.build-item-text.editing{
+    height:100%;
+    outline:none;
+    cursor:text;
+    overflow:auto;
+    user-select:text;
+}
+
+.build-item.shape-item .build-item-text{
+    position:absolute;
+    inset:8px;
+    width:auto;
+    height:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    pointer-events:auto;
+}
+
+.build-text-align-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:4px;
+}
+
+.build-text-align-controls{
+    display:grid;
+    gap:4px;
+}
+
+.build-item-menu .build-align-button{
+    min-width:0;
+    padding:4px 0;
+    font-size:13px;
+    line-height:1;
+}
+
+.build-item-menu .build-align-button.active{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0b67b2;
+}
+
+.build-item.machine-item .build-item-text{
+    width:auto;
+    height:auto;
+}
+
+.build-resize-handle{
+    position:absolute;
+    width:13px;
+    height:13px;
+    border:2px solid #1a73e8;
+    border-radius:50%;
+    background:white;
+    cursor:nwse-resize;
+    display:none;
+    z-index:6;
+}
+
+.build-resize-handle.nw{
+    top:-8px;
+    left:-8px;
+    cursor:nwse-resize;
+}
+
+.build-resize-handle.ne{
+    top:-8px;
+    right:-8px;
+    cursor:nesw-resize;
+}
+
+.build-resize-handle.sw{
+    left:-8px;
+    bottom:-8px;
+    cursor:nesw-resize;
+}
+
+.build-resize-handle.se{
+    right:-8px;
+    bottom:-8px;
+    cursor:nwse-resize;
+}
+
+.build-canvas.edit-mode .build-item.selected .build-resize-handle{
+    display:block;
+}
+
+.build-item-gear,
+.build-item-menu{
+    display:none;
+}
+
+.build-canvas.edit-mode .build-item.selected .build-item-gear,
+.build-canvas.edit-mode .build-item:hover .build-item-gear{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.build-item-menu.active{
+    display:grid;
+}
+
+.build-item.text-item{
+    min-width:140px;
+    min-height:56px;
+    border-color:rgba(0,0,0,0.08);
+    background:#fff7c8;
+    font-weight:600;
+    color:#2b2b2b;
+}
+
+.build-item.text-item .build-item-meta{
+    opacity:0.55;
+}
+
+.build-item.machine-item{
+    padding:6px;
+    background:white;
+}
+
+.build-item.shape-item{
+    padding:0;
+    background:transparent;
+    box-shadow:0 6px 14px rgba(0,0,0,0.08);
+}
+
+.build-item.shape-item.ellipse-shape{
+    border-radius:999px;
+}
+
+.build-item.image-item{
+    padding:0;
+    overflow:hidden;
+    background:white;
+}
+
+.build-item.image-item .build-item-image{
+    width:100%;
+    height:100%;
+}
+
+.build-item.image-item img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    background:#fafafa;
+}
+
+.build-item.shape-item.line-shape{
+    min-height:16px;
+    padding:0;
+    border:none !important;
+    background:transparent !important;
+    box-shadow:none;
+}
+
+.build-item.shape-item.line-shape::after{
+    display:none;
+}
+
+.build-item.shape-item.line-shape .build-item-text{
+    display:none;
+}
+
+.build-item-machine-photo{
+    width:100%;
+    height:calc(100% - 36px);
+    min-height:70px;
+    border-radius:9px;
+    background:#f2f2f2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.build-item-machine-photo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.build-item-machine-title{
+    display:block;
+    padding:5px 2px 0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-weight:800;
+}
+
+.build-item-machine-title.editing{
+    min-height:28px;
+    white-space:pre-wrap;
+    overflow:auto;
+    background:rgba(255,255,255,0.82);
+    border-radius:6px;
+}
+
+.build-item-meta{
+    display:block;
+    margin-top:4px;
+    color:#777;
+    font-size:10px;
+    font-weight:500;
+}
+
+.build-item-gear{
+    position:absolute;
+    top:-10px;
+    right:-10px;
+    width:24px;
+    height:24px;
+    margin:0;
+    padding:0;
+    border-radius:50%;
+    border:1px solid rgba(0,0,0,0.16);
+    background:rgba(255,255,255,0.95);
+    color:#333;
+    font-size:12px;
+    line-height:22px;
+    z-index:8;
+    cursor:pointer;
+}
+
+.build-item-menu{
+    position:absolute;
+    top:18px;
+    right:-6px;
+    min-width:120px;
+    gap:4px;
+    padding:7px;
+    border:1px solid rgba(0,0,0,0.14);
+    border-radius:10px;
+    background:white;
+    box-shadow:0 10px 24px rgba(0,0,0,0.18);
+    z-index:9;
+}
+
+.build-item-menu button,
+.build-item-menu input{
+    width:100%;
+    min-height:26px;
+    margin:0;
+    padding:4px 7px;
+    border:1px solid #ddd;
+    border-radius:7px;
+    background:#fafafa;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:800;
+}
+
+.build-item-menu input{
+    padding:1px;
+}
+
+.build-help{
+    display:none;
+}
+
 @media(max-width:600px){
+    .build-toolbar{
+        grid-template-columns:1fr;
+    }
+
+    .build-toolbar-section.tool-section{
+        justify-content:flex-start;
+    }
+
+    .build-mode-button{
+        flex:1 1 0;
+    }
+
     .grid-3{
         grid-template-columns:repeat(2,1fr);
     }
@@ -2170,6 +3191,10 @@ textarea.scroll-mode{
     }
 
     .board-layout{
+        grid-template-columns:1fr;
+    }
+
+    .build-layout{
         grid-template-columns:1fr;
     }
 
@@ -2213,6 +3238,7 @@ textarea.scroll-mode{
 <div id="side-menu">
     <div class="menu-header">메뉴</div>
     <div class="login-status" id="login-status">보기 전용</div>
+    <div class="menu-item" id="home-menu">🏠 홈</div>
     <div class="menu-item" id="login-menu">로그인</div>
     <div class="login-panel" id="login-panel">
         <input type="text" id="login-id" placeholder="아이디">
@@ -2227,10 +3253,11 @@ textarea.scroll-mode{
                 자동 로그인
             </label>
         </div>
-        <button class="btn-save" id="login-submit">로그인</button>
-        <button class="btn-back" id="logout-submit">로그아웃</button>
+    <button class="btn-save" id="login-submit">로그인</button>
+    <button class="btn-back" id="logout-submit">로그아웃</button>
     </div>
     <div class="menu-item" id="board-menu">📌 게시판</div>
+    <div class="menu-item" id="build-menu">🧱 빌드</div>
     <div class="menu-item" id="figure-catalog-menu">🎁 피규어 도감</div>
     <div class="menu-item" id="admin-menu-toggle">⚙️ 관리</div>
     <div class="submenu" id="admin-submenu">
@@ -2346,7 +3373,8 @@ textarea.scroll-mode{
             <button class="btn-mini" id="draw-eraser-btn">🧽 지우개</button>
             <label>
                 굵기
-                <input type="range" id="draw-size" min="2" max="28" step="1" value="7">
+                <input type="range" id="draw-size" min="1" max="220" step="1" value="7">
+                <span class="draw-size-label" id="draw-size-label">7px</span>
             </label>
             <button class="btn-mini" id="draw-undo-btn">↩️ 되돌리기</button>
             <button class="btn-mini btn-danger" id="draw-clear-btn">모두 지우기</button>
@@ -2411,6 +3439,7 @@ let appData = {
     figureCatalog:[],
     boardCategories:[],
     boardPosts:[],
+    buildBoards:{},
     accounts:{},
     userRoles:{},
     userPasswords:{}
@@ -2429,6 +3458,11 @@ let currentView = "genres";
 let currentGenre = null;
 let currentGenreGroup = null;
 let currentMachine = null;
+let appDataLoaded = false;
+let appDataReadyResolver = null;
+const appDataReadyPromise = new Promise((resolve)=>{
+    appDataReadyResolver = resolve;
+});
 let saving = false;
 let saveQueued = false;
 let queuedCallbacks = [];
@@ -2439,6 +3473,52 @@ let figureCatalogSearch = "";
 let boardCategory = localStorage.getItem("boardCategory") || "notice";
 let boardListMode = localStorage.getItem("boardListMode") || "title";
 let currentBoardPostId = null;
+let accountEditCodes = new Set();
+let buildMode = "view";
+let buildDragItemId = "";
+let buildDragOffsetX = 0;
+let buildDragOffsetY = 0;
+let buildDrawing = false;
+let buildCurrentStroke = null;
+let buildDrawColor = "#ff2d2d";
+let buildDrawSize = 6;
+let buildDrawOpacity = 1;
+let buildShapeColor = "#4dabf7";
+let buildOpenLibraryKeys = new Set();
+let buildSelectedItemId = "";
+let buildPendingTextEditItemId = "";
+let buildActiveTextEdit = null;
+let buildTextEditCanFinish = false;
+let buildResizeItemId = "";
+let buildResizeStartX = 0;
+let buildResizeStartY = 0;
+let buildResizeStartW = 0;
+let buildResizeStartH = 0;
+let buildResizeStartItemX = 0;
+let buildResizeStartItemY = 0;
+let buildAutoSaveTimer = null;
+let buildZoom = 0.65;
+let buildPanX = 40;
+let buildPanY = 40;
+let buildPanning = false;
+let buildPanStartX = 0;
+let buildPanStartY = 0;
+let buildPanOriginX = 0;
+let buildPanOriginY = 0;
+let buildCreateTool = null;
+let buildCreating = false;
+let buildCreateStartX = 0;
+let buildCreateStartY = 0;
+let buildCreatePreviewEl = null;
+let buildViewReady = false;
+let buildFolderToggleDragging = false;
+let buildFolderToggleMoved = false;
+let buildFolderToggleStartY = 0;
+let buildFolderToggleStartTop = 48;
+let buildUndoStacks = {};
+let buildRedoStacks = {};
+let buildHistoryBaselines = {};
+let buildHistoryApplying = false;
 let memoEditMode = false;
 let adminMemoEditMode = false;
 let memoInputListener = null;
@@ -2620,6 +3700,7 @@ function createEmptyStore(){
     return {
         genres:[],
         machines:{},
+        machineOrder:{},
         trash:[],
         siteLogo:null,
         storageUsageBytes:0
@@ -2660,6 +3741,7 @@ function initializeAppData(raw){
             figureCatalog:[],
             boardCategories:[],
             boardPosts:[],
+            buildBoards:{},
             accounts:{},
             userRoles:{},
             userPasswords:{}
@@ -2680,6 +3762,7 @@ function initializeAppData(raw){
             figureCatalog:Array.isArray(raw.figureCatalog) ? raw.figureCatalog : [],
             boardCategories:Array.isArray(raw.boardCategories) ? raw.boardCategories : [],
             boardPosts:Array.isArray(raw.boardPosts) ? raw.boardPosts : [],
+            buildBoards:raw.buildBoards && typeof raw.buildBoards === "object" ? raw.buildBoards : {},
             accounts:raw.accounts && typeof raw.accounts === "object" ? raw.accounts : {},
             userRoles:raw.userRoles && typeof raw.userRoles === "object" ? raw.userRoles : {},
             userPasswords:raw.userPasswords && typeof raw.userPasswords === "object" ? raw.userPasswords : {}
@@ -2730,6 +3813,10 @@ function initializeAppData(raw){
 
     if(!Array.isArray(appData.storeTrash)){
         appData.storeTrash = [];
+    }
+
+    if(!appData.buildBoards || typeof appData.buildBoards !== "object" || Array.isArray(appData.buildBoards)){
+        appData.buildBoards = {};
     }
 
     if(!Array.isArray(appData.figureCatalog)){
@@ -3151,12 +4238,13 @@ function canManageStores(){
 
 function canAccessStore(storeId){
     const role = getCurrentUserRole();
+    const storeIds = Array.isArray(role.storeIds) ? role.storeIds : [];
 
     if(role.role === "master"){
         return true;
     }
 
-    return role.storeIds.includes(storeId);
+    return storeIds.includes("*") || storeIds.includes(storeId);
 }
 
 function canEditCurrentStore(){
@@ -3166,8 +4254,8 @@ function canEditCurrentStore(){
         return true;
     }
 
-    if(role.role === "manager"){
-        return role.storeIds.includes(currentStoreId);
+    if(role.role === "manager" || role.role === "staff"){
+        return role.storeIds.includes("*") || role.storeIds.includes(currentStoreId);
     }
 
     return false;
@@ -3178,7 +4266,7 @@ function requireStoreEdit(){
         return true;
     }
 
-    alert("수정 권한이 없습니다. 지점 관리자 또는 본사 계정으로 로그인하세요.");
+    alert("수정 권한이 없습니다. 접속 가능한 직원 계정으로 로그인하세요.");
     return false;
 }
 
@@ -3359,6 +4447,46 @@ function saveLoginOptions(loginId, password){
     }
 }
 
+function updateLoginAvailability(){
+    const buttons = [
+        document.getElementById("login-submit"),
+        document.getElementById("center-login-submit")
+    ].filter(Boolean);
+
+    buttons.forEach((button)=>{
+        button.disabled = !appDataLoaded;
+        button.innerText = appDataLoaded ? "로그인" : "데이터 로드 중";
+    });
+}
+
+function markAppDataLoaded(){
+    if(appDataLoaded){
+        updateLoginAvailability();
+        return;
+    }
+
+    appDataLoaded = true;
+
+    if(appDataReadyResolver){
+        appDataReadyResolver();
+        appDataReadyResolver = null;
+    }
+
+    updateLoginAvailability();
+}
+
+async function waitForAppDataLoaded(){
+    if(appDataLoaded){
+        return;
+    }
+
+    await withTimeout(
+        appDataReadyPromise,
+        15000,
+        "계정 데이터를 아직 불러오는 중입니다. 잠시 후 다시 시도하세요."
+    );
+}
+
 async function validateLogin(loginId, password){
     const isDefaultMaster =
         loginId === DEFAULT_MASTER_ID &&
@@ -3367,6 +4495,8 @@ async function validateLogin(loginId, password){
     if(isDefaultMaster){
         return "__default_master";
     }
+
+    await waitForAppDataLoaded();
 
     const accountCode = findAccountCodeByLoginId(loginId);
     const account = accountCode ? appData.accounts[accountCode] : null;
@@ -4115,6 +5245,10 @@ function initializeData(){
         data.machines = {};
     }
 
+    if(!data.machineOrder || typeof data.machineOrder !== "object" || Array.isArray(data.machineOrder)){
+        data.machineOrder = {};
+    }
+
     if(!Array.isArray(data.trash)){
         data.trash = [];
     }
@@ -4168,6 +5302,21 @@ function initializeData(){
     data.genres.forEach((genre)=>{
         if(!data.machines[genre] || typeof data.machines[genre] !== "object"){
             data.machines[genre] = {};
+        }
+
+        const machineKeys = Object.keys(data.machines[genre]).sort(naturalMachineCompare);
+
+        if(!Array.isArray(data.machineOrder[genre])){
+            data.machineOrder[genre] = machineKeys;
+        }else{
+            data.machineOrder[genre] = data.machineOrder[genre]
+            .filter((machine)=>machineKeys.includes(machine));
+
+            machineKeys.forEach((machine)=>{
+                if(!data.machineOrder[genre].includes(machine)){
+                    data.machineOrder[genre].push(machine);
+                }
+            });
         }
 
         Object.keys(data.machines[genre]).forEach((machine)=>{
@@ -4438,6 +5587,65 @@ function withTimeout(promise, milliseconds, message){
     });
 }
 
+function cleanUndefinedValues(value){
+    if(Array.isArray(value)){
+        value.forEach((item, index)=>{
+            if(item === undefined){
+                value[index] = "";
+            }else{
+                cleanUndefinedValues(item);
+            }
+        });
+        return value;
+    }
+
+    if(value && typeof value === "object"){
+        Object.keys(value).forEach((key)=>{
+            if(value[key] === undefined){
+                value[key] = "";
+            }else if(typeof value[key] === "number" && !Number.isFinite(value[key])){
+                value[key] = 0;
+            }else{
+                cleanUndefinedValues(value[key]);
+            }
+        });
+    }
+
+    return value;
+}
+
+function initializeBuildOpenLibraryKeys(){
+    try{
+        const saved = JSON.parse(localStorage.getItem("buildOpenLibraryKeys") || "[]");
+
+        if(Array.isArray(saved)){
+            buildOpenLibraryKeys = new Set(saved.filter((key)=>typeof key === "string" && key));
+        }
+    }catch(err){
+        buildOpenLibraryKeys = new Set();
+    }
+
+    const legacyKey = localStorage.getItem("buildOpenLibraryKey") || "";
+
+    if(legacyKey){
+        buildOpenLibraryKeys.add(legacyKey);
+    }
+}
+
+function isBuildLibraryOpen(key){
+    return buildOpenLibraryKeys.has(key);
+}
+
+function toggleBuildLibraryOpen(key){
+    if(buildOpenLibraryKeys.has(key)){
+        buildOpenLibraryKeys.delete(key);
+    }else{
+        buildOpenLibraryKeys.add(key);
+    }
+
+    localStorage.setItem("buildOpenLibraryKeys", JSON.stringify([...buildOpenLibraryKeys]));
+}
+
 function showLoading(text = "저장 중..."){
     const loading = document.getElementById("loading");
     const loadingText = document.getElementById("loading-text");
@@ -4489,6 +5697,7 @@ async function saveData(callback){
 
     try{
         syncCurrentStoreData();
+        cleanUndefinedValues(appData);
 
         const dataSize = getJsonSizeBytes(appData);
 
@@ -5350,7 +6559,7 @@ function render(push = true){
         renderStoreSelector();
         updateStorageBadge();
 
-        if(!canEditCurrentStore()){
+        if(!canViewAdminOnlyItems()){
             adminOnlySelectMode = null;
         }
 
@@ -5359,6 +6568,10 @@ function render(push = true){
         }
 
         const root = document.getElementById("content");
+        const container = document.querySelector(".container");
+        if(container){
+            container.classList.toggle("build-container", currentView === "build");
+        }
         root.innerHTML = "";
 
         if(currentView === "genres" || currentView === "genreGroup"){
@@ -5379,6 +6592,8 @@ function render(push = true){
             renderBoardDetail(root);
         }else if(currentView === "boardCompose"){
             renderBoardCompose(root);
+        }else if(currentView === "build"){
+            renderBuild(root);
         }else if(currentView === "help"){
             renderHelp(root);
         }else{
@@ -5567,7 +6782,7 @@ function getMemoPreviewScope(target = ""){
         "public",
         target
     );
-    const allowedScopes = canEditCurrentStore()
+    const allowedScopes = canViewAdminOnlyItems()
         ? ["both", "public", "admin"]
         : ["public"];
 
@@ -5592,7 +6807,7 @@ function createMemoPreviewScopeSelect(value, target = ""){
             label:"관리자만"
         }
     ]
-    .filter((option)=>canEditCurrentStore() || option.value === "public")
+    .filter((option)=>canViewAdminOnlyItems() || option.value === "public")
     .forEach((option)=>{
         const item = document.createElement("option");
         item.value = option.value;
@@ -5679,7 +6894,26 @@ function applyFolderColor(item, color){
 }
 
 function canViewAdminOnlyItems(){
-    return canEditCurrentStore();
+    const role = getCurrentUserRole();
+
+    if(role.role === "master"){
+        return true;
+    }
+
+    if(role.role === "manager"){
+        return role.storeIds.includes("*") || role.storeIds.includes(currentStoreId);
+    }
+
+    return false;
+}
+
+function requireAdminOnlyManage(){
+    if(canViewAdminOnlyItems()){
+        return true;
+    }
+
+    alert("관리자 전용 항목은 지점 관리자 또는 게임마스터만 설정할 수 있습니다.");
+    return false;
 }
 
 function isAdminOnlyGenre(genre){
@@ -5701,6 +6935,10 @@ function createAdminOnlyBadge(){
 }
 
 function createAdminOnlyModeButton(mode){
+    if(!canViewAdminOnlyItems()){
+        return document.createDocumentFragment();
+    }
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "admin-only-toggle" + (adminOnlySelectMode === mode ? " active" : "");
@@ -5713,7 +6951,7 @@ function createAdminOnlyModeButton(mode){
 }
 
 function toggleAdminOnlyGenre(genre){
-    if(!requireStoreEdit()){
+    if(!requireAdminOnlyManage()){
         return;
     }
 
@@ -5727,7 +6965,7 @@ function toggleAdminOnlyGenre(genre){
 }
 
 function toggleAdminOnlyGroup(group){
-    if(!group || !requireStoreEdit()){
+    if(!group || !requireAdminOnlyManage()){
         return;
     }
 
@@ -5736,7 +6974,7 @@ function toggleAdminOnlyGroup(group){
 }
 
 function toggleAdminOnlyMachine(machineName){
-    if(!requireStoreEdit()){
+    if(!requireAdminOnlyManage()){
         return;
     }
 
@@ -5943,6 +7181,317 @@ function moveGenreByVisibleOrder(genre, direction, visibleGenres, activeGroup){
         [orderList[targetIndex], orderList[currentIndex]];
 
     saveData(()=>render(false));
+}
+
+function moveValueBeforeOrAfter(list, sourceValue, targetValue, placeAfter){
+    if(!Array.isArray(list) || sourceValue === targetValue){
+        return false;
+    }
+
+    const sourceIndex = list.indexOf(sourceValue);
+    let targetIndex = list.indexOf(targetValue);
+
+    if(sourceIndex < 0 || targetIndex < 0){
+        return false;
+    }
+
+    list.splice(sourceIndex, 1);
+
+    if(sourceIndex < targetIndex){
+        targetIndex--;
+    }
+
+    list.splice(targetIndex + (placeAfter ? 1 : 0), 0, sourceValue);
+    return true;
+}
+
+function clearReorderDropMarkers(container){
+    if(!container){
+        return;
+    }
+
+    container.querySelectorAll(".drag-over-before,.drag-over-after").forEach((el)=>{
+        el.classList.remove("drag-over-before", "drag-over-after");
+    });
+}
+
+function attachSettingsReorderDrag(settings, wrap, options){
+    if(
+        !settings ||
+        !wrap ||
+        !options ||
+        !options.container ||
+        (!options.onDrop && !options.onOrder)
+    ){
+        return;
+    }
+
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
+    let dropTarget = null;
+    let placeAfter = false;
+    let ghost = null;
+    let ghostOffsetX = 0;
+    let ghostOffsetY = 0;
+
+    const moveGhost = (event)=>{
+        if(!ghost){
+            return;
+        }
+
+        ghost.style.transform =
+            "translate3d(" +
+            Math.round(event.clientX - ghostOffsetX) +
+            "px," +
+            Math.round(event.clientY - ghostOffsetY) +
+            "px,0)";
+    };
+
+    const removeGhost = ()=>{
+        if(ghost){
+            ghost.remove();
+            ghost = null;
+        }
+    };
+
+    const finish = (event)=>{
+        if(settings.hasPointerCapture && settings.hasPointerCapture(event.pointerId)){
+            settings.releasePointerCapture(event.pointerId);
+        }
+
+        document.body.style.userSelect = "";
+        removeGhost();
+
+        if(!dragging){
+            return;
+        }
+
+        dragging = false;
+        wrap.classList.remove("dragging");
+        clearReorderDropMarkers(options.container);
+        settings.dataset.dragMoved = "1";
+
+        setTimeout(()=>{
+            delete settings.dataset.dragMoved;
+        }, 0);
+
+        if(dropTarget && dropTarget !== wrap && options.onDrop){
+            options.onDrop(
+                options.key,
+                dropTarget.dataset.reorderKey,
+                placeAfter
+            );
+        }else if(dropTarget && options.onOrder){
+            const orderedKeys = Array.from(
+                options.container.querySelectorAll(".item-wrapper[data-reorder-type='" + options.type + "']")
+            ).map((item)=>item.dataset.reorderKey)
+            .filter(Boolean);
+
+            options.onOrder(orderedKeys);
+        }
+    };
+
+    settings.onpointerdown = (event)=>{
+        if(!canEditCurrentStore() || event.button !== 0){
+            return;
+        }
+
+        startX = event.clientX;
+        startY = event.clientY;
+        dragging = false;
+        dropTarget = null;
+        placeAfter = false;
+        settings.setPointerCapture(event.pointerId);
+    };
+
+    settings.onpointermove = (event)=>{
+        if(!settings.hasPointerCapture || !settings.hasPointerCapture(event.pointerId)){
+            return;
+        }
+
+        const moved = Math.hypot(event.clientX - startX, event.clientY - startY);
+
+        if(!dragging && moved < 7){
+            return;
+        }
+
+        if(!dragging){
+            dragging = true;
+            wrap.classList.add("dragging");
+            const rect = wrap.getBoundingClientRect();
+            ghostOffsetX = event.clientX - rect.left;
+            ghostOffsetY = event.clientY - rect.top;
+            ghost = wrap.cloneNode(true);
+            ghost.classList.remove("dragging", "drag-over-before", "drag-over-after");
+            ghost.classList.add("reorder-ghost");
+            ghost.style.width = rect.width + "px";
+            ghost.style.height = rect.height + "px";
+            document.body.appendChild(ghost);
+            moveGhost(event);
+            document.body.style.userSelect = "none";
+        }
+
+        event.preventDefault();
+        moveGhost(event);
+        clearReorderDropMarkers(options.container);
+
+        const underPointer = document.elementFromPoint(event.clientX, event.clientY);
+        const target = underPointer
+            ? underPointer.closest(".item-wrapper[data-reorder-type='" + options.type + "']")
+            : null;
+
+        if(!target || !options.container.contains(target)){
+            dropTarget = null;
+            return;
+        }
+
+        if(target === wrap){
+            dropTarget = null;
+            return;
+        }
+
+        const rect = target.getBoundingClientRect();
+        const sameRowPointer = event.clientY >= rect.top && event.clientY <= rect.bottom;
+        placeAfter = sameRowPointer
+            ? event.clientX > rect.left + rect.width / 2
+            : event.clientY > rect.top + rect.height / 2;
+        target.classList.add(placeAfter ? "drag-over-after" : "drag-over-before");
+        dropTarget = target;
+    };
+
+    settings.onpointerup = finish;
+    settings.onpointercancel = finish;
+}
+
+function getOrderedMachinesForGenre(genre){
+    const machines = data.machines[genre] || {};
+    const machineKeys = Object.keys(machines).sort(naturalMachineCompare);
+
+    if(!data.machineOrder || typeof data.machineOrder !== "object" || Array.isArray(data.machineOrder)){
+        data.machineOrder = {};
+    }
+
+    if(!Array.isArray(data.machineOrder[genre])){
+        data.machineOrder[genre] = machineKeys;
+    }else{
+        data.machineOrder[genre] = data.machineOrder[genre]
+        .filter((machine)=>machineKeys.includes(machine));
+
+        machineKeys.forEach((machine)=>{
+            if(!data.machineOrder[genre].includes(machine)){
+                data.machineOrder[genre].push(machine);
+            }
+        });
+    }
+
+    return data.machineOrder[genre].filter((machine)=>machineKeys.includes(machine));
+}
+
+function mergeVisibleOrderIntoList(list, visibleOrder){
+    const visibleSet = new Set(visibleOrder);
+    let cursor = 0;
+
+    return list.map((value)=>{
+        if(!visibleSet.has(value)){
+            return value;
+        }
+
+        const nextValue = visibleOrder[cursor];
+        cursor++;
+        return nextValue;
+    });
+}
+
+function applyGenreOrderFromDrag(orderedGenres, activeGroup){
+    const orderList = activeGroup ? activeGroup.genres : data.genres;
+    const visibleOrder = orderedGenres.filter((genre)=>orderList.includes(genre));
+    const nextOrder = mergeVisibleOrderIntoList(orderList, visibleOrder);
+
+    if(JSON.stringify(orderList) === JSON.stringify(nextOrder)){
+        return;
+    }
+
+    if(activeGroup){
+        activeGroup.genres = nextOrder;
+    }else{
+        data.genres = nextOrder;
+    }
+
+    saveData(()=>render(false));
+}
+
+function applyGenreGroupOrderFromDrag(orderedGroupIds){
+    const visibleOrder = orderedGroupIds.filter((groupId)=>{
+        return (data.genreGroups || []).some((group)=>group.id === groupId);
+    });
+    const visibleSet = new Set(visibleOrder);
+    let cursor = 0;
+    const nextGroups = (data.genreGroups || []).map((group)=>{
+        if(!visibleSet.has(group.id)){
+            return group;
+        }
+
+        const nextId = visibleOrder[cursor];
+        cursor++;
+        return data.genreGroups.find((entry)=>entry.id === nextId) || group;
+    });
+
+    if(JSON.stringify((data.genreGroups || []).map((group)=>group.id)) === JSON.stringify(nextGroups.map((group)=>group.id))){
+        return;
+    }
+
+    data.genreGroups = nextGroups;
+    saveData(()=>render(false));
+}
+
+function applyMachineOrderFromDrag(orderedMachines){
+    const currentOrder = getOrderedMachinesForGenre(currentGenre);
+    const visibleOrder = orderedMachines.filter((machine)=>currentOrder.includes(machine));
+    const nextOrder = mergeVisibleOrderIntoList(currentOrder, visibleOrder);
+
+    if(JSON.stringify(currentOrder) === JSON.stringify(nextOrder)){
+        return;
+    }
+
+    data.machineOrder[currentGenre] = nextOrder;
+    saveData(()=>render(false));
+}
+
+function reorderGenreByDrag(sourceGenre, targetGenre, placeAfter, activeGroup){
+    const orderList = activeGroup ? activeGroup.genres : data.genres;
+
+    if(moveValueBeforeOrAfter(orderList, sourceGenre, targetGenre, placeAfter)){
+        saveData(()=>render(false));
+    }
+}
+
+function reorderGenreGroupByDrag(sourceGroupId, targetGroupId, placeAfter){
+    const orderList = data.genreGroups || [];
+    const sourceIndex = orderList.findIndex((group)=>group.id === sourceGroupId);
+    let targetIndex = orderList.findIndex((group)=>group.id === targetGroupId);
+
+    if(sourceIndex < 0 || targetIndex < 0 || sourceIndex === targetIndex){
+        return;
+    }
+
+    const [sourceGroup] = orderList.splice(sourceIndex, 1);
+
+    if(sourceIndex < targetIndex){
+        targetIndex--;
+    }
+
+    orderList.splice(targetIndex + (placeAfter ? 1 : 0), 0, sourceGroup);
+    saveData(()=>render(false));
+}
+
+function reorderMachineByDrag(sourceMachine, targetMachine, placeAfter){
+    const orderList = getOrderedMachinesForGenre(currentGenre);
+
+    if(moveValueBeforeOrAfter(orderList, sourceMachine, targetMachine, placeAfter)){
+        data.machineOrder[currentGenre] = orderList;
+        saveData(()=>render(false));
+    }
 }
 
 function normalizeMachineSearchText(value){
@@ -6164,6 +7713,8 @@ function renderGenres(root){
         .forEach((group)=>{
             const wrap = document.createElement("div");
             wrap.className = "item-wrapper";
+            wrap.dataset.reorderType = "genre-group";
+            wrap.dataset.reorderKey = group.id;
 
             const item = document.createElement("div");
             item.className = "item" + (layout === "tile" ? "" : " list-mode");
@@ -6198,8 +7749,20 @@ function renderGenres(root){
             settings.innerText = "⚙️";
             settings.onclick = (event)=>{
                 event.stopPropagation();
+
+                if(settings.dataset.dragMoved === "1"){
+                    return;
+                }
+
                 admin.classList.toggle("active");
             };
+            attachSettingsReorderDrag(settings, wrap, {
+                container:container,
+                type:"genre-group",
+                key:group.id,
+                onDrop:reorderGenreGroupByDrag,
+                onOrder:applyGenreGroupOrderFromDrag
+            });
 
             info.appendChild(name);
             info.appendChild(desc);
@@ -6248,6 +7811,8 @@ function renderGenres(root){
         const index = data.genres.indexOf(genre);
         const wrap = document.createElement("div");
         wrap.className = "item-wrapper";
+        wrap.dataset.reorderType = "genre";
+        wrap.dataset.reorderKey = genre;
 
         const item = document.createElement("div");
         item.className = "item" + (layout === "tile" ? "" : " list-mode");
@@ -6278,8 +7843,24 @@ function renderGenres(root){
         settings.innerText = "⚙️";
         settings.onclick = (event)=>{
             event.stopPropagation();
+
+            if(settings.dataset.dragMoved === "1"){
+                return;
+            }
+
             admin.classList.toggle("active");
         };
+        attachSettingsReorderDrag(settings, wrap, {
+            container:container,
+            type:"genre",
+            key:genre,
+            onDrop:(sourceGenre, targetGenre, placeAfter)=>{
+                reorderGenreByDrag(sourceGenre, targetGenre, placeAfter, activeGroup);
+            },
+            onOrder:(orderedGenres)=>{
+                applyGenreOrderFromDrag(orderedGenres, activeGroup);
+            }
+        });
 
         info.appendChild(name);
         if(isAdminOnlyGenre(genre)){
@@ -6292,16 +7873,6 @@ function renderGenres(root){
 
         const admin = document.createElement("div");
         admin.className = "admin-menu";
-
-        admin.appendChild(createAdminButton("⬆️", (event)=>{
-            event.stopPropagation();
-            moveGenreByVisibleOrder(genre, -1, visibleGenresToRender, activeGroup);
-        }));
-
-        admin.appendChild(createAdminButton("⬇️", (event)=>{
-            event.stopPropagation();
-            moveGenreByVisibleOrder(genre, 1, visibleGenresToRender, activeGroup);
-        }));
 
         admin.appendChild(createAdminButton("색상", (event)=>{
             event.stopPropagation();
@@ -6336,6 +7907,11 @@ function renderGenres(root){
 
             data.genres[index] = newName;
             data.machines[newName] = data.machines[genre] || {};
+
+            if(data.machineOrder && data.machineOrder[genre]){
+                data.machineOrder[newName] = data.machineOrder[genre];
+                delete data.machineOrder[genre];
+            }
 
             if(data.genreColors[genre]){
                 data.genreColors[newName] = data.genreColors[genre];
@@ -6378,6 +7954,7 @@ function renderGenres(root){
 
             data.genres.splice(index, 1);
             delete data.machines[genre];
+            delete data.machineOrder[genre];
             delete data.genreColors[genre];
             delete data.adminOnlyGenres[genre];
 
@@ -6437,6 +8014,7 @@ function renderGenres(root){
 
             data.genres.push(name);
             data.machines[name] = {};
+            data.machineOrder[name] = [];
 
             saveData(()=>render(false));
         }));
@@ -6563,14 +8141,15 @@ function renderMachines(root){
 
     const machines = data.machines[currentGenre] || {};
 
-    Object.keys(machines)
-    .sort(naturalMachineCompare)
+    getOrderedMachinesForGenre(currentGenre)
     .filter((machine)=>canViewAdminOnlyItems() || !isAdminOnlyMachine(machines[machine]))
     .forEach((machine)=>{
         const machineData = machines[machine] || {};
 
         const wrap = document.createElement("div");
         wrap.className = "item-wrapper";
+        wrap.dataset.reorderType = "machine";
+        wrap.dataset.reorderKey = machine;
 
         const item = document.createElement("div");
         item.className = [
@@ -6631,8 +8210,20 @@ function renderMachines(root){
         settings.innerText = "⚙️";
         settings.onclick = (event)=>{
             event.stopPropagation();
+
+            if(settings.dataset.dragMoved === "1"){
+                return;
+            }
+
             admin.classList.toggle("active");
         };
+        attachSettingsReorderDrag(settings, wrap, {
+            container:container,
+            type:"machine",
+            key:machine,
+            onDrop:reorderMachineByDrag,
+            onOrder:applyMachineOrderFromDrag
+        });
 
         item.appendChild(thumbBox);
         item.appendChild(info);
@@ -6673,6 +8264,11 @@ function renderMachines(root){
 
             if(newName !== machine){
                 delete data.machines[currentGenre][machine];
+
+                if(data.machineOrder && Array.isArray(data.machineOrder[currentGenre])){
+                    data.machineOrder[currentGenre] = data.machineOrder[currentGenre]
+                    .map((item)=>item === machine ? newName : item);
+                }
             }
 
             if(currentMachine === machine){
@@ -6698,6 +8294,11 @@ function renderMachines(root){
             });
 
             delete data.machines[currentGenre][machine];
+
+            if(data.machineOrder && Array.isArray(data.machineOrder[currentGenre])){
+                data.machineOrder[currentGenre] = data.machineOrder[currentGenre]
+                .filter((item)=>item !== machine);
+            }
 
             saveData(()=>render(false));
         }));
@@ -6762,6 +8363,14 @@ function renderMachines(root){
             evidencePhotos:[],
             adminEvidencePhotos:[]
         };
+
+        if(!Array.isArray(data.machineOrder[currentGenre])){
+            data.machineOrder[currentGenre] = getOrderedMachinesForGenre(currentGenre);
+        }
+
+        if(!data.machineOrder[currentGenre].includes(number)){
+            data.machineOrder[currentGenre].push(number);
+        }
 
         saveData(()=>render(false));
         }));
@@ -7098,6 +8707,12 @@ function renderDetail(root){
     });
     memoButton.id = "memo-btn";
 
+    const memoClearButton = createButton("btn-back", "모두지우기", ()=>{
+        clearMemoTextarea("memo");
+    });
+    memoClearButton.id = "memo-clear-btn";
+    memoClearButton.style.display = "none";
+
     memoSection.appendChild(publicMemoTitle);
     if(memoTime){
         memoSection.appendChild(memoTime);
@@ -7107,12 +8722,13 @@ function renderDetail(root){
     if(canEditCurrentStore()){
         const memoActions = document.createElement("div");
         memoActions.className = "detail-action-grid";
+        memoActions.appendChild(memoClearButton);
         memoActions.appendChild(memoButton);
         memoSection.appendChild(memoActions);
     }
     root.appendChild(memoSection);
 
-    if(canEditCurrentStore()){
+    if(canViewAdminOnlyItems()){
         const adminMemoSection = document.createElement("div");
         adminMemoSection.className = "memo-section admin-private-section";
 
@@ -7148,6 +8764,12 @@ function renderDetail(root){
         });
         adminMemoButton.id = "admin-memo-btn";
 
+        const adminMemoClearButton = createButton("btn-back", "모두지우기", ()=>{
+            clearMemoTextarea("admin-memo");
+        });
+        adminMemoClearButton.id = "admin-memo-clear-btn";
+        adminMemoClearButton.style.display = "none";
+
         adminMemoSection.appendChild(adminMemoTitle);
         if(adminMemoTime){
             adminMemoSection.appendChild(adminMemoTime);
@@ -7156,6 +8778,7 @@ function renderDetail(root){
         adminMemoSection.appendChild(adminMemoToggle);
         const adminMemoActions = document.createElement("div");
         adminMemoActions.className = "detail-action-grid";
+        adminMemoActions.appendChild(adminMemoClearButton);
         adminMemoActions.appendChild(adminMemoButton);
         adminMemoSection.appendChild(adminMemoActions);
         root.appendChild(adminMemoSection);
@@ -7171,7 +8794,7 @@ function renderDetail(root){
         private:false
     }));
 
-    if(canEditCurrentStore()){
+    if(canViewAdminOnlyItems()){
         root.appendChild(createEvidenceSection(machine, {
             collectionKey:"adminEvidencePhotos",
             title:"관리자 전용 추가 사진",
@@ -8066,7 +9689,7 @@ function createBoardComposer(post = null){
             post,
             category:category.value,
             scope:scope.value,
-            adminOnly:adminOnlyInput.checked,
+            adminOnly:canViewAdminOnlyItems() && adminOnlyInput.checked,
             title:nextTitle,
             body:nextBody,
             existingImages,
@@ -8075,7 +9698,9 @@ function createBoardComposer(post = null){
     });
 
     form.appendChild(row);
-    form.appendChild(adminOnlyLabel);
+    if(canViewAdminOnlyItems()){
+        form.appendChild(adminOnlyLabel);
+    }
     form.appendChild(title);
     form.appendChild(body);
     form.appendChild(attachmentTools);
@@ -8599,6 +10224,3283 @@ function renderBoardCompose(root){
     }));
 }
 
+function createBuildItemId(){
+    return "build_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 8);
+}
+
+function getCurrentBuildBoard(){
+    if(!appData.buildBoards || typeof appData.buildBoards !== "object"){
+        appData.buildBoards = {};
+    }
+
+    if(!appData.buildBoards[currentStoreId] || typeof appData.buildBoards[currentStoreId] !== "object"){
+        appData.buildBoards[currentStoreId] = {
+            width:2400,
+            height:1600,
+            items:[],
+            strokes:[],
+            updatedAt:"",
+            updatedByName:""
+        };
+    }
+
+    const board = appData.buildBoards[currentStoreId];
+
+    board.width = Number(board.width) || 2400;
+    board.height = Number(board.height) || 1600;
+
+    if(!Array.isArray(board.sheets) || board.sheets.length === 0){
+        board.sheets = [{
+            id:createBuildSheetId(),
+            name:"시트1",
+            items:Array.isArray(board.items) ? board.items : [],
+            strokes:Array.isArray(board.strokes) ? board.strokes : []
+        }];
+    }
+
+    board.sheets.forEach((sheet, index)=>{
+        if(!sheet.id){
+            sheet.id = createBuildSheetId();
+        }
+
+        if(!sheet.name){
+            sheet.name = "시트" + (index + 1);
+        }
+
+        if(!Array.isArray(sheet.items)){
+            sheet.items = [];
+        }
+
+        if(!Array.isArray(sheet.strokes)){
+            sheet.strokes = [];
+        }
+    });
+
+    if(!board.activeSheetId || !board.sheets.some((sheet)=>sheet.id === board.activeSheetId)){
+        board.activeSheetId = board.sheets[0].id;
+    }
+
+    const activeSheet = getCurrentBuildSheet(board);
+    board.items = activeSheet.items;
+    board.strokes = activeSheet.strokes;
+
+    board.items.forEach((item, index)=>{
+        if(!Number.isFinite(Number(item.z))){
+            item.z = index + 1;
+        }
+
+        if(typeof item.id !== "string" || !item.id){
+            item.id = createBuildItemId();
+        }
+
+        if(typeof item.type !== "string" || !item.type){
+            item.type = "folder";
+        }
+
+        if(item.type === "shape" && typeof item.shape !== "string"){
+            item.shape = "rect";
+        }
+
+        [
+            "genre",
+            "groupId",
+            "machine",
+            "text",
+            "photo",
+            "color",
+            "createdAt",
+            "createdByName",
+            "updatedAt",
+            "updatedByName"
+        ].forEach((key)=>{
+            if(typeof item[key] !== "string"){
+                item[key] = "";
+            }
+        });
+
+        if(!["left", "center", "right"].includes(item.textAlign)){
+            item.textAlign = "";
+        }
+
+        if(!["top", "middle", "bottom"].includes(item.textVAlign)){
+            item.textVAlign = "";
+        }
+
+        item.x = Number.isFinite(Number(item.x)) ? Number(item.x) : 0;
+        item.y = Number.isFinite(Number(item.y)) ? Number(item.y) : 0;
+        item.w = Number.isFinite(Number(item.w)) ? Number(item.w) : 150;
+        item.h = Number.isFinite(Number(item.h)) ? Number(item.h) : 58;
+        item.rotation = Number.isFinite(Number(item.rotation)) ? Number(item.rotation) : 0;
+        item.lineX1 = Number.isFinite(Number(item.lineX1)) ? Number(item.lineX1) : 0;
+        item.lineY1 = Number.isFinite(Number(item.lineY1)) ? Number(item.lineY1) : Math.max(1, item.h / 2);
+        item.lineX2 = Number.isFinite(Number(item.lineX2)) ? Number(item.lineX2) : item.w;
+        item.lineY2 = Number.isFinite(Number(item.lineY2)) ? Number(item.lineY2) : Math.max(1, item.h / 2);
+        item.outlineOnly = item.outlineOnly === true;
+    });
+
+    ensureBuildHistoryBaseline(board);
+
+    return board;
+}
+
+function getBuildHistoryKey(){
+    return currentStoreId || "default";
+}
+
+function cloneBuildBoardSnapshot(board){
+    const source = board || getCurrentBuildBoard();
+    const snapshot = {
+        width:Number(source.width) || 2400,
+        height:Number(source.height) || 1600,
+        activeSheetId:source.activeSheetId || "",
+        sheets:JSON.parse(JSON.stringify(source.sheets || [])),
+        updatedAt:source.updatedAt || "",
+        updatedBy:source.updatedBy || "",
+        updatedByName:source.updatedByName || ""
+    };
+
+    return snapshot;
+}
+
+function serializeBuildSnapshot(snapshot){
+    return JSON.stringify(snapshot || {});
+}
+
+function ensureBuildHistoryBaseline(board){
+    const key = getBuildHistoryKey();
+
+    if(!buildHistoryBaselines[key]){
+        buildHistoryBaselines[key] = cloneBuildBoardSnapshot(board);
+    }
+}
+
+function pushBuildHistoryBeforeSave(board){
+    if(buildHistoryApplying){
+        return;
+    }
+
+    const key = getBuildHistoryKey();
+    const currentSnapshot = cloneBuildBoardSnapshot(board);
+    const previousSnapshot = buildHistoryBaselines[key] || currentSnapshot;
+
+    if(serializeBuildSnapshot(previousSnapshot) === serializeBuildSnapshot(currentSnapshot)){
+        return;
+    }
+
+    if(!buildUndoStacks[key]){
+        buildUndoStacks[key] = [];
+    }
+
+    buildUndoStacks[key].push(previousSnapshot);
+
+    if(buildUndoStacks[key].length > 60){
+        buildUndoStacks[key].shift();
+    }
+
+    buildRedoStacks[key] = [];
+}
+
+function setBuildHistoryBaseline(board){
+    buildHistoryBaselines[getBuildHistoryKey()] = cloneBuildBoardSnapshot(board);
+    updateBuildHistoryButtons();
+}
+
+function restoreBuildBoardSnapshot(snapshot){
+    if(!snapshot){
+        return null;
+    }
+
+    if(!appData.buildBoards || typeof appData.buildBoards !== "object"){
+        appData.buildBoards = {};
+    }
+
+    appData.buildBoards[currentStoreId] = JSON.parse(JSON.stringify(snapshot));
+    buildSelectedItemId = "";
+    buildPendingTextEditItemId = "";
+    buildCreateTool = null;
+    buildCreating = false;
+    clearBuildCreatePreview();
+
+    return getCurrentBuildBoard();
+}
+
+function updateBuildHistoryButtons(){
+    const key = getBuildHistoryKey();
+    const undoButton = document.getElementById("build-undo-button");
+    const redoButton = document.getElementById("build-redo-button");
+
+    if(undoButton){
+        undoButton.disabled = !buildUndoStacks[key] || buildUndoStacks[key].length === 0;
+    }
+
+    if(redoButton){
+        redoButton.disabled = !buildRedoStacks[key] || buildRedoStacks[key].length === 0;
+    }
+}
+
+function undoBuildBoard(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const key = getBuildHistoryKey();
+    const undoStack = buildUndoStacks[key] || [];
+
+    if(undoStack.length === 0){
+        alert("되돌릴 작업이 없습니다.");
+        return;
+    }
+
+    const currentSnapshot = cloneBuildBoardSnapshot(getCurrentBuildBoard());
+    const previousSnapshot = undoStack.pop();
+
+    if(!buildRedoStacks[key]){
+        buildRedoStacks[key] = [];
+    }
+
+    buildRedoStacks[key].push(currentSnapshot);
+    buildHistoryApplying = true;
+    const board = restoreBuildBoardSnapshot(previousSnapshot);
+
+    saveBuildBoard(()=>{
+        buildHistoryApplying = false;
+        setBuildHistoryBaseline(board);
+        render(false);
+    });
+}
+
+function redoBuildBoard(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const key = getBuildHistoryKey();
+    const redoStack = buildRedoStacks[key] || [];
+
+    if(redoStack.length === 0){
+        alert("앞으로 되돌릴 작업이 없습니다.");
+        return;
+    }
+
+    const currentSnapshot = cloneBuildBoardSnapshot(getCurrentBuildBoard());
+    const nextSnapshot = redoStack.pop();
+
+    if(!buildUndoStacks[key]){
+        buildUndoStacks[key] = [];
+    }
+
+    buildUndoStacks[key].push(currentSnapshot);
+    buildHistoryApplying = true;
+    const board = restoreBuildBoardSnapshot(nextSnapshot);
+
+    saveBuildBoard(()=>{
+        buildHistoryApplying = false;
+        setBuildHistoryBaseline(board);
+        render(false);
+    });
+}
+
+function isBuildTextInputTarget(target){
+    if(!target){
+        return false;
+    }
+
+    const tagName = target.tagName ? target.tagName.toLowerCase() : "";
+
+    return tagName === "input" ||
+        tagName === "textarea" ||
+        tagName === "select" ||
+        target.isContentEditable ||
+        !!target.closest(".build-item-text.editing");
+}
+
+function handleBuildUndoRedoShortcut(event){
+    if(event.defaultPrevented){
+        return false;
+    }
+
+    if(currentView !== "build"){
+        return false;
+    }
+
+    if(!(event.ctrlKey || event.metaKey)){
+        return false;
+    }
+
+    if(isBuildTextInputTarget(event.target)){
+        return false;
+    }
+
+    const key = event.key.toLowerCase();
+
+    if(event.shiftKey && key === "z"){
+        event.preventDefault();
+        redoBuildBoard();
+        return true;
+    }
+
+    if(key === "z"){
+        event.preventDefault();
+        undoBuildBoard();
+        return true;
+    }
+
+    if(key === "y"){
+        event.preventDefault();
+        redoBuildBoard();
+        return true;
+    }
+
+    return false;
+}
+
+function getBuildFolderToggleTop(){
+    return Math.max(8, Math.min(720, Number(localStorage.getItem("buildFolderToggleTop")) || 48));
+}
+
+function setBuildFolderToggleTop(layout, top){
+    const nextTop = Math.max(8, Math.min(Math.max(120, window.innerHeight - 140), Math.round(Number(top) || 48)));
+
+    if(layout){
+        layout.style.setProperty("--build-folder-toggle-top", nextTop + "px");
+    }
+
+    localStorage.setItem("buildFolderToggleTop", String(nextTop));
+}
+
+function createBuildSheetId(){
+    return "sheet_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 7);
+}
+
+function getCurrentBuildSheet(board){
+    const targetBoard = board || getCurrentBuildBoard();
+    return targetBoard.sheets.find((sheet)=>sheet.id === targetBoard.activeSheetId) ||
+        targetBoard.sheets[0];
+}
+
+function switchBuildSheet(sheetId){
+    const board = getCurrentBuildBoard();
+
+    if(!board.sheets.some((sheet)=>sheet.id === sheetId)){
+        return;
+    }
+
+    board.activeSheetId = sheetId;
+    buildSelectedItemId = "";
+    saveBuildBoard(()=>render(false), false);
+}
+
+function addBuildSheet(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const sheet = {
+        id:createBuildSheetId(),
+        name:"시트" + (board.sheets.length + 1),
+        items:[],
+        strokes:[]
+    };
+
+    board.sheets.push(sheet);
+    board.activeSheetId = sheet.id;
+    buildSelectedItemId = "";
+    saveBuildBoard(()=>render(false));
+}
+
+function renameBuildSheet(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const sheet = getCurrentBuildSheet(board);
+
+    if(!sheet){
+        return;
+    }
+
+    let name = prompt("시트 이름을 입력하세요.", sheet.name || "");
+
+    if(name === null){
+        return;
+    }
+
+    name = sanitizeText(name);
+
+    if(!name){
+        alert("시트 이름을 입력하세요.");
+        return;
+    }
+
+    sheet.name = name;
+    saveBuildBoard(()=>render(false));
+}
+
+function duplicateBuildSheet(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const sheet = getCurrentBuildSheet(board);
+
+    if(!sheet){
+        return;
+    }
+
+    const clone = {
+        id:createBuildSheetId(),
+        name:(sheet.name || "시트") + " 복사",
+        items:JSON.parse(JSON.stringify(sheet.items || [])),
+        strokes:JSON.parse(JSON.stringify(sheet.strokes || []))
+    };
+
+    clone.items.forEach((item)=>{
+        item.id = createBuildItemId();
+        item.createdAt = new Date().toISOString();
+        item.createdByName = getCurrentDisplayName();
+        item.updatedAt = "";
+        item.updatedByName = "";
+    });
+
+    clone.strokes.forEach((stroke)=>{
+        stroke.id = createBuildItemId();
+        stroke.createdAt = new Date().toISOString();
+        stroke.createdByName = getCurrentDisplayName();
+    });
+
+    const index = board.sheets.findIndex((entry)=>entry.id === sheet.id);
+    board.sheets.splice(index + 1, 0, clone);
+    board.activeSheetId = clone.id;
+    buildSelectedItemId = "";
+    saveBuildBoard(()=>render(false));
+}
+
+function deleteBuildSheet(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const sheet = getCurrentBuildSheet(board);
+
+    if(!sheet){
+        return;
+    }
+
+    if(board.sheets.length <= 1){
+        alert("시트는 최소 1개가 필요합니다.");
+        return;
+    }
+
+    if(!confirm((sheet.name || "현재 시트") + " 시트를 삭제할까요?")){
+        return;
+    }
+
+    board.sheets = board.sheets.filter((entry)=>entry.id !== sheet.id);
+    board.activeSheetId = board.sheets[0].id;
+    buildSelectedItemId = "";
+    saveBuildBoard(()=>render(false));
+}
+
+function getBuildSelectedItem(){
+    const board = getCurrentBuildBoard();
+    return board.items.find((item)=>item.id === buildSelectedItemId) || null;
+}
+
+function selectBuildItem(itemId){
+    buildSelectedItemId = itemId || "";
+
+    document.querySelectorAll(".build-item.selected").forEach((el)=>{
+        el.classList.remove("selected");
+    });
+
+    if(buildSelectedItemId){
+        const selected = document.querySelector('[data-build-item-id="' + buildSelectedItemId + '"]');
+
+        if(selected){
+            selected.classList.add("selected");
+        }
+    }
+}
+
+function getNextBuildZ(board){
+    return board.items.reduce((max, item)=>{
+        return Math.max(max, Number(item.z) || 0);
+    }, 0) + 1;
+}
+
+function getBuildPoint(event, canvas){
+    const rect = canvas.getBoundingClientRect();
+
+    return {
+        x:Math.max(0, Math.min(canvas.offsetWidth, (event.clientX - rect.left) / buildZoom)),
+        y:Math.max(0, Math.min(canvas.offsetHeight, (event.clientY - rect.top) / buildZoom))
+    };
+}
+
+function applyBuildTransform(){
+    const canvas = document.getElementById("build-canvas");
+    const label = document.getElementById("build-zoom-label");
+
+    if(canvas){
+        canvas.style.transform =
+            "translate(" + buildPanX + "px, " + buildPanY + "px) scale(" + buildZoom + ")";
+    }
+
+    if(label){
+        label.innerText = Math.round(buildZoom * 100) + "%";
+    }
+}
+
+function zoomBuildView(nextZoom, centerX, centerY){
+    const viewport = document.getElementById("build-viewport");
+    const oldZoom = buildZoom;
+    const clampedZoom = Math.max(0.15, Math.min(2.5, nextZoom));
+
+    if(!viewport || clampedZoom === oldZoom){
+        buildZoom = clampedZoom;
+        applyBuildTransform();
+        return;
+    }
+
+    const rect = viewport.getBoundingClientRect();
+    const viewportX = centerX - rect.left;
+    const viewportY = centerY - rect.top;
+    const boardX = (viewportX - buildPanX) / oldZoom;
+    const boardY = (viewportY - buildPanY) / oldZoom;
+
+    buildZoom = clampedZoom;
+    buildPanX = viewportX - boardX * buildZoom;
+    buildPanY = viewportY - boardY * buildZoom;
+    applyBuildTransform();
+}
+
+function fitBuildView(){
+    const viewport = document.getElementById("build-viewport");
+    const board = getCurrentBuildBoard();
+
+    if(!viewport){
+        return;
+    }
+
+    const fitX = (viewport.clientWidth - 80) / board.width;
+    const fitY = (viewport.clientHeight - 80) / board.height;
+
+    buildZoom = Math.max(0.15, Math.min(1, fitX, fitY));
+    buildPanX = Math.max(30, (viewport.clientWidth - board.width * buildZoom) / 2);
+    buildPanY = Math.max(30, (viewport.clientHeight - board.height * buildZoom) / 2);
+    applyBuildTransform();
+}
+
+function resetBuildView(){
+    buildZoom = 1;
+    buildPanX = 40;
+    buildPanY = 40;
+    applyBuildTransform();
+}
+
+function setBuildBoardSize(width, height){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const nextWidth = Math.round(Math.max(800, Math.min(20000, Number(width) || board.width || 2400)));
+    const nextHeight = Math.round(Math.max(800, Math.min(20000, Number(height) || board.height || 1600)));
+
+    board.width = nextWidth;
+    board.height = nextHeight;
+    saveBuildBoard(()=>render(false));
+}
+
+function updateBuildAudit(board){
+    const auditUser = getCurrentAuditUser();
+    board.updatedAt = new Date().toISOString();
+    board.updatedBy = auditUser.id;
+    board.updatedByName = auditUser.name;
+}
+
+function setBuildMode(mode){
+    const allowedModes = ["view", "edit", "draw"];
+    buildMode = allowedModes.includes(mode) ? mode : "view";
+
+    const canvas = document.getElementById("build-canvas");
+    const viewBtn = document.getElementById("build-view-mode");
+    const editBtn = document.getElementById("build-edit-mode");
+    const drawBtn = document.getElementById("build-draw-mode");
+
+    if(canvas){
+        canvas.classList.toggle("draw-mode", buildMode === "draw");
+        canvas.classList.toggle("edit-mode", buildMode === "edit");
+    }
+
+    if(viewBtn){
+        viewBtn.classList.toggle("active", buildMode === "view");
+    }
+
+    if(editBtn){
+        editBtn.classList.toggle("active", buildMode === "edit");
+    }
+
+    if(drawBtn){
+        drawBtn.classList.toggle("active", buildMode === "draw");
+    }
+
+    if(buildMode !== "edit"){
+        buildCreateTool = null;
+    }
+
+    if(buildMode !== "draw"){
+        hideBuildDrawCursor(canvas);
+    }
+
+    document.querySelectorAll(".build-folder-chip").forEach((chip)=>{
+        chip.draggable = canEditCurrentStore() && buildMode === "edit";
+        chip.classList.toggle("disabled", buildMode !== "edit");
+    });
+
+    updateBuildDrawToolUI();
+    updateBuildCreateToolUI();
+}
+
+function renderBuildStrokes(svg, board){
+    svg.innerHTML = "";
+
+    board.strokes.forEach((stroke)=>{
+        if(!stroke || !Array.isArray(stroke.points) || stroke.points.length === 0){
+            return;
+        }
+
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+        polyline.setAttribute("points", stroke.points.map((point)=>point.x + "," + point.y).join(" "));
+        polyline.setAttribute("fill", "none");
+        polyline.setAttribute("stroke", stroke.color || "#ff2d2d");
+        polyline.setAttribute("stroke-width", String(Number(stroke.size) || 6));
+        polyline.setAttribute("stroke-opacity", String(Number(stroke.opacity) || 1));
+        polyline.setAttribute("stroke-linecap", "round");
+        polyline.setAttribute("stroke-linejoin", "round");
+        svg.appendChild(polyline);
+    });
+}
+
+function getBuildDrawCursor(canvas){
+    if(!canvas){
+        return null;
+    }
+
+    let cursor = canvas.querySelector(".build-draw-cursor");
+
+    if(!cursor){
+        cursor = document.createElement("div");
+        cursor.className = "build-draw-cursor";
+        canvas.appendChild(cursor);
+    }
+
+    return cursor;
+}
+
+function updateBuildDrawCursor(event, canvas){
+    if(!canvas || buildMode !== "draw" || !event){
+        return;
+    }
+
+    const cursor = getBuildDrawCursor(canvas);
+    const point = getBuildPoint(event, canvas);
+    const size = Math.max(1, Number(buildDrawSize) || 1);
+
+    if(!cursor){
+        return;
+    }
+
+    cursor.style.width = size + "px";
+    cursor.style.height = size + "px";
+    cursor.style.left = (point.x - size / 2) + "px";
+    cursor.style.top = (point.y - size / 2) + "px";
+    cursor.classList.toggle("eraser", buildDrawColor === "#fffdf7");
+    cursor.style.display = "block";
+}
+
+function hideBuildDrawCursor(canvas){
+    const targetCanvas = canvas || document.getElementById("build-canvas");
+    const cursor = targetCanvas ? targetCanvas.querySelector(".build-draw-cursor") : null;
+
+    if(cursor){
+        cursor.style.display = "none";
+    }
+}
+
+function saveBuildBoard(callback, trackHistory=true){
+    const board = getCurrentBuildBoard();
+
+    if(trackHistory){
+        pushBuildHistoryBeforeSave(board);
+    }
+
+    updateBuildAudit(board);
+    return saveData(()=>{
+        setBuildHistoryBaseline(board);
+
+        if(callback){
+            callback();
+        }else{
+            render(false);
+        }
+    });
+}
+
+function scheduleBuildBoardSave(){
+    clearTimeout(buildAutoSaveTimer);
+    buildAutoSaveTimer = setTimeout(()=>{
+        const board = getCurrentBuildBoard();
+        pushBuildHistoryBeforeSave(board);
+        updateBuildAudit(board);
+        saveData(()=>{
+            setBuildHistoryBaseline(board);
+        });
+    }, 500);
+}
+
+function getBuildLibraryItems(){
+    const items = [];
+
+    (data.genreGroups || [])
+    .filter((group)=>canViewAdminOnlyItems() || !group.adminOnly)
+    .forEach((group)=>{
+        items.push({
+            kind:"group",
+            title:group.name,
+            subText:"대폴더 · " + ((group.genres || []).length) + "개 폴더",
+            color:group.color || "#f0dcff",
+            icon:"🗂",
+            payload:{
+                type:"group",
+                groupId:group.id,
+                text:group.name,
+                color:group.color || "#f0dcff"
+            }
+        });
+    });
+
+    (data.genres || [])
+    .filter((genre)=>canViewAdminOnlyItems() || !isAdminOnlyGenre(genre))
+    .forEach((genre)=>{
+        const machines = data.machines[genre] || {};
+
+        items.push({
+            kind:"folder",
+            title:genre,
+            subText:"폴더 · " + Object.keys(machines).length + "개 정답지",
+            color:data.genreColors && data.genreColors[genre] ? data.genreColors[genre] : "#fff7c8",
+            icon:"📁",
+            payload:{
+                type:"folder",
+                genre:genre,
+                text:genre,
+                color:data.genreColors && data.genreColors[genre] ? data.genreColors[genre] : "#fff7c8"
+            }
+        });
+
+        Object.keys(machines)
+        .sort(naturalMachineCompare)
+        .filter((machine)=>canViewAdminOnlyItems() || !isAdminOnlyMachine(machines[machine]))
+        .forEach((machine)=>{
+            const machineData = machines[machine] || {};
+
+            items.push({
+                kind:"machine",
+                title:machine + "번",
+                subText:genre,
+                photo:machineData.photo || "",
+                payload:{
+                    type:"machine",
+                    genre:genre,
+                    machine:machine,
+                    text:machine + "번",
+                    photo:machineData.photo || "",
+                    color:"#ffffff"
+                }
+            });
+        });
+    });
+
+    return items;
+}
+
+function getBuildLibraryRows(){
+    const rows = [];
+    const groupedGenres = getGroupedGenres();
+
+    (data.genreGroups || [])
+    .filter((group)=>canViewAdminOnlyItems() || !group.adminOnly)
+    .forEach((group)=>{
+        const key = "group:" + group.id;
+        const isOpen = isBuildLibraryOpen(key);
+
+        rows.push({
+            kind:"group",
+            key:key,
+            open:isOpen,
+            title:group.name,
+            subText:(group.genres || []).length + "개 폴더",
+            color:group.color || "#f0dcff",
+            icon:isOpen ? "▾" : "▸",
+            payload:{
+                type:"group",
+                groupId:group.id,
+                text:group.name,
+                color:group.color || "#f0dcff"
+            }
+        });
+
+        if(isOpen){
+            (group.genres || [])
+            .filter((genre)=>data.genres.includes(genre))
+            .filter((genre)=>canViewAdminOnlyItems() || !isAdminOnlyGenre(genre))
+            .forEach((genre)=>{
+                rows.push(createBuildFolderRow(genre, 1));
+            });
+        }
+    });
+
+    (data.genres || [])
+    .filter((genre)=>!groupedGenres.has(genre))
+    .filter((genre)=>canViewAdminOnlyItems() || !isAdminOnlyGenre(genre))
+    .forEach((genre)=>{
+        rows.push(createBuildFolderRow(genre, 0));
+    });
+
+    return rows;
+}
+
+function createBuildFolderRow(genre, depth){
+    const machines = data.machines[genre] || {};
+    const key = "folder:" + genre;
+    const isOpen = isBuildLibraryOpen(key);
+
+    const row = {
+        kind:"folder",
+        key:key,
+        depth:depth || 0,
+        open:isOpen,
+        title:genre,
+        subText:Object.keys(machines).length + "개 정답지",
+        color:data.genreColors && data.genreColors[genre] ? data.genreColors[genre] : "#fff7c8",
+        icon:isOpen ? "▾" : "▸",
+        payload:{
+            type:"folder",
+            genre:genre,
+            text:genre,
+            color:data.genreColors && data.genreColors[genre] ? data.genreColors[genre] : "#fff7c8"
+        },
+        children:[]
+    };
+
+    if(isOpen){
+        row.children = Object.keys(machines)
+        .sort(naturalMachineCompare)
+        .filter((machine)=>canViewAdminOnlyItems() || !isAdminOnlyMachine(machines[machine]))
+        .map((machine)=>{
+            const machineData = machines[machine] || {};
+
+            return {
+                kind:"machine",
+                key:"machine:" + genre + ":" + machine,
+                depth:(depth || 0) + 1,
+                title:machine + "번",
+                subText:genre,
+                photo:machineData.photo || "",
+                payload:{
+                    type:"machine",
+                    genre:genre,
+                    machine:machine,
+                    text:machine + "번",
+                    photo:machineData.photo || "",
+                    color:"#ffffff"
+                }
+            };
+        });
+    }
+
+    return row;
+}
+
+function flattenBuildLibraryRows(rows){
+    const flattened = [];
+
+    const visit = (row)=>{
+        flattened.push(row);
+
+        if(Array.isArray(row.children)){
+            row.children.forEach(visit);
+        }
+    };
+
+    rows.forEach(visit);
+
+    return flattened;
+}
+
+function addBuildLibraryItem(payload, x, y){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const itemType = payload && payload.type ? payload.type : "folder";
+    const isMachine = itemType === "machine";
+    const isGroup = itemType === "group";
+    const text = payload && payload.text ? payload.text : "항목";
+
+    board.items.push({
+        id:createBuildItemId(),
+        type:itemType,
+        genre:payload && typeof payload.genre === "string" ? payload.genre : "",
+        groupId:payload && typeof payload.groupId === "string" ? payload.groupId : "",
+        machine:payload && typeof payload.machine === "string" ? payload.machine : "",
+        text:text,
+        photo:payload ? payload.photo || "" : "",
+        color:payload && payload.color ? payload.color : (isMachine ? "#ffffff" : "#fff7c8"),
+        x:Math.round(x),
+        y:Math.round(y),
+        w:isMachine ? 170 : (isGroup ? 170 : 150),
+        h:isMachine ? 150 : 58,
+        z:getNextBuildZ(board),
+        createdAt:new Date().toISOString(),
+        createdByName:getCurrentDisplayName()
+    });
+
+    saveBuildBoard(()=>render(false));
+}
+
+function addBuildFolderItem(genre, x, y){
+    addBuildLibraryItem({
+        type:"folder",
+        genre:genre,
+        text:genre,
+        color:data.genreColors && data.genreColors[genre] ? data.genreColors[genre] : "#fff7c8"
+    }, x, y);
+}
+
+function addBuildTextItem(x, y, force=false){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(buildMode !== "text" && !force){
+        alert("메모를 추가하려면 텍스트 모드를 켜세요.");
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const viewport = document.getElementById("build-viewport");
+    let itemX = Number.isFinite(Number(x)) ? Math.round(Number(x)) : 80;
+    let itemY = Number.isFinite(Number(y)) ? Math.round(Number(y)) : 80;
+
+    if(viewport && !Number.isFinite(Number(x))){
+        itemX = Math.round(Math.max(0, Math.min(
+            board.width - 220,
+            (viewport.clientWidth / 2 - buildPanX) / buildZoom - 100
+        )));
+        itemY = Math.round(Math.max(0, Math.min(
+            board.height - 100,
+            (viewport.clientHeight / 2 - buildPanY) / buildZoom - 40
+        )));
+    }
+
+    itemX = Math.max(0, Math.min(board.width - 220, itemX));
+    itemY = Math.max(0, Math.min(board.height - 120, itemY));
+
+    const id = createBuildItemId();
+
+    board.items.push({
+        id:id,
+        type:"text",
+        text:"텍스트 입력",
+        x:itemX,
+        y:itemY,
+        w:200,
+        h:110,
+        z:getNextBuildZ(board),
+        color:"#fff7c8",
+        createdAt:new Date().toISOString(),
+        createdByName:getCurrentDisplayName()
+    });
+
+    buildSelectedItemId = id;
+    buildPendingTextEditItemId = id;
+    saveBuildBoard(()=>render(false));
+}
+
+function getBuildViewportCenterPosition(defaultWidth, defaultHeight){
+    const board = getCurrentBuildBoard();
+    const viewport = document.getElementById("build-viewport");
+    const width = Number(defaultWidth) || 220;
+    const height = Number(defaultHeight) || 160;
+
+    if(!viewport){
+        return {
+            x:80,
+            y:80
+        };
+    }
+
+    return {
+        x:Math.round(Math.max(0, Math.min(
+            board.width - width,
+            (viewport.clientWidth / 2 - buildPanX) / buildZoom - width / 2
+        ))),
+        y:Math.round(Math.max(0, Math.min(
+            board.height - height,
+            (viewport.clientHeight / 2 - buildPanY) / buildZoom - height / 2
+        )))
+    };
+}
+
+async function addBuildImageFromFile(file){
+    if(!file || !requireStoreEdit()){
+        return;
+    }
+
+    const interval = showLoading("빌드 사진 추가 중...");
+
+    try{
+        const url = await compressAndUploadImage(file, "build_image");
+        const board = getCurrentBuildBoard();
+        const position = getBuildViewportCenterPosition(240, 180);
+        const auditUser = getCurrentAuditUser();
+
+        board.items.push({
+            id:createBuildItemId(),
+            type:"image",
+            text:file.name || "사진",
+            photo:url,
+            x:position.x,
+            y:position.y,
+            w:240,
+            h:180,
+            z:getNextBuildZ(board),
+            color:"#ffffff",
+            createdAt:new Date().toISOString(),
+            createdBy:auditUser.id,
+            createdByName:auditUser.name
+        });
+
+        await saveBuildBoard(()=>{
+            render(false);
+        });
+        hideLoading(interval);
+    }catch(err){
+        hideLoading(interval);
+        console.error(err);
+        alert("빌드 사진 추가 실패: " + err.message);
+    }
+}
+
+function openBuildImagePicker(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    document.body.appendChild(input);
+
+    input.onchange = async(event)=>{
+        const file = event.target.files && event.target.files[0];
+
+        if(file){
+            await addBuildImageFromFile(file);
+        }
+
+        if(input.parentNode){
+            input.parentNode.removeChild(input);
+        }
+    };
+
+    input.oncancel = ()=>{
+        if(input.parentNode){
+            input.parentNode.removeChild(input);
+        }
+    };
+
+    input.click();
+}
+
+function addBuildShapeItem(shape, outlineOnly){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(buildMode !== "edit"){
+        alert("도형을 추가하려면 편집 모드를 켜세요.");
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const viewport = document.getElementById("build-viewport");
+    let itemX = 80;
+    let itemY = 80;
+
+    if(viewport){
+        itemX = Math.round(Math.max(0, Math.min(
+            board.width - 180,
+            (viewport.clientWidth / 2 - buildPanX) / buildZoom - 80
+        )));
+        itemY = Math.round(Math.max(0, Math.min(
+            board.height - 140,
+            (viewport.clientHeight / 2 - buildPanY) / buildZoom - 60
+        )));
+    }
+
+    const id = createBuildItemId();
+
+    board.items.push({
+        id:id,
+        type:"shape",
+        shape:shape || "rect",
+        outlineOnly:!!outlineOnly,
+        text:"",
+        x:itemX,
+        y:itemY,
+        w:160,
+        h:120,
+        z:getNextBuildZ(board),
+        color:buildShapeColor || buildDrawColor || "#4dabf7",
+        createdAt:new Date().toISOString(),
+        createdByName:getCurrentDisplayName()
+    });
+
+    buildSelectedItemId = id;
+    saveBuildBoard(()=>render(false));
+}
+
+function setBuildCreateTool(tool){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    buildCreateTool = tool || null;
+    setBuildMode("edit");
+    updateBuildCreateToolUI();
+}
+
+function updateBuildCreateToolUI(){
+    const activeKey = buildCreateTool ? buildCreateTool.key || buildCreateTool.type || "" : "";
+
+    document.querySelectorAll("[data-build-create-tool]").forEach((button)=>{
+        button.classList.toggle("active", button.dataset.buildCreateTool === activeKey);
+    });
+}
+
+function getBuildCreateMinimum(tool){
+    if(!tool){
+        return {
+            w:80,
+            h:42
+        };
+    }
+
+    if(tool.type === "text"){
+        return {
+            w:120,
+            h:70
+        };
+    }
+
+    if(tool.shape === "line"){
+        return {
+            w:40,
+            h:18
+        };
+    }
+
+    return {
+        w:40,
+        h:40
+    };
+}
+
+function getBuildCreateDefault(tool){
+    if(tool && tool.type === "text"){
+        return {
+            w:200,
+            h:110
+        };
+    }
+
+    if(tool && tool.shape === "line"){
+        return {
+            w:180,
+            h:18
+        };
+    }
+
+    return {
+        w:160,
+        h:120
+    };
+}
+
+function getBuildCreateBox(startX, startY, endX, endY, tool){
+    const min = getBuildCreateMinimum(tool);
+    const fallback = getBuildCreateDefault(tool);
+
+    if(tool && tool.shape === "line"){
+        const rawDx = endX - startX;
+        const rawDy = endY - startY;
+        const isTiny = Math.abs(rawDx) < min.w && Math.abs(rawDy) < min.w;
+        const finalEndX = isTiny ? startX + fallback.w : endX;
+        const finalEndY = isTiny ? startY : endY;
+        const padding = 10;
+        const x = Math.min(startX, finalEndX) - padding;
+        const y = Math.min(startY, finalEndY) - padding;
+        const w = Math.max(min.w, Math.abs(finalEndX - startX) + padding * 2);
+        const h = Math.max(18, Math.abs(finalEndY - startY) + padding * 2);
+
+        return {
+            x:Math.round(Math.max(0, x)),
+            y:Math.round(Math.max(0, y)),
+            w:Math.round(w),
+            h:Math.round(h),
+            lineX1:Math.round(startX - x),
+            lineY1:Math.round(startY - y),
+            lineX2:Math.round(finalEndX - x),
+            lineY2:Math.round(finalEndY - y)
+        };
+    }
+
+    let x = Math.min(startX, endX);
+    let y = Math.min(startY, endY);
+    let w = Math.abs(endX - startX);
+    let h = Math.abs(endY - startY);
+
+    if(w < min.w && h < min.h){
+        x = startX;
+        y = startY;
+        w = fallback.w;
+        h = fallback.h;
+    }else{
+        w = Math.max(min.w, w);
+        h = Math.max(min.h, h);
+    }
+
+    return {
+        x:Math.round(Math.max(0, x)),
+        y:Math.round(Math.max(0, y)),
+        w:Math.round(w),
+        h:Math.round(h)
+    };
+}
+
+function updateBuildCreatePreview(canvas, box, tool){
+    if(!buildCreatePreviewEl){
+        buildCreatePreviewEl = document.createElement("div");
+        buildCreatePreviewEl.className = "build-create-preview";
+        canvas.appendChild(buildCreatePreviewEl);
+    }
+
+    buildCreatePreviewEl.classList.toggle("line-preview", tool && tool.shape === "line");
+    buildCreatePreviewEl.style.left = box.x + "px";
+    buildCreatePreviewEl.style.top = box.y + "px";
+    buildCreatePreviewEl.style.width = box.w + "px";
+    buildCreatePreviewEl.style.height = box.h + "px";
+    buildCreatePreviewEl.style.transform = "";
+
+    if(tool && tool.shape === "line"){
+        buildCreatePreviewEl.innerHTML = "";
+        const lineX1 = Number.isFinite(Number(box.lineX1)) ? Number(box.lineX1) : 0;
+        const lineY1 = Number.isFinite(Number(box.lineY1)) ? Number(box.lineY1) : 0;
+        const lineX2 = Number.isFinite(Number(box.lineX2)) ? Number(box.lineX2) : box.w;
+        const lineY2 = Number.isFinite(Number(box.lineY2)) ? Number(box.lineY2) : 0;
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.classList.add("build-create-line-svg");
+        svg.setAttribute("viewBox", "0 0 " + box.w + " " + box.h);
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", String(lineX1));
+        line.setAttribute("y1", String(lineY1));
+        line.setAttribute("x2", String(lineX2));
+        line.setAttribute("y2", String(lineY2));
+        line.setAttribute("stroke", "#1a73e8");
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("stroke-dasharray", "7 5");
+        line.setAttribute("stroke-linecap", "round");
+        svg.appendChild(line);
+        buildCreatePreviewEl.appendChild(svg);
+    }else{
+        buildCreatePreviewEl.innerHTML = "";
+    }
+}
+
+function clearBuildCreatePreview(){
+    if(buildCreatePreviewEl){
+        buildCreatePreviewEl.style.transform = "";
+        buildCreatePreviewEl.remove();
+        buildCreatePreviewEl = null;
+    }
+}
+
+function addBuildCreatedItem(tool, box){
+    if(!tool){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const id = createBuildItemId();
+    const now = new Date().toISOString();
+
+    if(tool.type === "text"){
+        board.items.push({
+            id:id,
+            type:"text",
+            text:"텍스트 입력",
+            x:box.x,
+            y:box.y,
+            w:box.w,
+            h:box.h,
+            z:getNextBuildZ(board),
+            color:"#fff7c8",
+            createdAt:now,
+            createdByName:getCurrentDisplayName()
+        });
+        buildPendingTextEditItemId = id;
+    }else{
+        board.items.push({
+            id:id,
+            type:"shape",
+            shape:tool.shape || "rect",
+            outlineOnly:tool.outlineOnly === true,
+            text:"",
+            x:box.x,
+            y:box.y,
+            w:box.w,
+            h:box.h,
+            lineX1:Number.isFinite(Number(box.lineX1)) ? Number(box.lineX1) : 0,
+            lineY1:Number.isFinite(Number(box.lineY1)) ? Number(box.lineY1) : 0,
+            lineX2:Number.isFinite(Number(box.lineX2)) ? Number(box.lineX2) : box.w,
+            lineY2:Number.isFinite(Number(box.lineY2)) ? Number(box.lineY2) : 0,
+            z:getNextBuildZ(board),
+            color:buildShapeColor || buildDrawColor || "#4dabf7",
+            createdAt:now,
+            createdByName:getCurrentDisplayName()
+        });
+    }
+
+    buildSelectedItemId = id;
+    saveBuildBoard(()=>render(false));
+}
+
+function editBuildItem(itemId){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const item = board.items.find((entry)=>entry.id === itemId);
+
+    if(!item){
+        return;
+    }
+
+    if(item.type === "folder"){
+        alert("폴더 이름은 폴더 목록에서 수정됩니다.");
+        return;
+    }
+
+    let text = prompt("텍스트 수정", item.text || "");
+
+    if(text === null){
+        return;
+    }
+
+    text = String(text || "").trim();
+
+    if(!text){
+        alert("텍스트를 입력하세요.");
+        return;
+    }
+
+    item.text = text;
+    item.updatedAt = new Date().toISOString();
+    item.updatedByName = getCurrentDisplayName();
+    saveBuildBoard(()=>render(false));
+}
+
+function deleteBuildItem(itemId){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!confirm("이 항목을 삭제할까요?")){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const itemIndex = board.items.findIndex((item)=>item.id === itemId);
+
+    if(itemIndex < 0){
+        return;
+    }
+
+    board.items.splice(itemIndex, 1);
+    const activeSheet = getCurrentBuildSheet(board);
+    activeSheet.items = board.items;
+
+    if(buildSelectedItemId === itemId){
+        buildSelectedItemId = "";
+    }
+    saveBuildBoard(()=>render(false));
+}
+
+function clearBuildDrawing(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!confirm("그림 표시를 모두 지울까요?")){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    board.strokes = [];
+    saveBuildBoard(()=>render(false));
+}
+
+function undoBuildDrawing(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+
+    if(!board.strokes.length){
+        return;
+    }
+
+    board.strokes.pop();
+    saveBuildBoard(()=>render(false));
+}
+
+function updateBuildDrawToolUI(){
+    document.querySelectorAll(".build-draw-swatch").forEach((button)=>{
+        button.classList.toggle(
+            "active",
+            button.dataset.color === buildDrawColor &&
+            Number(button.dataset.opacity || 1) === buildDrawOpacity
+        );
+    });
+
+    document.querySelectorAll(".build-draw-size").forEach((button)=>{
+        button.classList.toggle("active", Number(button.dataset.size) === buildDrawSize);
+    });
+}
+
+function setBuildDrawTool(color, size, opacity){
+    buildDrawColor = color || buildDrawColor;
+    buildDrawSize = Number(size) || buildDrawSize;
+    buildDrawOpacity = Number.isFinite(Number(opacity)) ? Number(opacity) : 1;
+    updateBuildDrawToolUI();
+    setBuildMode("draw");
+}
+
+function createBuildDrawSwatch(color, opacity, label){
+    const button = document.createElement("button");
+    button.className = "build-draw-swatch";
+    button.type = "button";
+    button.dataset.color = color;
+    button.dataset.opacity = String(opacity);
+    button.title = label;
+    button.style.background = color;
+    button.style.opacity = String(Math.max(0.45, Number(opacity) || 1));
+    button.onclick = ()=>{
+        setBuildDrawTool(color, buildDrawSize, opacity);
+    };
+    return button;
+}
+
+function createBuildDrawSizeButton(size){
+    const button = document.createElement("button");
+    button.className = "build-draw-size";
+    button.type = "button";
+    button.dataset.size = String(size);
+    const labels = {
+        3:"얇게",
+        6:"보통",
+        12:"굵게",
+        22:"매우 굵게"
+    };
+    button.innerText = labels[size] || String(size);
+    button.title = "펜 굵기 " + size;
+    button.onclick = ()=>{
+        setBuildDrawTool(buildDrawColor, size, buildDrawOpacity);
+    };
+    return button;
+}
+
+function appendBuildToolDivider(toolbar){
+    const divider = document.createElement("span");
+    divider.className = "build-tool-divider";
+    toolbar.appendChild(divider);
+}
+
+function getBuildFavoriteColors(){
+    try{
+        const saved = JSON.parse(localStorage.getItem("buildFavoriteColors") || "[]");
+
+        if(Array.isArray(saved) && saved.length){
+            return saved.filter((color)=>/^#[0-9a-fA-F]{6}$/.test(color)).slice(0, 10);
+        }
+    }catch(err){
+    }
+
+    return ["#ff2d2d", "#1976d2", "#2e7d32", "#111111", "#ffd54f"];
+}
+
+function normalizeBuildColor(value){
+    const text = String(value || "").trim();
+
+    if(/^#[0-9a-fA-F]{6}$/.test(text)){
+        return text;
+    }
+
+    const rgb = text.match(/^rgb\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i);
+
+    if(rgb){
+        const parts = rgb.slice(1).map((part)=>Math.max(0, Math.min(255, Number(part) || 0)));
+        return "#" + parts.map((part)=>part.toString(16).padStart(2, "0")).join("");
+    }
+
+    return "";
+}
+
+function rgbTextFromHex(color){
+    const normalized = normalizeBuildColor(color);
+
+    if(!normalized){
+        return "";
+    }
+
+    const value = normalized.slice(1);
+    return "rgb(" +
+        parseInt(value.slice(0, 2), 16) + "," +
+        parseInt(value.slice(2, 4), 16) + "," +
+        parseInt(value.slice(4, 6), 16) + ")";
+}
+
+function saveBuildFavoriteColor(color){
+    color = normalizeBuildColor(color);
+
+    if(!color){
+        return;
+    }
+
+    const colors = getBuildFavoriteColors().filter((item)=>item.toLowerCase() !== color.toLowerCase());
+    colors.unshift(color);
+    localStorage.setItem("buildFavoriteColors", JSON.stringify(colors.slice(0, 10)));
+    render(false);
+}
+
+function renderBuildDrawPalette(root){
+    const palette = document.createElement("div");
+    palette.className = "build-draw-palette";
+    const collapsed = localStorage.getItem("buildDrawPaletteCollapsed") === "1";
+
+    if(collapsed){
+        palette.classList.add("collapsed");
+    }
+
+    const title = document.createElement("div");
+    title.className = "build-palette-title";
+
+    const titleText = document.createElement("span");
+    titleText.innerText = "그리기 팔레트";
+    title.appendChild(titleText);
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "build-palette-toggle";
+    toggle.innerText = collapsed ? "▶" : "▼";
+    toggle.title = collapsed ? "팔레트 펼치기" : "팔레트 접기";
+    toggle.onclick = ()=>{
+        const nextCollapsed = !palette.classList.contains("collapsed");
+        palette.classList.toggle("collapsed", nextCollapsed);
+        toggle.innerText = nextCollapsed ? "▶" : "▼";
+        toggle.title = nextCollapsed ? "팔레트 펼치기" : "팔레트 접기";
+        localStorage.setItem("buildDrawPaletteCollapsed", nextCollapsed ? "1" : "0");
+    };
+    title.appendChild(toggle);
+    palette.appendChild(title);
+
+    const body = document.createElement("div");
+    body.className = "build-palette-body";
+
+    const colorRow = document.createElement("div");
+    colorRow.className = "build-palette-row";
+
+    const colorInput = document.createElement("input");
+    colorInput.type = "color";
+    colorInput.value = buildDrawColor;
+    colorInput.oninput = ()=>{
+        setBuildDrawTool(colorInput.value, buildDrawSize, 1);
+        colorText.value = rgbTextFromHex(colorInput.value);
+    };
+    colorRow.appendChild(colorInput);
+
+    const colorText = document.createElement("input");
+    colorText.type = "text";
+    colorText.placeholder = "rgb(255,0,0)";
+    colorText.value = rgbTextFromHex(buildDrawColor);
+    colorText.onchange = ()=>{
+        const normalized = normalizeBuildColor(colorText.value);
+
+        if(!normalized){
+            alert("색상은 #ff0000 또는 rgb(255,0,0) 형식으로 입력하세요.");
+            colorText.value = rgbTextFromHex(buildDrawColor);
+            return;
+        }
+
+        colorInput.value = normalized;
+        setBuildDrawTool(normalized, buildDrawSize, 1);
+        colorText.value = rgbTextFromHex(normalized);
+    };
+    colorRow.appendChild(colorText);
+
+    const saveColor = document.createElement("button");
+    saveColor.type = "button";
+    saveColor.className = "build-palette-button";
+    saveColor.innerText = "색 저장";
+    saveColor.onclick = ()=>saveBuildFavoriteColor(buildDrawColor);
+    colorRow.appendChild(saveColor);
+    body.appendChild(colorRow);
+
+    const favoriteRow = document.createElement("div");
+    favoriteRow.className = "build-palette-row";
+    getBuildFavoriteColors().forEach((color)=>{
+        favoriteRow.appendChild(createBuildDrawSwatch(color, 1, color));
+    });
+    body.appendChild(favoriteRow);
+
+    const sizeLabel = document.createElement("div");
+    sizeLabel.className = "build-palette-label";
+    sizeLabel.id = "build-size-label";
+    sizeLabel.innerText = "두께 " + buildDrawSize;
+    body.appendChild(sizeLabel);
+
+    const sizeRow = document.createElement("div");
+    sizeRow.className = "build-palette-row";
+    const sizeInput = document.createElement("input");
+    sizeInput.type = "range";
+    sizeInput.min = "1";
+    sizeInput.max = "260";
+    sizeInput.value = String(buildDrawSize);
+    sizeInput.oninput = ()=>{
+        buildDrawSize = Number(sizeInput.value) || 6;
+        sizeLabel.innerText = "두께 " + buildDrawSize;
+        setBuildDrawTool(buildDrawColor, buildDrawSize, buildDrawOpacity);
+    };
+    sizeRow.appendChild(sizeInput);
+    body.appendChild(sizeRow);
+
+    const actionRow = document.createElement("div");
+    actionRow.className = "build-palette-row";
+
+    const marker = document.createElement("button");
+    marker.type = "button";
+    marker.className = "build-palette-button";
+    marker.innerText = "형광";
+    marker.onclick = ()=>setBuildDrawTool("#ffd54f", Math.max(18, buildDrawSize), 0.45);
+    actionRow.appendChild(marker);
+
+    const eraser = document.createElement("button");
+    eraser.type = "button";
+    eraser.className = "build-palette-button";
+    eraser.innerText = "지우개";
+    eraser.onclick = ()=>setBuildDrawTool("#fffdf7", Math.max(24, buildDrawSize), 1);
+    actionRow.appendChild(eraser);
+
+    const undo = document.createElement("button");
+    undo.type = "button";
+    undo.className = "build-palette-button";
+    undo.innerText = "되돌리기";
+    undo.onclick = undoBuildDrawing;
+    actionRow.appendChild(undo);
+
+    body.appendChild(actionRow);
+    palette.appendChild(body);
+    root.appendChild(palette);
+}
+
+function renderBuildSheetTabs(root, board){
+    const tabs = document.createElement("div");
+    tabs.className = "build-sheet-tabs";
+
+    board.sheets.forEach((sheet)=>{
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "build-sheet-tab" + (sheet.id === board.activeSheetId ? " active" : "");
+        button.innerText = sheet.name;
+        button.onclick = ()=>{
+            switchBuildSheet(sheet.id);
+        };
+        tabs.appendChild(button);
+    });
+
+    const add = document.createElement("button");
+    add.type = "button";
+    add.className = "build-sheet-tab add";
+    add.innerText = "+";
+    add.onclick = addBuildSheet;
+    tabs.appendChild(add);
+
+    const rename = document.createElement("button");
+    rename.type = "button";
+    rename.className = "build-sheet-tab";
+    rename.innerText = "이름수정";
+    rename.onclick = renameBuildSheet;
+    tabs.appendChild(rename);
+
+    const duplicate = document.createElement("button");
+    duplicate.type = "button";
+    duplicate.className = "build-sheet-tab";
+    duplicate.innerText = "복제";
+    duplicate.onclick = duplicateBuildSheet;
+    tabs.appendChild(duplicate);
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "build-sheet-tab";
+    remove.innerText = "삭제";
+    remove.onclick = deleteBuildSheet;
+    tabs.appendChild(remove);
+
+    root.appendChild(tabs);
+}
+
+function duplicateBuildItem(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(buildMode !== "edit"){
+        alert("복제하려면 편집 모드를 켜세요.");
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const item = getBuildSelectedItem();
+
+    if(!item){
+        alert("복제할 도형을 선택하세요.");
+        return;
+    }
+
+    const copy = {
+        ...item,
+        id:createBuildItemId(),
+        x:Math.min(board.width - 80, (Number(item.x) || 0) + 28),
+        y:Math.min(board.height - 60, (Number(item.y) || 0) + 28),
+        z:getNextBuildZ(board),
+        createdAt:new Date().toISOString(),
+        createdByName:getCurrentDisplayName(),
+        updatedAt:"",
+        updatedByName:""
+    };
+
+    board.items.push(copy);
+    buildSelectedItemId = copy.id;
+    saveBuildBoard(()=>render(false));
+}
+
+function bringBuildItemForward(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(buildMode !== "edit"){
+        alert("앞뒤 순서를 바꾸려면 편집 모드를 켜세요.");
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const item = getBuildSelectedItem();
+
+    if(!item){
+        alert("앞으로 보낼 도형을 선택하세요.");
+        return;
+    }
+
+    item.z = getNextBuildZ(board);
+    item.updatedAt = new Date().toISOString();
+    item.updatedByName = getCurrentDisplayName();
+    saveBuildBoard(()=>render(false));
+}
+
+function sendBuildItemBackward(){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(buildMode !== "edit"){
+        alert("앞뒤 순서를 바꾸려면 편집 모드를 켜세요.");
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const item = getBuildSelectedItem();
+
+    if(!item){
+        alert("뒤로 보낼 도형을 선택하세요.");
+        return;
+    }
+
+    const minZ = board.items.reduce((min, entry)=>{
+        return Math.min(min, Number(entry.z) || 1);
+    }, Number(item.z) || 1);
+
+    item.z = minZ - 1;
+    item.updatedAt = new Date().toISOString();
+    item.updatedByName = getCurrentDisplayName();
+    saveBuildBoard(()=>render(false));
+}
+
+function setBuildSelectedItemColor(color, saveNow=true){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(buildMode !== "edit"){
+        alert("색상을 바꾸려면 편집 모드를 켜세요.");
+        return;
+    }
+
+    const item = getBuildSelectedItem();
+
+    if(!item){
+        buildShapeColor = color;
+        return;
+    }
+
+    item.color = color;
+    if(item.type === "shape"){
+        buildShapeColor = color;
+    }
+    item.updatedAt = new Date().toISOString();
+    item.updatedByName = getCurrentDisplayName();
+
+    const el = document.querySelector('[data-build-item-id="' + item.id + '"]');
+
+    if(el){
+        if(item.type === "shape"){
+            el.style.setProperty("--build-shape-color", color);
+
+            if(item.shape === "line"){
+                el.style.background = "transparent";
+                el.style.border = "none";
+                const svgLine = el.querySelector(".build-line-svg line");
+
+                if(svgLine){
+                    svgLine.setAttribute("stroke", color);
+                }
+            }else{
+                el.style.background = item.outlineOnly ? "transparent" : color;
+                el.style.border = "3px solid " + color;
+            }
+        }else{
+            el.style.background = color;
+        }
+    }
+
+    if(saveNow){
+        saveBuildBoard(()=>{});
+    }
+}
+
+function createBuildColorSwatch(color){
+    const button = document.createElement("button");
+    button.className = "build-color-swatch";
+    button.type = "button";
+    button.style.background = color;
+    button.title = "선택 도형 색상 변경";
+    button.onclick = ()=>{
+        setBuildSelectedItemColor(color);
+    };
+    return button;
+}
+
+function deleteSelectedBuildItem(){
+    if(buildMode !== "edit"){
+        alert("삭제하려면 편집 모드를 켜세요.");
+        return;
+    }
+
+    if(!buildSelectedItemId){
+        alert("삭제할 도형을 선택하세요.");
+        return;
+    }
+
+    deleteBuildItem(buildSelectedItemId);
+}
+
+function moveBuildSelectedItem(dx, dy){
+    if(!canEditCurrentStore()){
+        return;
+    }
+
+    if(buildMode !== "edit"){
+        return;
+    }
+
+    const board = getCurrentBuildBoard();
+    const item = getBuildSelectedItem();
+
+    if(!item){
+        return;
+    }
+
+    item.x = Math.round(Math.max(0, Math.min(board.width - 40, (Number(item.x) || 0) + dx)));
+    item.y = Math.round(Math.max(0, Math.min(board.height - 30, (Number(item.y) || 0) + dy)));
+    item.updatedAt = new Date().toISOString();
+    item.updatedByName = getCurrentDisplayName();
+
+    const el = document.querySelector('[data-build-item-id="' + item.id + '"]');
+
+    if(el){
+        el.style.left = item.x + "px";
+        el.style.top = item.y + "px";
+    }
+
+    saveBuildBoard(()=>{});
+}
+
+function resizeBuildItem(item, el, width, height){
+    item.w = Math.round(Math.max(80, width));
+    item.h = Math.round(Math.max(item.shape === "line" ? 16 : 42, height));
+    item.updatedAt = new Date().toISOString();
+    item.updatedByName = getCurrentDisplayName();
+    el.style.width = item.w + "px";
+    el.style.height = item.h + "px";
+}
+
+function resizeBuildItemFromHandle(item, el, direction, event){
+    const dx = (event.clientX - buildResizeStartX) / buildZoom;
+    const dy = (event.clientY - buildResizeStartY) / buildZoom;
+    const minW = item.shape === "line" ? 40 : 80;
+    const minH = item.shape === "line" ? 16 : 42;
+
+    let nextX = buildResizeStartItemX;
+    let nextY = buildResizeStartItemY;
+    let nextW = buildResizeStartW;
+    let nextH = buildResizeStartH;
+
+    if(direction.includes("e")){
+        nextW = buildResizeStartW + dx;
+    }
+
+    if(direction.includes("s")){
+        nextH = buildResizeStartH + dy;
+    }
+
+    if(direction.includes("w")){
+        nextW = buildResizeStartW - dx;
+        nextX = buildResizeStartItemX + dx;
+
+        if(nextW < minW){
+            nextX -= minW - nextW;
+            nextW = minW;
+        }
+    }
+
+    if(direction.includes("n")){
+        nextH = buildResizeStartH - dy;
+        nextY = buildResizeStartItemY + dy;
+
+        if(nextH < minH){
+            nextY -= minH - nextH;
+            nextH = minH;
+        }
+    }
+
+    item.x = Math.round(Math.max(0, nextX));
+    item.y = Math.round(Math.max(0, nextY));
+    resizeBuildItem(item, el, nextW, nextH);
+    el.style.left = item.x + "px";
+    el.style.top = item.y + "px";
+}
+
+function getBuildTextAlign(item){
+    if(item && ["left", "center", "right"].includes(item.textAlign)){
+        return item.textAlign;
+    }
+
+    return item && item.type === "shape" ? "center" : "left";
+}
+
+function getBuildTextVAlign(item){
+    if(item && ["top", "middle", "bottom"].includes(item.textVAlign)){
+        return item.textVAlign;
+    }
+
+    return item && item.type === "shape" ? "middle" : "top";
+}
+
+function applyBuildTextLayout(item, textEl){
+    if(!textEl){
+        return;
+    }
+
+    const align = getBuildTextAlign(item);
+    const valign = getBuildTextVAlign(item);
+    const horizontalMap = {
+        left:"flex-start",
+        center:"center",
+        right:"flex-end"
+    };
+    const verticalMap = {
+        top:"flex-start",
+        middle:"center",
+        bottom:"flex-end"
+    };
+
+    textEl.style.textAlign = align;
+
+    if(item && item.type === "shape"){
+        textEl.style.justifyContent = verticalMap[valign] || "center";
+        textEl.style.alignItems = horizontalMap[align] || "center";
+    }else{
+        textEl.style.justifyContent = verticalMap[valign] || "flex-start";
+        textEl.style.alignItems = "stretch";
+    }
+}
+
+function finishBuildTextEdit(saveNow=true){
+    if(!buildActiveTextEdit){
+        return;
+    }
+
+    const active = buildActiveTextEdit;
+    buildActiveTextEdit = null;
+    buildTextEditCanFinish = false;
+
+    active.item.text = active.textEl.innerText;
+    active.item.updatedAt = new Date().toISOString();
+    active.item.updatedByName = getCurrentDisplayName();
+    active.textEl.contentEditable = "false";
+    active.textEl.classList.remove("editing");
+    active.textEl.onkeydown = null;
+    applyBuildTextLayout(active.item, active.textEl);
+
+    if(saveNow){
+        saveBuildBoard(()=>{});
+    }
+}
+
+function setBuildTextAlign(item, textEl, align, valign=null){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    item.textAlign = align || getBuildTextAlign(item);
+
+    if(valign){
+        item.textVAlign = valign;
+    }
+
+    item.updatedAt = new Date().toISOString();
+    item.updatedByName = getCurrentDisplayName();
+    applyBuildTextLayout(item, textEl);
+    saveBuildBoard(()=>{});
+}
+
+function createBuildAlignButton(label, title, active, onClick){
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "build-align-button" + (active ? " active" : "");
+    button.innerText = label;
+    button.title = title;
+    button.onclick = (event)=>{
+        event.preventDefault();
+        event.stopPropagation();
+        onClick();
+    };
+    return button;
+}
+
+function createBuildTextAlignControls(item, textEl){
+    const wrap = document.createElement("div");
+    wrap.className = "build-text-align-controls";
+
+    const horizontal = document.createElement("div");
+    horizontal.className = "build-text-align-row";
+    horizontal.appendChild(createBuildAlignButton("☰←", "왼쪽 정렬", getBuildTextAlign(item) === "left", ()=>{
+        setBuildTextAlign(item, textEl, "left");
+    }));
+    horizontal.appendChild(createBuildAlignButton("☰", "가운데 정렬", getBuildTextAlign(item) === "center", ()=>{
+        setBuildTextAlign(item, textEl, "center");
+    }));
+    horizontal.appendChild(createBuildAlignButton("→☰", "오른쪽 정렬", getBuildTextAlign(item) === "right", ()=>{
+        setBuildTextAlign(item, textEl, "right");
+    }));
+    wrap.appendChild(horizontal);
+
+    const vertical = document.createElement("div");
+    vertical.className = "build-text-align-row";
+    vertical.appendChild(createBuildAlignButton("↥", "위쪽 정렬", getBuildTextVAlign(item) === "top", ()=>{
+        setBuildTextAlign(item, textEl, getBuildTextAlign(item), "top");
+    }));
+    vertical.appendChild(createBuildAlignButton("↕", "세로 중앙", getBuildTextVAlign(item) === "middle", ()=>{
+        setBuildTextAlign(item, textEl, getBuildTextAlign(item), "middle");
+    }));
+    vertical.appendChild(createBuildAlignButton("↧", "아래쪽 정렬", getBuildTextVAlign(item) === "bottom", ()=>{
+        setBuildTextAlign(item, textEl, getBuildTextAlign(item), "bottom");
+    }));
+    wrap.appendChild(vertical);
+
+    return wrap;
+}
+
+function startBuildTextEdit(item, textEl, force=false){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(buildMode !== "text" && !force){
+        alert("텍스트를 수정하려면 텍스트 모드를 켜세요.");
+        return;
+    }
+
+    finishBuildTextEdit(true);
+    buildActiveTextEdit = {
+        item,
+        textEl
+    };
+    buildTextEditCanFinish = false;
+    textEl.contentEditable = "true";
+    textEl.classList.add("editing");
+    applyBuildTextLayout(item, textEl);
+    textEl.focus();
+
+    const range = document.createRange();
+    range.selectNodeContents(textEl);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    textEl.onkeydown = (event)=>{
+        if(event.key === "Escape"){
+            event.preventDefault();
+            finishBuildTextEdit(true);
+        }
+
+        if((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s"){
+            event.preventDefault();
+            finishBuildTextEdit(true);
+        }
+    };
+
+    setTimeout(()=>{
+        buildTextEditCanFinish = true;
+    }, 0);
+}
+
+function renderBuildItem(item, canvas){
+    const el = document.createElement("div");
+    el.className = [
+        "build-item",
+        item.type === "text" ? "text-item" : "",
+        item.type === "machine" ? "machine-item" : "",
+        item.type === "image" ? "image-item" : "",
+        item.type === "shape" ? "shape-item" : "",
+        item.type === "shape" && item.shape === "ellipse" ? "ellipse-shape" : "",
+        item.type === "shape" && item.shape === "line" ? "line-shape" : "",
+        item.type === "group" ? "group-item" : "",
+        item.type === "folder" ? "folder-item" : ""
+    ].filter(Boolean).join(" ");
+    el.dataset.buildItemId = item.id;
+    el.style.left = (Number(item.x) || 0) + "px";
+    el.style.top = (Number(item.y) || 0) + "px";
+    el.style.width = (Number(item.w) || 150) + "px";
+    el.style.height = (Number(item.h) || 58) + "px";
+    el.style.zIndex = String(2 + (Number(item.z) || 1));
+    el.style.transform = "";
+    el.style.transformOrigin = "";
+
+
+    if(item.id === buildSelectedItemId){
+        el.classList.add("selected");
+    }
+
+    if(item.type === "image"){
+        el.style.background = "white";
+    }else if(item.type === "shape"){
+        const shapeColor = item.color || "#4dabf7";
+        el.style.setProperty("--build-shape-color", shapeColor);
+
+        if(item.shape === "line"){
+            el.style.background = "transparent";
+            el.style.border = "none";
+        }else{
+            el.style.background = item.outlineOnly ? "transparent" : shapeColor;
+            el.style.border = "3px solid " + shapeColor;
+        }
+    }else if(item.color){
+        el.style.background = item.color;
+    }
+
+    let textEl = null;
+
+    if(item.type === "shape"){
+        textEl = document.createElement("span");
+        textEl.className = "build-item-text";
+        textEl.innerText = item.text || "";
+
+        if(item.shape === "line"){
+            const lineSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const lineW = Number(item.w) || 1;
+            const lineH = Number(item.h) || 1;
+            const lineX1 = Number.isFinite(Number(item.lineX1)) ? Number(item.lineX1) : 0;
+            const lineY1 = Number.isFinite(Number(item.lineY1)) ? Number(item.lineY1) : Math.max(1, lineH / 2);
+            const lineX2 = Number.isFinite(Number(item.lineX2)) ? Number(item.lineX2) : lineW;
+            const lineY2 = Number.isFinite(Number(item.lineY2)) ? Number(item.lineY2) : Math.max(1, lineH / 2);
+            lineSvg.classList.add("build-line-svg");
+            lineSvg.setAttribute("viewBox", "0 0 " + lineW + " " + lineH);
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", String(lineX1));
+            line.setAttribute("y1", String(lineY1));
+            line.setAttribute("x2", String(lineX2));
+            line.setAttribute("y2", String(lineY2));
+            line.setAttribute("stroke", item.color || "#4dabf7");
+            line.setAttribute("stroke-width", "3");
+            line.setAttribute("stroke-linecap", "round");
+            lineSvg.appendChild(line);
+            el.appendChild(lineSvg);
+        }
+
+        el.appendChild(textEl);
+    }else if(item.type === "image"){
+        const photo = document.createElement("div");
+        photo.className = "build-item-image";
+
+        if(item.photo){
+            const img = document.createElement("img");
+            img.src = item.photo;
+            img.alt = item.text || "빌드 사진";
+            photo.appendChild(img);
+        }else{
+            photo.innerText = "사진 없음";
+        }
+
+        textEl = document.createElement("span");
+        textEl.className = "build-item-text";
+        textEl.innerText = item.text || "";
+        textEl.style.display = "none";
+
+        el.appendChild(photo);
+        el.appendChild(textEl);
+    }else if(item.type === "machine"){
+        const currentMachineData =
+            item.genre &&
+            item.machine &&
+            data.machines[item.genre] &&
+            data.machines[item.genre][item.machine]
+                ? data.machines[item.genre][item.machine]
+                : null;
+        const displayPhoto = item.photo || (currentMachineData ? currentMachineData.photo || "" : "");
+
+        const photo = document.createElement("div");
+        photo.className = "build-item-machine-photo";
+
+        if(displayPhoto){
+            const img = document.createElement("img");
+            img.src = displayPhoto;
+            img.alt = item.text || item.machine || "정답지";
+            photo.appendChild(img);
+        }else{
+            photo.innerText = "사진 없음";
+        }
+
+        const title = document.createElement("span");
+        title.className = "build-item-machine-title build-item-text";
+        title.innerText = (item.genre ? item.genre + " · " : "") + (item.text || item.machine || "정답지");
+        textEl = title;
+
+        el.appendChild(photo);
+        el.appendChild(title);
+    }else{
+        textEl = document.createElement("span");
+        textEl.className = "build-item-text";
+        textEl.innerText = item.text || item.genre || "항목";
+        el.appendChild(textEl);
+    }
+
+    const meta = document.createElement("span");
+    meta.className = "build-item-meta";
+    meta.innerText = item.createdByName ? "by " + item.createdByName : "";
+
+    if(meta.innerText){
+        el.appendChild(meta);
+    }
+
+    applyBuildTextLayout(item, textEl);
+
+    if(canEditCurrentStore()){
+        const gearButton = createButton("build-item-gear", "⚙", (event)=>{
+            event.preventDefault();
+            event.stopPropagation();
+            if(buildMode !== "edit"){
+                return;
+            }
+            selectBuildItem(item.id);
+            menu.classList.toggle("active");
+        });
+        gearButton.onpointerdown = (event)=>{
+            event.preventDefault();
+            event.stopPropagation();
+        };
+        el.appendChild(gearButton);
+
+        const menu = document.createElement("div");
+        menu.className = "build-item-menu";
+        menu.onpointerdown = (event)=>{
+            event.stopPropagation();
+        };
+        menu.onclick = (event)=>{
+            event.stopPropagation();
+        };
+
+        menu.appendChild(createAdminButton("텍스트", (event)=>{
+            event.preventDefault();
+            event.stopPropagation();
+            selectBuildItem(item.id);
+
+            if(textEl){
+                startBuildTextEdit(item, textEl, true);
+                menu.classList.remove("active");
+            }
+        }));
+
+        if(textEl){
+            menu.appendChild(createBuildTextAlignControls(item, textEl));
+        }
+
+        const menuColor = document.createElement("input");
+        menuColor.type = "color";
+        menuColor.value = normalizeBuildColor(item.color || buildShapeColor || "#fff7c8") || "#fff7c8";
+        menuColor.onpointerdown = (event)=>{
+            event.stopPropagation();
+        };
+        menuColor.onclick = (event)=>{
+            event.stopPropagation();
+        };
+        menuColor.oninput = (event)=>{
+            event.stopPropagation();
+            selectBuildItem(item.id);
+            setBuildSelectedItemColor(menuColor.value, false);
+        };
+        menuColor.onchange = (event)=>{
+            event.stopPropagation();
+            selectBuildItem(item.id);
+            setBuildSelectedItemColor(menuColor.value, true);
+        };
+        menu.appendChild(menuColor);
+
+        menu.appendChild(createAdminButton("복제", (event)=>{
+            event.stopPropagation();
+            selectBuildItem(item.id);
+            duplicateBuildItem();
+        }));
+        menu.appendChild(createAdminButton("앞으로", (event)=>{
+            event.stopPropagation();
+            selectBuildItem(item.id);
+            bringBuildItemForward();
+        }));
+        menu.appendChild(createAdminButton("뒤로", (event)=>{
+            event.stopPropagation();
+            selectBuildItem(item.id);
+            sendBuildItemBackward();
+        }));
+        menu.appendChild(createAdminButton("삭제", (event)=>{
+            event.preventDefault();
+            event.stopPropagation();
+            deleteBuildItem(item.id);
+        }));
+        el.appendChild(menu);
+
+        ["nw", "ne", "sw", "se"].forEach((direction)=>{
+            const resizeHandle = document.createElement("span");
+            resizeHandle.className = "build-resize-handle " + direction;
+            resizeHandle.onpointerdown = (event)=>{
+                if(buildMode !== "edit"){
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+                selectBuildItem(item.id);
+                buildResizeItemId = item.id;
+                buildResizeStartX = event.clientX;
+                buildResizeStartY = event.clientY;
+                buildResizeStartW = Number(item.w) || 150;
+                buildResizeStartH = Number(item.h) || 58;
+                buildResizeStartItemX = Number(item.x) || 0;
+                buildResizeStartItemY = Number(item.y) || 0;
+                resizeHandle.dataset.direction = direction;
+                resizeHandle.setPointerCapture(event.pointerId);
+            };
+            resizeHandle.onpointermove = (event)=>{
+                if(buildResizeItemId !== item.id){
+                    return;
+                }
+
+                resizeBuildItemFromHandle(item, el, resizeHandle.dataset.direction, event);
+            };
+            resizeHandle.onpointerup = (event)=>{
+                if(buildResizeItemId !== item.id){
+                    return;
+                }
+
+                buildResizeItemId = "";
+                saveBuildBoard(()=>{});
+                resizeHandle.releasePointerCapture(event.pointerId);
+            };
+            resizeHandle.onpointercancel = resizeHandle.onpointerup;
+            el.appendChild(resizeHandle);
+        });
+    }
+
+    el.ondblclick = (event)=>{
+        event.stopPropagation();
+        selectBuildItem(item.id);
+    };
+
+    el.onpointerdown = (event)=>{
+        if(!canEditCurrentStore() || buildMode === "draw"){
+            return;
+        }
+
+        if(event.target.closest(".build-item-text.editing")){
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        const viewport = document.getElementById("build-viewport");
+        if(viewport){
+            viewport.focus();
+        }
+        selectBuildItem(item.id);
+
+        if(buildMode !== "edit"){
+            return;
+        }
+
+        const point = getBuildPoint(event, canvas);
+        buildDragItemId = item.id;
+        buildDragOffsetX = point.x - (Number(item.x) || 0);
+        buildDragOffsetY = point.y - (Number(item.y) || 0);
+        el.setPointerCapture(event.pointerId);
+    };
+
+    el.onpointermove = (event)=>{
+        if(buildDragItemId !== item.id || buildResizeItemId){
+            return;
+        }
+
+        const point = getBuildPoint(event, canvas);
+        item.x = Math.round(Math.max(0, Math.min(canvas.offsetWidth - 40, point.x - buildDragOffsetX)));
+        item.y = Math.round(Math.max(0, Math.min(canvas.offsetHeight - 30, point.y - buildDragOffsetY)));
+        el.style.left = item.x + "px";
+        el.style.top = item.y + "px";
+    };
+
+    el.onpointerup = (event)=>{
+        if(buildDragItemId !== item.id){
+            return;
+        }
+
+        buildDragItemId = "";
+        item.updatedAt = new Date().toISOString();
+        item.updatedByName = getCurrentDisplayName();
+        saveBuildBoard(()=>{});
+        el.releasePointerCapture(event.pointerId);
+    };
+
+    el.onpointercancel = el.onpointerup;
+
+    canvas.appendChild(el);
+
+    if(buildPendingTextEditItemId === item.id){
+        buildPendingTextEditItemId = "";
+        setTimeout(()=>{
+            selectBuildItem(item.id);
+            if(textEl){
+                startBuildTextEdit(item, textEl, true);
+            }
+        }, 0);
+    }
+}
+
+function renderBuild(root){
+    const board = getCurrentBuildBoard();
+
+    const header = document.createElement("div");
+    header.className = "build-title-row";
+
+    const title = document.createElement("h2");
+    title.innerText = "🧱 빌드";
+    header.appendChild(title);
+    root.appendChild(header);
+
+    const layout = document.createElement("div");
+    layout.className = "build-layout";
+    setBuildFolderToggleTop(layout, getBuildFolderToggleTop());
+    const folderCollapsed = localStorage.getItem("buildFolderCollapsed") !== "0";
+
+    if(folderCollapsed){
+        layout.classList.add("sidebar-collapsed");
+    }
+
+    const sidebar = document.createElement("div");
+    sidebar.className = "build-sidebar";
+
+    const sidebarTitle = document.createElement("div");
+    sidebarTitle.className = "build-sidebar-title";
+
+    const folderToggle = document.createElement("button");
+    folderToggle.className = "build-folder-toggle";
+    folderToggle.type = "button";
+    folderToggle.innerText = folderCollapsed ? "▶" : "◀";
+    folderToggle.title = "클릭해서 접고 펼치기, 누른 채 위아래로 드래그해서 위치 조정";
+    folderToggle.onpointerdown = (event)=>{
+        buildFolderToggleDragging = true;
+        buildFolderToggleMoved = false;
+        buildFolderToggleStartY = event.clientY;
+        buildFolderToggleStartTop = getBuildFolderToggleTop();
+        sidebar.classList.add("dragging");
+        folderToggle.setPointerCapture(event.pointerId);
+    };
+    folderToggle.onpointermove = (event)=>{
+        if(!buildFolderToggleDragging){
+            return;
+        }
+
+        const deltaY = event.clientY - buildFolderToggleStartY;
+
+        if(Math.abs(deltaY) > 3){
+            buildFolderToggleMoved = true;
+        }
+
+        if(buildFolderToggleMoved){
+            event.preventDefault();
+            setBuildFolderToggleTop(layout, buildFolderToggleStartTop + deltaY);
+        }
+    };
+    folderToggle.onpointerup = (event)=>{
+        if(!buildFolderToggleDragging){
+            return;
+        }
+
+        buildFolderToggleDragging = false;
+        sidebar.classList.remove("dragging");
+
+        if(folderToggle.hasPointerCapture && folderToggle.hasPointerCapture(event.pointerId)){
+            folderToggle.releasePointerCapture(event.pointerId);
+        }
+
+        if(buildFolderToggleMoved){
+            event.preventDefault();
+            setTimeout(()=>{
+                buildFolderToggleMoved = false;
+            }, 0);
+        }
+    };
+    folderToggle.onpointercancel = folderToggle.onpointerup;
+    folderToggle.onclick = ()=>{
+        if(buildFolderToggleMoved){
+            buildFolderToggleMoved = false;
+            return;
+        }
+
+        const nextCollapsed = !layout.classList.contains("sidebar-collapsed");
+        layout.classList.toggle("sidebar-collapsed", nextCollapsed);
+        folderToggle.innerText = nextCollapsed ? "▶" : "◀";
+        localStorage.setItem("buildFolderCollapsed", nextCollapsed ? "1" : "0");
+        setTimeout(applyBuildTransform, 0);
+    };
+    sidebarTitle.appendChild(folderToggle);
+
+    const folderTitleText = document.createElement("span");
+    folderTitleText.className = "build-folder-title-text";
+    folderTitleText.innerText = "자료 목록";
+    sidebarTitle.appendChild(folderTitleText);
+    sidebar.appendChild(sidebarTitle);
+
+    const folderList = document.createElement("div");
+    folderList.className = "build-folder-list";
+
+    flattenBuildLibraryRows(getBuildLibraryRows()).forEach((entry)=>{
+        const chip = document.createElement("div");
+        chip.className = "build-folder-chip " + entry.kind;
+        chip.draggable = canEditCurrentStore() && buildMode === "edit";
+        chip.style.marginLeft = ((entry.depth || 0) * 14) + "px";
+
+        const media = document.createElement("div");
+        media.className = entry.kind === "machine" ? "build-chip-thumb" : "build-chip-icon";
+
+        if(entry.kind === "machine" && entry.photo){
+            const img = document.createElement("img");
+            img.src = entry.photo;
+            img.alt = entry.title;
+            media.appendChild(img);
+        }else{
+            media.innerText = entry.icon || "📄";
+        }
+
+        const textWrap = document.createElement("div");
+        textWrap.className = "build-chip-text";
+
+        const title = document.createElement("div");
+        title.className = "build-chip-title";
+        title.innerText = entry.title;
+
+        const sub = document.createElement("div");
+        sub.className = "build-chip-sub";
+        sub.innerText = entry.subText || "";
+
+        textWrap.appendChild(title);
+        textWrap.appendChild(sub);
+        chip.appendChild(media);
+        chip.appendChild(textWrap);
+
+        chip.onclick = ()=>{
+            if(entry.kind !== "group" && entry.kind !== "folder"){
+                return;
+            }
+
+            toggleBuildLibraryOpen(entry.key);
+            render(false);
+        };
+
+        chip.ondragstart = (event)=>{
+            if(buildMode !== "edit"){
+                event.preventDefault();
+                return;
+            }
+
+            event.stopPropagation();
+
+            event.dataTransfer.setData("application/json", JSON.stringify(entry.payload));
+            event.dataTransfer.setData("text/plain", entry.payload.genre || entry.payload.text || "");
+        };
+        folderList.appendChild(chip);
+    });
+
+    sidebar.appendChild(folderList);
+    layout.appendChild(sidebar);
+
+    const main = document.createElement("div");
+    main.className = "build-main";
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "build-toolbar";
+
+    const canvasSection = document.createElement("div");
+    canvasSection.className = "build-toolbar-section canvas-section";
+
+    const canvasLabel = document.createElement("div");
+    canvasLabel.className = "build-toolbar-label";
+    canvasLabel.innerText = "캔버스 크기";
+    canvasSection.appendChild(canvasLabel);
+
+    const sizeSelect = document.createElement("select");
+    sizeSelect.innerHTML = `
+        <option value="1200x800">1200 x 800</option>
+        <option value="1600x1000">1600 x 1000</option>
+        <option value="2000x1200">2000 x 1200</option>
+        <option value="2400x1600">2400 x 1600</option>
+        <option value="3200x2200">3200 x 2200</option>
+        <option value="4800x3200">4800 x 3200</option>
+        <option value="6400x4200">6400 x 4200</option>
+        <option value="9000x6000">9000 x 6000</option>
+        <option value="12000x8000">12000 x 8000</option>
+    `;
+    const currentSizeValue = board.width + "x" + board.height;
+
+    if(![...sizeSelect.options].some((option)=>option.value === currentSizeValue)){
+        const customOption = document.createElement("option");
+        customOption.value = currentSizeValue;
+        customOption.innerText = currentSizeValue.replace("x", " x ");
+        sizeSelect.appendChild(customOption);
+    }
+
+    sizeSelect.value = currentSizeValue;
+    sizeSelect.onchange = ()=>{
+        const [width, height] = sizeSelect.value.split("x").map((value)=>Number(value));
+        setBuildBoardSize(width, height);
+    };
+    canvasSection.appendChild(sizeSelect);
+
+    const customSize = document.createElement("div");
+    customSize.className = "build-size-control";
+
+    const widthInput = document.createElement("input");
+    widthInput.type = "number";
+    widthInput.min = "800";
+    widthInput.max = "20000";
+    widthInput.step = "100";
+    widthInput.value = String(board.width);
+    widthInput.title = "캔버스 가로";
+
+    const multiply = document.createElement("span");
+    multiply.innerText = "x";
+
+    const heightInput = document.createElement("input");
+    heightInput.type = "number";
+    heightInput.min = "800";
+    heightInput.max = "20000";
+    heightInput.step = "100";
+    heightInput.value = String(board.height);
+    heightInput.title = "캔버스 세로";
+
+    const applySize = createAdminButton("적용", ()=>{
+        setBuildBoardSize(widthInput.value, heightInput.value);
+    });
+
+    const applySizeOnEnter = (event)=>{
+        if(event.key === "Enter"){
+            event.preventDefault();
+            setBuildBoardSize(widthInput.value, heightInput.value);
+        }
+    };
+
+    widthInput.onkeydown = applySizeOnEnter;
+    heightInput.onkeydown = applySizeOnEnter;
+
+    customSize.appendChild(widthInput);
+    customSize.appendChild(multiply);
+    customSize.appendChild(heightInput);
+    customSize.appendChild(applySize);
+    canvasSection.appendChild(customSize);
+
+    canvasSection.appendChild(createAdminButton("－", ()=>{
+        const viewport = document.getElementById("build-viewport");
+        if(!viewport){
+            return;
+        }
+        const rect = viewport.getBoundingClientRect();
+        zoomBuildView(buildZoom / 1.18, rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }));
+
+    const zoomLabel = document.createElement("span");
+    zoomLabel.className = "build-zoom-label";
+    zoomLabel.id = "build-zoom-label";
+    canvasSection.appendChild(zoomLabel);
+
+    canvasSection.appendChild(createAdminButton("＋", ()=>{
+        const viewport = document.getElementById("build-viewport");
+        if(!viewport){
+            return;
+        }
+        const rect = viewport.getBoundingClientRect();
+        zoomBuildView(buildZoom * 1.18, rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }));
+
+    canvasSection.appendChild(createAdminButton("맞춤", fitBuildView));
+    canvasSection.appendChild(createAdminButton("100%", resetBuildView));
+    toolbar.appendChild(canvasSection);
+
+    const historySection = document.createElement("div");
+    historySection.className = "build-toolbar-section history-section";
+
+    const undoButton = createAdminButton("↩️ 뒤로", undoBuildBoard);
+    undoButton.id = "build-undo-button";
+    undoButton.title = "마지막 빌드 작업 되돌리기";
+    historySection.appendChild(undoButton);
+
+    const redoButton = createAdminButton("↪️ 앞으로", redoBuildBoard);
+    redoButton.id = "build-redo-button";
+    redoButton.title = "되돌린 빌드 작업 다시 실행";
+    historySection.appendChild(redoButton);
+
+    toolbar.appendChild(historySection);
+
+    const modeSection = document.createElement("div");
+    modeSection.className = "build-toolbar-section mode-section";
+
+    const viewModeButton = createAdminButton("보기 모드", ()=>{
+        setBuildMode("view");
+    });
+    viewModeButton.id = "build-view-mode";
+    viewModeButton.classList.add("build-mode-button");
+    modeSection.appendChild(viewModeButton);
+
+    const editModeButton = createAdminButton("편집 모드", ()=>{
+        setBuildMode("edit");
+    });
+    editModeButton.id = "build-edit-mode";
+    editModeButton.classList.add("build-mode-button");
+    modeSection.appendChild(editModeButton);
+    toolbar.appendChild(modeSection);
+
+    const toolSection = document.createElement("div");
+    toolSection.className = "build-toolbar-section tool-section";
+
+    const drawToolGroup = document.createElement("div");
+    drawToolGroup.className = "build-tool-group";
+
+    const drawLabel = document.createElement("span");
+    drawLabel.className = "build-tool-label";
+    drawLabel.innerText = "그리기";
+    drawToolGroup.appendChild(drawLabel);
+
+    const penButton = createAdminButton("✎ 펜", ()=>{
+        setBuildDrawTool(buildDrawColor, buildDrawSize, buildDrawOpacity);
+    });
+    penButton.id = "build-draw-mode";
+    drawToolGroup.appendChild(penButton);
+
+    drawToolGroup.appendChild(createAdminButton("⌫ 지우개", ()=>{
+        setBuildDrawTool("#fffdf7", Math.max(18, buildDrawSize), 1);
+    }));
+
+    const colorInput = document.createElement("input");
+    colorInput.type = "color";
+    colorInput.value = buildDrawColor;
+    colorInput.title = "색상";
+    colorInput.oninput = ()=>{
+        buildDrawColor = colorInput.value;
+        buildShapeColor = colorInput.value;
+        updateBuildDrawToolUI();
+    };
+    drawToolGroup.appendChild(colorInput);
+
+    const opacityLabel = document.createElement("span");
+    opacityLabel.className = "build-tool-label";
+    opacityLabel.innerText = "투명도";
+    drawToolGroup.appendChild(opacityLabel);
+
+    const opacityInput = document.createElement("input");
+    opacityInput.type = "range";
+    opacityInput.min = "0.1";
+    opacityInput.max = "1";
+    opacityInput.step = "0.05";
+    opacityInput.value = String(buildDrawOpacity);
+    opacityInput.oninput = ()=>{
+        buildDrawOpacity = Number(opacityInput.value) || 1;
+        updateBuildDrawToolUI();
+    };
+    drawToolGroup.appendChild(opacityInput);
+    toolSection.appendChild(drawToolGroup);
+
+    const shapeToolGroup = document.createElement("div");
+    shapeToolGroup.className = "build-tool-group";
+
+    const shapeLabel = document.createElement("span");
+    shapeLabel.className = "build-tool-label";
+    shapeLabel.innerText = "도형";
+    shapeToolGroup.appendChild(shapeLabel);
+
+    const textTool = createAdminButton("+ 메모", ()=>setBuildCreateTool({
+        key:"text",
+        type:"text"
+    }));
+    textTool.dataset.buildCreateTool = "text";
+    shapeToolGroup.appendChild(textTool);
+
+    const imageTool = createAdminButton("🖼 사진", openBuildImagePicker);
+    imageTool.title = "사진을 빌드 캔버스에 추가";
+    shapeToolGroup.appendChild(imageTool);
+
+    const rectFillTool = createAdminButton("■", ()=>setBuildCreateTool({
+        key:"rect-fill",
+        type:"shape",
+        shape:"rect",
+        outlineOnly:false
+    }));
+    rectFillTool.dataset.buildCreateTool = "rect-fill";
+    shapeToolGroup.appendChild(rectFillTool);
+
+    const rectOutlineTool = createAdminButton("□", ()=>setBuildCreateTool({
+        key:"rect-outline",
+        type:"shape",
+        shape:"rect",
+        outlineOnly:true
+    }));
+    rectOutlineTool.dataset.buildCreateTool = "rect-outline";
+    shapeToolGroup.appendChild(rectOutlineTool);
+
+    const ellipseFillTool = createAdminButton("●", ()=>setBuildCreateTool({
+        key:"ellipse-fill",
+        type:"shape",
+        shape:"ellipse",
+        outlineOnly:false
+    }));
+    ellipseFillTool.dataset.buildCreateTool = "ellipse-fill";
+    shapeToolGroup.appendChild(ellipseFillTool);
+
+    const ellipseOutlineTool = createAdminButton("○", ()=>setBuildCreateTool({
+        key:"ellipse-outline",
+        type:"shape",
+        shape:"ellipse",
+        outlineOnly:true
+    }));
+    ellipseOutlineTool.dataset.buildCreateTool = "ellipse-outline";
+    shapeToolGroup.appendChild(ellipseOutlineTool);
+
+    const lineTool = createAdminButton("━", ()=>setBuildCreateTool({
+        key:"line",
+        type:"shape",
+        shape:"line",
+        outlineOnly:true
+    }));
+    lineTool.dataset.buildCreateTool = "line";
+    shapeToolGroup.appendChild(lineTool);
+    toolSection.appendChild(shapeToolGroup);
+
+    const clearGroup = document.createElement("div");
+    clearGroup.className = "build-tool-group";
+    clearGroup.appendChild(createAdminButton("그림 모두 지우기", clearBuildDrawing));
+    toolSection.appendChild(clearGroup);
+
+    toolbar.appendChild(toolSection);
+
+    main.appendChild(toolbar);
+    renderBuildSheetTabs(main, board);
+
+    const scroll = document.createElement("div");
+    scroll.className = "build-canvas-scroll";
+    scroll.id = "build-viewport";
+    scroll.tabIndex = 0;
+
+    const canvas = document.createElement("div");
+    canvas.className = "build-canvas";
+    canvas.id = "build-canvas";
+    canvas.style.width = board.width + "px";
+    canvas.style.height = board.height + "px";
+
+    scroll.ondragover = (event)=>{
+        event.preventDefault();
+    };
+
+    scroll.ondrop = (event)=>{
+        event.preventDefault();
+
+        if(buildMode !== "edit"){
+            alert("자료를 배치하려면 편집 모드를 켜세요.");
+            return;
+        }
+
+        const json = event.dataTransfer.getData("application/json");
+        const genre = event.dataTransfer.getData("text/plain");
+        let payload = null;
+
+        if(json){
+            try{
+                payload = JSON.parse(json);
+            }catch(err){
+                payload = null;
+            }
+        }
+
+        if(!payload && !genre){
+            return;
+        }
+
+        const point = getBuildPoint(event, canvas);
+        addBuildLibraryItem(payload || {
+            type:"folder",
+            genre:genre,
+            text:genre,
+            color:data.genreColors && data.genreColors[genre] ? data.genreColors[genre] : "#fff7c8"
+        }, point.x, point.y);
+    };
+
+    scroll.ondblclick = (event)=>{
+        return;
+    };
+
+    scroll.onwheel = (event)=>{
+        event.preventDefault();
+        const direction = event.deltaY > 0 ? 0.9 : 1.1;
+        zoomBuildView(buildZoom * direction, event.clientX, event.clientY);
+    };
+
+    scroll.onpointerdown = (event)=>{
+        if(buildMode === "draw" || event.button !== 0 || event.target.closest(".build-item")){
+            return;
+        }
+
+        event.preventDefault();
+        scroll.focus();
+        selectBuildItem("");
+
+        if(buildMode === "edit" && buildCreateTool){
+            const point = getBuildPoint(event, canvas);
+            buildCreating = true;
+            buildCreateStartX = point.x;
+            buildCreateStartY = point.y;
+            updateBuildCreatePreview(
+                canvas,
+                getBuildCreateBox(buildCreateStartX, buildCreateStartY, point.x, point.y, buildCreateTool),
+                buildCreateTool
+            );
+            scroll.setPointerCapture(event.pointerId);
+            return;
+        }
+
+        buildPanning = true;
+        buildPanStartX = event.clientX;
+        buildPanStartY = event.clientY;
+        buildPanOriginX = buildPanX;
+        buildPanOriginY = buildPanY;
+        scroll.classList.add("panning");
+        scroll.setPointerCapture(event.pointerId);
+    };
+
+    scroll.onpointermove = (event)=>{
+        if(buildCreating && buildCreateTool){
+            event.preventDefault();
+            const point = getBuildPoint(event, canvas);
+            updateBuildCreatePreview(
+                canvas,
+                getBuildCreateBox(buildCreateStartX, buildCreateStartY, point.x, point.y, buildCreateTool),
+                buildCreateTool
+            );
+            return;
+        }
+
+        if(!buildPanning){
+            return;
+        }
+
+        event.preventDefault();
+        buildPanX = buildPanOriginX + event.clientX - buildPanStartX;
+        buildPanY = buildPanOriginY + event.clientY - buildPanStartY;
+        applyBuildTransform();
+    };
+
+    scroll.onpointerup = (event)=>{
+        if(buildCreating && buildCreateTool){
+            event.preventDefault();
+            const point = getBuildPoint(event, canvas);
+            const tool = buildCreateTool;
+            const box = getBuildCreateBox(buildCreateStartX, buildCreateStartY, point.x, point.y, tool);
+            buildCreating = false;
+            buildCreateTool = null;
+            clearBuildCreatePreview();
+            updateBuildCreateToolUI();
+            scroll.releasePointerCapture(event.pointerId);
+            addBuildCreatedItem(tool, box);
+            return;
+        }
+
+        if(!buildPanning){
+            return;
+        }
+
+        buildPanning = false;
+        scroll.classList.remove("panning");
+        scroll.releasePointerCapture(event.pointerId);
+    };
+
+    scroll.onpointercancel = (event)=>{
+        if(buildCreating){
+            buildCreating = false;
+            clearBuildCreatePreview();
+            if(scroll.hasPointerCapture && scroll.hasPointerCapture(event.pointerId)){
+                scroll.releasePointerCapture(event.pointerId);
+            }
+            return;
+        }
+
+        scroll.onpointerup(event);
+    };
+
+    scroll.onkeydown = (event)=>{
+        if(handleBuildUndoRedoShortcut(event)){
+            return;
+        }
+
+        if(event.target.closest(".build-item-text.editing")){
+            return;
+        }
+
+        if(!buildSelectedItemId){
+            if((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === "z"){
+                event.preventDefault();
+                redoBuildBoard();
+                return;
+            }
+
+            if((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "z"){
+                event.preventDefault();
+                undoBuildBoard();
+                return;
+            }
+
+            if((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "y"){
+                event.preventDefault();
+                redoBuildBoard();
+                return;
+            }
+
+            return;
+        }
+
+        const amount = event.shiftKey ? 10 : 1;
+
+        if((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === "z"){
+            event.preventDefault();
+            redoBuildBoard();
+            return;
+        }
+
+        if((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "z"){
+            event.preventDefault();
+            undoBuildBoard();
+            return;
+        }
+
+        if((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "y"){
+            event.preventDefault();
+            redoBuildBoard();
+            return;
+        }
+
+        if(event.key === "Delete" || event.key === "Backspace"){
+            event.preventDefault();
+            deleteSelectedBuildItem();
+            return;
+        }
+
+        if(event.ctrlKey && event.key.toLowerCase() === "d"){
+            event.preventDefault();
+            duplicateBuildItem();
+            return;
+        }
+
+        if(event.key === "ArrowLeft"){
+            event.preventDefault();
+            moveBuildSelectedItem(-amount, 0);
+        }else if(event.key === "ArrowRight"){
+            event.preventDefault();
+            moveBuildSelectedItem(amount, 0);
+        }else if(event.key === "ArrowUp"){
+            event.preventDefault();
+            moveBuildSelectedItem(0, -amount);
+        }else if(event.key === "ArrowDown"){
+            event.preventDefault();
+            moveBuildSelectedItem(0, amount);
+        }
+    };
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.classList.add("build-drawing-layer");
+    svg.setAttribute("viewBox", "0 0 " + board.width + " " + board.height);
+    svg.setAttribute("preserveAspectRatio", "none");
+
+    svg.onpointerdown = (event)=>{
+        if(!canEditCurrentStore() || buildMode !== "draw"){
+            return;
+        }
+
+        event.preventDefault();
+        updateBuildDrawCursor(event, canvas);
+        const point = getBuildPoint(event, canvas);
+        buildDrawing = true;
+        buildCurrentStroke = {
+            id:createBuildItemId(),
+            color:buildDrawColor,
+            size:buildDrawSize,
+            opacity:buildDrawOpacity,
+            points:[{
+                x:Math.round(point.x),
+                y:Math.round(point.y)
+            }],
+            createdAt:new Date().toISOString(),
+            createdByName:getCurrentDisplayName()
+        };
+        board.strokes.push(buildCurrentStroke);
+        renderBuildStrokes(svg, board);
+        svg.setPointerCapture(event.pointerId);
+    };
+
+    svg.onpointermove = (event)=>{
+        updateBuildDrawCursor(event, canvas);
+
+        if(!buildDrawing || !buildCurrentStroke){
+            return;
+        }
+
+        event.preventDefault();
+        const point = getBuildPoint(event, canvas);
+        buildCurrentStroke.points.push({
+            x:Math.round(point.x),
+            y:Math.round(point.y)
+        });
+        renderBuildStrokes(svg, board);
+    };
+
+    svg.onpointerup = (event)=>{
+        if(!buildDrawing){
+            updateBuildDrawCursor(event, canvas);
+            return;
+        }
+
+        buildDrawing = false;
+        buildCurrentStroke = null;
+        updateBuildDrawCursor(event, canvas);
+        saveBuildBoard(()=>{});
+        svg.releasePointerCapture(event.pointerId);
+    };
+
+    svg.onpointercancel = svg.onpointerup;
+    svg.onpointerleave = ()=>{
+        hideBuildDrawCursor(canvas);
+    };
+    svg.onpointerenter = (event)=>{
+        updateBuildDrawCursor(event, canvas);
+    };
+
+    canvas.appendChild(svg);
+    renderBuildStrokes(svg, board);
+
+    [...board.items].sort((a,b)=>(Number(a.z) || 0) - (Number(b.z) || 0)).forEach((item)=>{
+        renderBuildItem(item, canvas);
+    });
+
+    scroll.appendChild(canvas);
+    main.appendChild(scroll);
+
+    const help = document.createElement("p");
+    help.className = "build-help";
+    help.innerText = "폴더를 끌어다 놓고, 빈 공간을 더블클릭해 메모를 붙이고, 필요하면 그 위에 바로 그려보세요. 정리된 문서보다 회의용 자유 보드에 가깝게 쓰면 됩니다.";
+    main.appendChild(help);
+
+    layout.appendChild(main);
+    root.appendChild(layout);
+
+    if(!buildViewReady){
+        buildViewReady = true;
+        fitBuildView();
+    }else{
+        applyBuildTransform();
+    }
+
+    setBuildMode(buildMode);
+    updateBuildHistoryButtons();
+}
+
 function createFigureCatalogCard(entry){
     const card = document.createElement("div");
     card.className = "figure-card";
@@ -8889,6 +13791,73 @@ function getAccountStoreNames(account){
     .join(", ") || "없음";
 }
 
+function getCollapsedAccountGroups(){
+    try{
+        const saved = JSON.parse(localStorage.getItem("collapsedAccountGroups") || "[]");
+        return new Set(Array.isArray(saved) ? saved : []);
+    }catch(err){
+        return new Set();
+    }
+}
+
+function setCollapsedAccountGroups(collapsed){
+    localStorage.setItem("collapsedAccountGroups", JSON.stringify([...collapsed]));
+}
+
+function getAccountGroupKey(account){
+    const storeIds = Array.isArray(account.storeIds) ? account.storeIds : [];
+
+    if(storeIds.includes("*")){
+        return "__all__";
+    }
+
+    return storeIds[0] || "__none__";
+}
+
+function getAccountGroupTitle(groupKey){
+    if(groupKey === "__all__"){
+        return "전체 지점";
+    }
+
+    if(groupKey === "__none__"){
+        return "지점 미지정";
+    }
+
+    return appData.storeNames[groupKey] || groupKey;
+}
+
+function getGroupedAccounts(accounts){
+    const order = ["__all__", ...appData.storeOrder, "__none__"];
+    const groups = new Map();
+
+    accounts.forEach((account)=>{
+        const key = getAccountGroupKey(account);
+
+        if(!groups.has(key)){
+            groups.set(key, []);
+        }
+
+        groups.get(key).push(account);
+    });
+
+    return [...groups.entries()]
+    .sort((a,b)=>{
+        const ai = order.includes(a[0]) ? order.indexOf(a[0]) : order.length;
+        const bi = order.includes(b[0]) ? order.indexOf(b[0]) : order.length;
+
+        if(ai !== bi){
+            return ai - bi;
+        }
+
+        return getAccountGroupTitle(a[0]).localeCompare(getAccountGroupTitle(b[0]), "ko-KR");
+    })
+    .map(([key, items])=>({
+        key,
+        title:getAccountGroupTitle(key),
+        accounts:items.sort((a,b)=>String(a.displayName || a.loginId || "").localeCompare(String(b.displayName || b.loginId || ""), "ko-KR"))
+    }));
+}
+
 function renderAccounts(root){
     if(!canManageStores()){
         root.innerHTML = "<p>본사 게임마스터 권한이 필요합니다.</p>";
@@ -8919,47 +13888,76 @@ function renderAccounts(root){
 
     root.appendChild(topActions);
 
-    const wrap = document.createElement("div");
-    wrap.className = "account-table-wrap";
-
-    const table = document.createElement("table");
-    table.className = "account-table";
-
-    const thead = document.createElement("thead");
-    thead.innerHTML = `
-        <tr>
-            <th>메모</th>
-            <th>식별 코드</th>
-            <th>표시이름</th>
-            <th>아이디</th>
-            <th>비밀번호</th>
-            <th>권한</th>
-            <th>접속 지점</th>
-            <th>관리</th>
-        </tr>
-    `;
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-
     if(accounts.length === 0){
-        const row = document.createElement("tr");
-        const cell = document.createElement("td");
-        cell.colSpan = 8;
-        cell.innerText = "생성된 계정이 없습니다.";
-        row.appendChild(cell);
-        tbody.appendChild(row);
+        const empty = document.createElement("p");
+        empty.className = "account-cell-muted";
+        empty.innerText = "생성된 계정이 없습니다.";
+        root.appendChild(empty);
     }else{
-        accounts
-        .sort((a,b)=>String(a.displayName || a.loginId || "").localeCompare(String(b.displayName || b.loginId || ""), "ko-KR"))
-        .forEach((account)=>{
-            tbody.appendChild(createAccountRow(account));
+        const collapsedGroups = getCollapsedAccountGroups();
+
+        getGroupedAccounts(accounts).forEach((group)=>{
+            const section = document.createElement("div");
+            section.className = "account-group" + (collapsedGroups.has(group.key) ? " collapsed" : "");
+
+            const groupHeader = document.createElement("button");
+            groupHeader.type = "button";
+            groupHeader.className = "account-group-header";
+            groupHeader.innerHTML = `
+                <span>${collapsedGroups.has(group.key) ? "▶" : "▼"} ${group.title}</span>
+                <span>${group.accounts.length}개</span>
+            `;
+            groupHeader.onclick = ()=>{
+                const nextCollapsed = !section.classList.contains("collapsed");
+                section.classList.toggle("collapsed", nextCollapsed);
+
+                if(nextCollapsed){
+                    collapsedGroups.add(group.key);
+                }else{
+                    collapsedGroups.delete(group.key);
+                }
+
+                setCollapsedAccountGroups(collapsedGroups);
+                groupHeader.innerHTML = `
+                    <span>${nextCollapsed ? "▶" : "▼"} ${group.title}</span>
+                    <span>${group.accounts.length}개</span>
+                `;
+            };
+            section.appendChild(groupHeader);
+
+            const wrap = document.createElement("div");
+            wrap.className = "account-table-wrap";
+
+            const table = document.createElement("table");
+            table.className = "account-table";
+
+            const thead = document.createElement("thead");
+            thead.innerHTML = `
+                <tr>
+                    <th>메모</th>
+                    <th>식별 코드</th>
+                    <th>표시이름</th>
+                    <th>아이디</th>
+                    <th>비밀번호</th>
+                    <th>권한</th>
+                    <th>접속 지점</th>
+                    <th>관리</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+
+            group.accounts.forEach((account)=>{
+                tbody.appendChild(createAccountRow(account, accountEditCodes.has(account.code)));
+            });
+
+            table.appendChild(tbody);
+            wrap.appendChild(table);
+            section.appendChild(wrap);
+            root.appendChild(section);
         });
     }
-
-    table.appendChild(tbody);
-    wrap.appendChild(table);
-    root.appendChild(wrap);
 
     root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
         currentView = "genres";
@@ -8967,60 +13965,103 @@ function renderAccounts(root){
     }));
 }
 
-function createAccountRow(account){
+function createTextCell(text, muted=false){
+    const cell = document.createElement("td");
+    const textEl = document.createElement("div");
+    textEl.className = "account-cell-text" + (muted ? " account-cell-muted" : "");
+    textEl.innerText = text || "";
+    cell.appendChild(textEl);
+    return cell;
+}
+
+function createAccountRow(account, editing=false){
     const row = document.createElement("tr");
     row.dataset.accountCode = account.code;
+    row.classList.toggle("editing", editing);
 
     const memoCell = document.createElement("td");
-    const memoInput = document.createElement("textarea");
-    memoInput.className = "account-memo";
-    memoInput.placeholder = "배포 메모";
-    memoInput.value = account.memo || "";
-    memoCell.appendChild(memoInput);
+    if(editing){
+        const memoInput = document.createElement("textarea");
+        memoInput.className = "account-memo";
+        memoInput.placeholder = "배포 메모";
+        memoInput.value = account.memo || "";
+        memoCell.appendChild(memoInput);
+    }else{
+        memoCell.appendChild(createTextCell(account.memo || "메모 없음", !account.memo).firstChild);
+    }
 
     const codeCell = document.createElement("td");
-    codeCell.innerText = account.code;
+    const codeText = document.createElement("div");
+    codeText.className = "account-cell-text";
+    codeText.innerText = account.code;
+    codeCell.appendChild(codeText);
 
     const displayNameCell = document.createElement("td");
-    const displayNameInput = document.createElement("input");
-    displayNameInput.className = "account-display-name";
-    displayNameInput.placeholder = "예: 홍길동";
-    displayNameInput.value = account.displayName || account.loginId || "";
-    displayNameCell.appendChild(displayNameInput);
+    if(editing){
+        const displayNameInput = document.createElement("input");
+        displayNameInput.className = "account-display-name";
+        displayNameInput.placeholder = "예: 홍길동";
+        displayNameInput.value = account.displayName || account.loginId || "";
+        displayNameCell.appendChild(displayNameInput);
+    }else{
+        displayNameCell.appendChild(createTextCell(account.displayName || account.loginId || "이름 없음").firstChild);
+    }
 
     const idCell = document.createElement("td");
-    const idInput = document.createElement("input");
-    idInput.className = "account-login-id";
-    idInput.value = account.loginId || "";
-    idCell.appendChild(idInput);
+    if(editing){
+        const idInput = document.createElement("input");
+        idInput.className = "account-login-id";
+        idInput.value = account.loginId || "";
+        idCell.appendChild(idInput);
+    }else{
+        idCell.appendChild(createTextCell(account.loginId || "아이디 없음").firstChild);
+    }
 
     const passwordCell = document.createElement("td");
-    const passwordInput = document.createElement("input");
-    passwordInput.className = "account-password";
-    passwordInput.type = "text";
-    passwordInput.placeholder = "변경시에만 입력";
-    passwordCell.appendChild(passwordInput);
+    if(editing){
+        const passwordInput = document.createElement("input");
+        passwordInput.className = "account-password";
+        passwordInput.type = "text";
+        passwordInput.placeholder = "변경시에만 입력";
+        passwordCell.appendChild(passwordInput);
+    }else{
+        passwordCell.appendChild(createTextCell(account.passwordHash ? "설정됨" : "미설정", !account.passwordHash).firstChild);
+    }
 
     const roleCell = document.createElement("td");
-    const roleSelect = document.createElement("select");
-    roleSelect.className = "account-role";
-    roleSelect.innerHTML = `
-        <option value="manager">지점 관리자</option>
-        <option value="staff">일반 직원</option>
-    `;
-    roleSelect.value = account.role === "manager" ? "manager" : "staff";
-    roleCell.appendChild(roleSelect);
+    if(editing){
+        const roleSelect = document.createElement("select");
+        roleSelect.className = "account-role";
+        roleSelect.innerHTML = `
+            <option value="manager">지점 관리자</option>
+            <option value="staff">일반 직원</option>
+        `;
+        roleSelect.value = account.role === "manager" ? "manager" : "staff";
+        roleCell.appendChild(roleSelect);
+    }else{
+        roleCell.appendChild(createTextCell(getRoleLabel(account.role)).firstChild);
+    }
 
     const storesCell = document.createElement("td");
-    storesCell.appendChild(createStoreChecks(account.storeIds || []));
+    if(editing){
+        storesCell.appendChild(createStoreChecks(account.storeIds || []));
+    }else{
+        storesCell.appendChild(createTextCell(getAccountStoreNames(account)).firstChild);
+    }
 
     const actionCell = document.createElement("td");
     const actions = document.createElement("div");
     actions.className = "account-actions";
 
-    actions.appendChild(createAdminButton("저장", ()=>{
-        saveAccountRow(account.code);
-    }));
+    if(editing){
+        actions.appendChild(createAdminButton("저장", ()=>{
+            saveAccountRow(account.code);
+        }));
+    }else{
+        actions.appendChild(createAdminButton("수정", ()=>{
+            enableAccountRowEdit(account.code);
+        }));
+    }
 
     const deleteButton = createAdminButton("삭제", ()=>{
         deleteAccountRow(account.code);
@@ -9066,11 +14107,41 @@ function createStoreChecks(selectedStoreIds){
     return box;
 }
 
-function getAccountRowValues(code){
+function enableAccountRowEdit(code){
+    const account = appData.accounts[code];
+
+    if(!account){
+        return;
+    }
+
+    accountEditCodes.add(code);
+
     const row = document.querySelector('[data-account-code="' + code + '"]');
 
-    if(!row){
+    if(row){
+        row.replaceWith(createAccountRow(account, true));
+    }else{
+        render(false);
+    }
+}
+
+function getAccountRowValues(code){
+    const row = document.querySelector('[data-account-code="' + code + '"]');
+    const account = appData.accounts[code];
+
+    if(!row || !account){
         return null;
+    }
+
+    if(!row.classList.contains("editing")){
+        return {
+            memo:account.memo || "",
+            displayName:account.displayName || account.loginId || "",
+            loginId:normalizeLoginId(account.loginId || ""),
+            password:"",
+            role:account.role === "manager" ? "manager" : "staff",
+            storeIds:Array.isArray(account.storeIds) ? account.storeIds : []
+        };
     }
 
     const loginId = normalizeLoginId(row.querySelector(".account-login-id").value);
@@ -9104,26 +14175,8 @@ function addAccountRow(){
         createdAt:new Date().toISOString()
     };
 
-    const tbody = document.querySelector(".account-table tbody");
-
-    if(!tbody){
-        render(false);
-        return;
-    }
-
-    const emptyCell = tbody.querySelector("td[colspan]");
-
-    if(emptyCell){
-        tbody.innerHTML = "";
-    }
-
-    tbody.appendChild(createAccountRow(appData.accounts[code]));
-
-    const title = document.querySelector("#content .header-row h2");
-
-    if(title){
-        title.innerText = "계정 관리 (" + Object.keys(appData.accounts || {}).length + "개)";
-    }
+    accountEditCodes.add(code);
+    render(false);
 }
 
 function collectAccountRowUpdates(codes){
@@ -9247,6 +14300,7 @@ async function saveAccountRow(code){
     await applyAccountRowUpdates(result.updates);
 
     await saveData(()=>{
+        accountEditCodes.delete(code);
         render(false);
         alert("계정이 저장되었습니다.");
     });
@@ -9269,6 +14323,7 @@ async function saveAllAccountRows(){
     }
 
     await saveData(()=>{
+        accountEditCodes.clear();
         render(false);
         updateAuthUI();
         alert("전체 계정이 저장되었습니다.");
@@ -9287,6 +14342,7 @@ function deleteAccountRow(code){
     }
 
     delete appData.accounts[code];
+    accountEditCodes.delete(code);
 
     if(currentAccountCode === code){
         currentAccountCode = "";
@@ -9464,6 +14520,36 @@ function toggleAdminMemoMode(){
     }
 }
 
+function clearMemoTextarea(textareaId){
+    const textarea = document.getElementById(textareaId);
+
+    if(!textarea || textarea.readOnly){
+        return;
+    }
+
+    if(textarea.value && !confirm("메모 내용을 모두 지울까요?")){
+        return;
+    }
+
+    textarea.value = "";
+
+    if(textareaId === "admin-memo"){
+        adjustAdminMemoHeight();
+    }else{
+        adjustMemoHeight();
+    }
+
+    textarea.focus();
+}
+
+function setMemoClearButtonVisible(buttonId, visible){
+    const button = document.getElementById(buttonId);
+
+    if(button){
+        button.style.display = visible ? "" : "none";
+    }
+}
+
 function toggleMemoEdit(){
     if(!requireStoreEdit()){
         return;
@@ -9482,6 +14568,7 @@ function toggleMemoEdit(){
         textarea.style.pointerEvents = "auto";
         textarea.focus();
         button.innerText = "💾 저장";
+        setMemoClearButtonVisible("memo-clear-btn", true);
 
         memoInputListener = ()=>{
             adjustMemoHeight();
@@ -9510,6 +14597,7 @@ function toggleMemoEdit(){
         textarea.readOnly = true;
         textarea.style.pointerEvents = "auto";
         button.innerText = "✏️ 수정";
+        setMemoClearButtonVisible("memo-clear-btn", false);
         memoEditMode = false;
         render(false);
         adjustMemoHeight();
@@ -9518,7 +14606,7 @@ function toggleMemoEdit(){
 }
 
 function updateAdminMemo(memo){
-    if(!canEditCurrentStore()){
+    if(!canViewAdminOnlyItems()){
         return;
     }
 
@@ -9540,7 +14628,7 @@ function updateAdminMemo(memo){
 }
 
 function toggleAdminMemoEdit(){
-    if(!requireStoreEdit()){
+    if(!requireAdminOnlyManage()){
         return;
     }
 
@@ -9557,6 +14645,7 @@ function toggleAdminMemoEdit(){
         textarea.style.pointerEvents = "auto";
         textarea.focus();
         button.innerText = "💾 저장";
+        setMemoClearButtonVisible("admin-memo-clear-btn", true);
         return;
     }
 
@@ -9565,6 +14654,7 @@ function toggleAdminMemoEdit(){
     if(machine && machine.adminMemo === textarea.value){
         textarea.readOnly = true;
         button.innerText = "✏️ 수정";
+        setMemoClearButtonVisible("admin-memo-clear-btn", false);
         adminMemoEditMode = false;
         return;
     }
@@ -9815,6 +14905,64 @@ function getDrawCanvasPoint(event){
     };
 }
 
+function getDrawCursorPreview(){
+    const wrap = document.querySelector(".draw-canvas-wrap");
+
+    if(!wrap){
+        return null;
+    }
+
+    let cursor = document.getElementById("draw-cursor-preview");
+
+    if(!cursor){
+        cursor = document.createElement("div");
+        cursor.id = "draw-cursor-preview";
+        cursor.className = "draw-cursor-preview";
+        wrap.appendChild(cursor);
+    }
+
+    return cursor;
+}
+
+function updateDrawSizeLabel(){
+    const input = document.getElementById("draw-size");
+    const label = document.getElementById("draw-size-label");
+
+    if(label && input){
+        label.innerText = (Number(input.value) || 1) + "px";
+    }
+}
+
+function updateDrawCursorPreview(event){
+    const canvas = document.getElementById("draw-canvas");
+    const wrap = document.querySelector(".draw-canvas-wrap");
+    const cursor = getDrawCursorPreview();
+
+    if(!canvas || !wrap || !cursor || !event){
+        return;
+    }
+
+    const canvasRect = canvas.getBoundingClientRect();
+    const wrapRect = wrap.getBoundingClientRect();
+    const size = Number(document.getElementById("draw-size").value) || 1;
+    const displaySize = Math.max(2, size * (canvasRect.width / canvas.width));
+
+    cursor.style.width = displaySize + "px";
+    cursor.style.height = displaySize + "px";
+    cursor.style.left = (event.clientX - wrapRect.left - displaySize / 2 + wrap.scrollLeft) + "px";
+    cursor.style.top = (event.clientY - wrapRect.top - displaySize / 2 + wrap.scrollTop) + "px";
+    cursor.classList.toggle("eraser", drawToolMode === "erase");
+    cursor.style.display = "block";
+}
+
+function hideDrawCursorPreview(){
+    const cursor = document.getElementById("draw-cursor-preview");
+
+    if(cursor){
+        cursor.style.display = "none";
+    }
+}
+
 function redrawMainPhotoCanvas(){
     const canvas = document.getElementById("draw-canvas");
     const ctx = canvas.getContext("2d");
@@ -9880,8 +15028,10 @@ function updateDrawToolButtons(){
     }
 
     if(canvas){
-        canvas.style.cursor = drawToolMode === "erase" ? "cell" : "crosshair";
+        canvas.style.cursor = "none";
     }
+
+    updateDrawSizeLabel();
 }
 
 function setDrawToolMode(mode){
@@ -10057,6 +15207,7 @@ async function openEvidencePhotoDrawEditor(index, collectionKey = "evidencePhoto
 
 function closeDrawModal(){
     document.getElementById("draw-modal").style.display = "none";
+    hideDrawCursorPreview();
     drawBaseImage = null;
     drawBaseDataUrl = "";
     drawStrokes = [];
@@ -10074,6 +15225,7 @@ function startDraw(event){
     }
 
     event.preventDefault();
+    updateDrawCursorPreview(event);
     canvas.setPointerCapture(event.pointerId);
     drawingActive = true;
 
@@ -10089,6 +15241,8 @@ function startDraw(event){
 }
 
 function moveDraw(event){
+    updateDrawCursorPreview(event);
+
     if(!drawingActive || !currentDrawStroke){
         return;
     }
@@ -10105,6 +15259,10 @@ function endDraw(event){
 
     drawingActive = false;
     currentDrawStroke = null;
+
+    if(event){
+        updateDrawCursorPreview(event);
+    }
 }
 
 async function saveDrawnMainPhoto(){
@@ -10571,6 +15729,18 @@ function goToTrash(){
     currentGenre = null;
     currentGenreGroup = null;
     currentMachine = null;
+    currentBoardPostId = null;
+    render();
+    toggleMenu(false);
+}
+
+function goHome(){
+    currentView = "genres";
+    currentGenre = null;
+    currentGenreGroup = null;
+    currentMachine = null;
+    currentBoardPostId = null;
+    buildViewReady = false;
     render();
     toggleMenu(false);
 }
@@ -10581,6 +15751,10 @@ document.getElementById("menu-button").onclick = ()=>{
 
 document.getElementById("side-overlay").onclick = ()=>{
     toggleMenu(false);
+};
+
+document.getElementById("home-menu").onclick = ()=>{
+    goHome();
 };
 
 document.getElementById("login-menu").onclick = ()=>{
@@ -10661,6 +15835,17 @@ document.getElementById("figure-catalog-menu").onclick = ()=>{
     currentGenre = null;
     currentGenreGroup = null;
     currentMachine = null;
+    render();
+    toggleMenu(false);
+};
+
+document.getElementById("build-menu").onclick = ()=>{
+    currentView = "build";
+    currentGenre = null;
+    currentGenreGroup = null;
+    currentMachine = null;
+    currentBoardPostId = null;
+    buildViewReady = false;
     render();
     toggleMenu(false);
 };
@@ -10760,6 +15945,13 @@ document.getElementById("draw-canvas").addEventListener("pointerdown", startDraw
 document.getElementById("draw-canvas").addEventListener("pointermove", moveDraw);
 document.getElementById("draw-canvas").addEventListener("pointerup", endDraw);
 document.getElementById("draw-canvas").addEventListener("pointercancel", endDraw);
+document.getElementById("draw-canvas").addEventListener("pointerenter", updateDrawCursorPreview);
+document.getElementById("draw-canvas").addEventListener("pointerleave", hideDrawCursorPreview);
+
+document.getElementById("draw-size").oninput = ()=>{
+    updateDrawSizeLabel();
+};
+updateDrawSizeLabel();
 
 document.getElementById("draw-brush-btn").onclick = ()=>{
     setDrawToolMode("brush");
@@ -10863,11 +16055,29 @@ window.addEventListener("unhandledrejection", (event)=>{
 });
 
 window.addEventListener("beforeunload", (event)=>{
+    finishBuildTextEdit(true);
+
     if(memoEditMode){
         event.preventDefault();
         event.returnValue = "";
     }
 });
+
+document.addEventListener("keydown", (event)=>{
+    handleBuildUndoRedoShortcut(event);
+}, true);
+
+document.addEventListener("pointerdown", (event)=>{
+    if(!buildActiveTextEdit || !buildTextEditCanFinish){
+        return;
+    }
+
+    if(event.target === buildActiveTextEdit.textEl || buildActiveTextEdit.textEl.contains(event.target)){
+        return;
+    }
+
+    finishBuildTextEdit(true);
+}, true);
 
 setInterval(()=>{
     if(currentView === "trash"){
@@ -10899,14 +16109,17 @@ window.saveCompressionSettings = saveCompressionSettings;
 window.openPreviewImage = openPreviewImage;
 window.up = uploadPhoto;
 window.toggleMenu = toggleMenu;
+window.goHome = goHome;
 window.goToTrash = goToTrash;
 
+initializeBuildOpenLibraryKeys();
 initializeAppData(appData);
 renderStoreSelector();
 loadLogo();
 updateStorageBadge();
 updateAuthUI();
 applySavedLoginOptions();
+updateLoginAvailability();
 
 signInAnonymously(auth)
 .then(()=>{
@@ -10925,6 +16138,7 @@ signInAnonymously(auth)
         updateStorageBadge();
         updateAuthUI();
         applySavedLoginOptions();
+        markAppDataLoaded();
         tryAutoLogin();
         hideLoading(interval);
         render(false);
@@ -10932,6 +16146,7 @@ signInAnonymously(auth)
 })
 .catch((err)=>{
     console.error(err);
+    markAppDataLoaded();
     alert("Firebase 로그인 실패");
     render(false);
 });
