@@ -93,6 +93,447 @@ body{
     color:#b71c1c;
 }
 
+.schedule-now-card{
+    margin:-6px 0 10px;
+    padding:8px 10px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fbfbfb;
+}
+
+.schedule-now-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:6px;
+    color:#333;
+    font-size:11px;
+    font-weight:800;
+}
+
+.schedule-now-head span{
+    color:#777;
+    font-size:10px;
+    font-weight:700;
+}
+
+.schedule-route{
+    display:grid;
+    grid-template-columns:1fr 1.1fr 1fr;
+    align-items:center;
+    gap:5px;
+    position:relative;
+}
+
+.schedule-route:before{
+    content:"";
+    position:absolute;
+    left:10%;
+    right:10%;
+    top:12px;
+    height:2px;
+    background:#d8d8d8;
+}
+
+.schedule-station{
+    position:relative;
+    z-index:1;
+    display:grid;
+    gap:2px;
+    justify-items:center;
+    min-width:0;
+    color:#777;
+    text-align:center;
+}
+
+.schedule-dot{
+    width:10px;
+    height:10px;
+    border:2px solid #aaa;
+    border-radius:50%;
+    background:white;
+}
+
+.schedule-station.active{
+    color:#111;
+}
+
+.schedule-station.active .schedule-dot{
+    width:14px;
+    height:14px;
+    border-color:#2196F3;
+    box-shadow:0 0 0 3px rgba(33,150,243,0.14);
+}
+
+.schedule-label{
+    font-size:9px;
+    font-weight:800;
+}
+
+.schedule-area{
+    width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:11px;
+    font-weight:900;
+}
+
+.schedule-time{
+    color:#777;
+    font-size:9px;
+    font-weight:700;
+}
+
+.schedule-empty{
+    color:#777;
+    font-size:11px;
+    line-height:1.35;
+}
+
+.schedule-editor{
+    display:grid;
+    gap:12px;
+}
+
+.schedule-image-preview{
+    width:100%;
+    max-height:260px;
+    object-fit:contain;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fafafa;
+}
+
+.schedule-table-wrap{
+    overflow-x:auto;
+}
+
+.schedule-table{
+    width:100%;
+    min-width:620px;
+    border-collapse:collapse;
+    font-size:12px;
+}
+
+.schedule-table th,
+.schedule-table td{
+    padding:6px;
+    border:1px solid #e3e3e3;
+    background:white;
+}
+
+.schedule-table th{
+    background:#f5f5f5;
+    font-weight:900;
+}
+
+.schedule-table input{
+    width:100%;
+    min-width:0;
+    padding:7px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    font-size:12px;
+}
+
+.schedule-table .btn-mini{
+    padding:7px 9px;
+    white-space:nowrap;
+}
+
+.schedule-workspace{
+    display:grid;
+    gap:12px;
+}
+
+.schedule-board-tools{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.schedule-palette{
+    display:grid;
+    gap:8px;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fafafa;
+}
+
+.schedule-palette h3{
+    margin:0;
+    font-size:13px;
+}
+
+.schedule-chip-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.schedule-chip-wrap{
+    display:flex;
+    align-items:center;
+    gap:3px;
+}
+
+.schedule-chip{
+    width:auto;
+    margin:0;
+    padding:7px 10px;
+    border:1px solid #ccc;
+    border-radius:999px;
+    background:white;
+    color:#222;
+    font-size:12px;
+    font-weight:800;
+    cursor:grab;
+}
+
+.schedule-chip.selected{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0d47a1;
+}
+
+.schedule-chip:active{
+    cursor:grabbing;
+}
+
+.schedule-chip-delete{
+    width:24px;
+    height:24px;
+    margin:0;
+    padding:0;
+    border:1px solid #ddd;
+    border-radius:50%;
+    background:white;
+    color:#d9534f;
+    font-size:13px;
+    font-weight:900;
+    line-height:1;
+}
+
+.schedule-color-input{
+    width:28px;
+    height:28px;
+    margin:0;
+    padding:0;
+    border:1px solid #ccc;
+    border-radius:50%;
+    background:white;
+    cursor:pointer;
+}
+
+.schedule-block-size{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+    padding:9px 10px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fafafa;
+    font-size:12px;
+    font-weight:900;
+}
+
+.schedule-size-btn{
+    width:auto;
+    margin:0;
+    padding:7px 10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:white;
+    color:#333;
+    font-size:12px;
+}
+
+.schedule-size-btn.active{
+    border-color:#2196F3;
+    background:#eaf4ff;
+    color:#0d47a1;
+}
+
+.schedule-size-btn.delete-active{
+    border-color:#d9534f;
+    background:#fff0f0;
+    color:#b71c1c;
+}
+
+.schedule-zoom-control{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    padding:9px 10px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fafafa;
+    font-size:12px;
+    font-weight:900;
+}
+
+.schedule-zoom-control input{
+    width:160px;
+}
+
+.schedule-board-wrap{
+    overflow:auto;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+}
+
+.schedule-board{
+    display:grid;
+    min-width:1180px;
+    font-size:12px;
+}
+
+.schedule-board-cell{
+    min-height:42px;
+    padding:7px 6px;
+    border-right:1px solid #333;
+    border-bottom:1px solid #333;
+    background:white;
+    text-align:center;
+    font-weight:800;
+}
+
+.schedule-board-cell.slot{
+    display:grid;
+    grid-template-rows:1fr 1fr;
+    min-height:76px;
+    padding:0;
+    background:#b8b8b8;
+}
+
+.schedule-board-cell.header{
+    position:sticky;
+    top:0;
+    z-index:2;
+    background:#fff3c4;
+}
+
+.schedule-board-cell.employee{
+    position:sticky;
+    left:0;
+    z-index:4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f7f7f7;
+    box-shadow:2px 0 0 rgba(0,0,0,0.12);
+}
+
+.schedule-board-cell.header.employee{
+    z-index:6;
+}
+
+.schedule-board-cell.drop-ready{
+    outline:3px solid rgba(33,150,243,0.32);
+    outline-offset:-3px;
+}
+
+.schedule-board-cell.filled{
+    background:#fff5d8;
+}
+
+.schedule-board-cell.rest{
+    background:#ddd;
+}
+
+.schedule-board-cell.empty{
+    color:#aaa;
+    font-weight:600;
+}
+
+.schedule-board-cell .cell-note{
+    display:block;
+    margin-top:3px;
+    color:#777;
+    font-size:10px;
+    font-weight:600;
+}
+
+.schedule-half{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    padding:4px;
+    border-bottom:1px dashed #cfcfcf;
+    background:#b8b8b8;
+    color:#777;
+    font-size:11px;
+    font-weight:700;
+    line-height:1.2;
+    text-align:center;
+    cursor:pointer;
+}
+
+.schedule-half:last-child{
+    border-bottom:none;
+}
+
+.schedule-half.filled{
+    color:#222;
+    font-weight:900;
+}
+
+.schedule-half.rest{
+    background:#ddd;
+}
+
+.schedule-half.drop-ready{
+    outline:3px solid rgba(33,150,243,0.32);
+    outline-offset:-3px;
+}
+
+.schedule-board-cell.slot.full-block .schedule-half:first-child{
+    grid-row:1 / 3;
+    min-height:76px;
+    border-bottom:none;
+    font-size:12px;
+}
+
+.schedule-board-cell.slot.full-block .schedule-half:last-child{
+    display:none;
+}
+
+.schedule-board-cell input{
+    width:100%;
+    padding:6px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    text-align:center;
+    font-size:12px;
+    font-weight:800;
+}
+
+.schedule-board-guide{
+    color:#666;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.schedule-selected-tool{
+    min-height:28px;
+    color:#0d47a1;
+    font-size:12px;
+    font-weight:800;
+}
+
+@media(max-width:600px){
+    .schedule-board-tools{
+        grid-template-columns:1fr;
+    }
+}
+
 .top-actions{
     display:flex;
     align-items:center;
@@ -273,6 +714,29 @@ select{
     object-fit:contain;
 }
 
+.photo-empty{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fafafa;
+    color:#999;
+    font-size:13px;
+    font-weight:700;
+    text-align:center;
+}
+
+.thumb-box .photo-empty{
+    position:absolute;
+    inset:0;
+}
+
+.main-photo-empty{
+    width:100%;
+    min-height:240px;
+    border:1px solid #ddd;
+    border-radius:12px;
+}
+
 .info-box{
     padding:10px;
     flex-grow:1;
@@ -339,8 +803,7 @@ select{
     opacity:0.25;
     transition:0.2s;
     z-index:5;
-    cursor:grab;
-    touch-action:none;
+    cursor:pointer;
 }
 
 .settings-btn:hover{
@@ -348,7 +811,35 @@ select{
 }
 
 .settings-btn:active{
+    background:#eee;
+}
+
+.item-wrapper.reorder-enabled>.item{
+    cursor:grab;
+}
+
+.item-wrapper.reorder-enabled>.item:active{
     cursor:grabbing;
+}
+
+@keyframes reorderJiggle{
+    0%{
+        transform:rotate(-0.45deg);
+    }
+
+    50%{
+        transform:rotate(0.45deg);
+    }
+
+    100%{
+        transform:rotate(-0.45deg);
+    }
+}
+
+.reorder-jiggle .item-wrapper[data-reorder-type]>.item,
+.reorder-ghost>.item{
+    animation:reorderJiggle 0.14s infinite;
+    transform-origin:center;
 }
 
 .item-wrapper.dragging{
@@ -538,6 +1029,23 @@ button{
     color:white;
 }
 
+.folder-create-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:12px;
+}
+
+.folder-create-actions .folder-create-btn{
+    width:auto;
+    min-width:96px;
+    margin-top:0;
+    padding:9px 12px;
+    border-radius:8px;
+    font-size:12px;
+    line-height:1.2;
+}
+
 .btn-back{
     background:#777;
     color:white;
@@ -596,10 +1104,29 @@ textarea{
     border:1px solid #ddd;
     padding:16px;
     resize:none;
+    font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
     font-size:15px;
     line-height:1.7;
+    color:#3f4650;
     background:#fafafa;
     transition:0.15s;
+}
+
+.memo-section textarea{
+    border-color:#d7dce2;
+    padding:15px 16px;
+    background:white;
+    color:#3f4650;
+    font-size:16px;
+    font-weight:400;
+    line-height:1.78;
+    word-break:keep-all;
+    overflow-wrap:anywhere;
+}
+
+.memo-section textarea::placeholder{
+    color:#9aa3ad;
+    font-weight:400;
 }
 
 textarea:focus{
@@ -763,9 +1290,14 @@ textarea.scroll-mode{
     border-radius:0;
     padding:8px;
     background:white;
-    font-size:12px;
-    line-height:1.45;
+    font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:#4a515b;
+    font-size:13px;
+    font-weight:400;
+    line-height:1.6;
     resize:vertical;
+    word-break:keep-all;
+    overflow-wrap:anywhere;
 }
 
 .evidence-memo-time{
@@ -790,6 +1322,142 @@ textarea.scroll-mode{
     margin:0;
     padding:6px 10px;
     font-size:11px;
+}
+
+.timeline-modal{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(0,0,0,0.45);
+    z-index:8500;
+}
+
+.timeline-dialog{
+    width:min(620px, 100%);
+    max-height:min(78vh, 680px);
+    display:flex;
+    flex-direction:column;
+    border-radius:14px;
+    background:white;
+    box-shadow:0 12px 32px rgba(0,0,0,0.25);
+    overflow:hidden;
+}
+
+.timeline-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:13px 14px;
+    border-bottom:1px solid #eee;
+}
+
+.timeline-header b{
+    font-size:16px;
+}
+
+.timeline-close{
+    width:32px;
+    height:32px;
+    margin:0;
+    padding:0;
+    border-radius:50%;
+    background:#f1f1f1;
+    color:#333;
+    line-height:32px;
+}
+
+.timeline-section{
+    padding:12px;
+    overflow-y:auto;
+}
+
+.timeline-section > .section-title{
+    display:none;
+}
+
+.timeline-list{
+    display:grid;
+    gap:10px;
+}
+
+.timeline-item{
+    display:grid;
+    grid-template-columns:minmax(86px, 120px) minmax(0, 1fr);
+    gap:10px;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fafafa;
+}
+
+.timeline-photo{
+    position:relative;
+    width:100%;
+    aspect-ratio:1 / 1.15;
+    border:1px solid #e2e2e2;
+    border-radius:10px;
+    background:white;
+    overflow:hidden;
+}
+
+.timeline-photo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    cursor:pointer;
+}
+
+.timeline-empty-photo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:100%;
+    color:#999;
+    font-size:12px;
+    font-weight:800;
+}
+
+.timeline-content{
+    min-width:0;
+}
+
+.timeline-time{
+    margin-bottom:6px;
+    color:#777;
+    font-size:11px;
+    font-weight:800;
+    line-height:1.45;
+    white-space:pre-wrap;
+}
+
+.timeline-memo{
+    margin:0;
+    color:#4a515b;
+    font-size:13px;
+    font-weight:400;
+    line-height:1.6;
+    white-space:pre-wrap;
+    word-break:keep-all;
+    overflow-wrap:anywhere;
+}
+
+.timeline-admin-memo{
+    margin-top:8px;
+    padding:8px;
+    border:1px dashed rgba(33,150,243,0.45);
+    border-radius:8px;
+    background:rgba(33,150,243,0.05);
+}
+
+@media(max-width:520px){
+    .timeline-item{
+        grid-template-columns:88px minmax(0, 1fr);
+    }
 }
 
 .admin-private-section{
@@ -1444,11 +2112,28 @@ textarea.scroll-mode{
     margin-bottom:12px;
 }
 
+.search-field{
+    position:relative;
+    width:100%;
+}
+
+.search-icon{
+    position:absolute;
+    top:50%;
+    left:12px;
+    transform:translateY(-50%);
+    z-index:1;
+    color:#777;
+    font-size:15px;
+    line-height:1;
+    pointer-events:none;
+}
+
 .folder-search{
     width:100%;
     border:1px solid #ccc;
     border-radius:10px;
-    padding:11px;
+    padding:11px 11px 11px 36px;
     background:white;
     font-size:14px;
 }
@@ -1711,7 +2396,7 @@ textarea.scroll-mode{
     width:100%;
     border:1px solid #ccc;
     border-radius:10px;
-    padding:12px;
+    padding:12px 12px 12px 38px;
     font-size:14px;
 }
 
@@ -3270,6 +3955,7 @@ textarea.scroll-mode{
         <div class="menu-item" id="compression-menu">🧪 압축 설정</div>
         <div class="menu-item" id="manage-role-menu">👤 권한 관리</div>
     </div>
+    <div class="menu-item" id="schedule-menu">🕒 시간표 등록</div>
     <div class="menu-item" id="trash-menu">🗑️ 휴지통</div>
     <input type="file" id="logo-upload" accept="image/*" style="display:none">
 </div>
@@ -3703,6 +4389,13 @@ function createEmptyStore(){
         machineOrder:{},
         trash:[],
         siteLogo:null,
+        staffSchedule:{
+            sourceImage:"",
+            entries:[],
+            updatedAt:"",
+            updatedBy:"",
+            updatedByName:""
+        },
         storageUsageBytes:0
     };
 }
@@ -4172,6 +4865,13 @@ function generateAccountCode(){
         Math.random().toString(36).slice(2, 8);
 }
 
+function createTimelineId(){
+    return "timeline_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 8);
+}
+
 function findAccountCodeByLoginId(loginId){
     return Object.keys(appData.accounts || {}).find((code)=>{
         const account = appData.accounts[code];
@@ -4258,6 +4958,29 @@ function canEditCurrentStore(){
         return role.storeIds.includes("*") || role.storeIds.includes(currentStoreId);
     }
 
+    return false;
+}
+
+function canEditSchedule(){
+    const role = getCurrentUserRole();
+
+    if(role.role === "master"){
+        return true;
+    }
+
+    if(role.role === "manager"){
+        return role.storeIds.includes("*") || role.storeIds.includes(currentStoreId);
+    }
+
+    return false;
+}
+
+function requireScheduleEdit(){
+    if(canEditSchedule()){
+        return true;
+    }
+
+    alert("시간표 수정은 관리자 계정만 가능합니다.");
     return false;
 }
 
@@ -5273,6 +5996,118 @@ function initializeData(){
         data.storageUsageBytes = 0;
     }
 
+    if(!data.staffSchedule || typeof data.staffSchedule !== "object" || Array.isArray(data.staffSchedule)){
+        data.staffSchedule = {
+            sourceImage:"",
+            entries:[],
+            updatedAt:"",
+            updatedBy:"",
+            updatedByName:""
+        };
+    }
+
+    if(typeof data.staffSchedule.sourceImage !== "string"){
+        data.staffSchedule.sourceImage = "";
+    }
+
+    if(!Array.isArray(data.staffSchedule.entries)){
+        data.staffSchedule.entries = [];
+    }
+
+    if(!Array.isArray(data.staffSchedule.employees)){
+        data.staffSchedule.employees = [];
+    }
+
+    if(!Array.isArray(data.staffSchedule.rows)){
+        data.staffSchedule.rows = [];
+    }
+
+    if(!Array.isArray(data.staffSchedule.areas)){
+        data.staffSchedule.areas = [];
+    }
+
+    if(typeof data.staffSchedule.zoom !== "number" || !Number.isFinite(data.staffSchedule.zoom)){
+        data.staffSchedule.zoom = 100;
+    }
+
+    data.staffSchedule.showOnHome = data.staffSchedule.showOnHome !== false;
+
+    data.staffSchedule.zoom = Math.min(
+        140,
+        Math.max(55, Number(data.staffSchedule.zoom) || 100)
+    );
+
+    if(!Array.isArray(data.staffSchedule.areaColors)){
+        const legacyColors = data.staffSchedule.areaColors && typeof data.staffSchedule.areaColors === "object"
+            ? data.staffSchedule.areaColors
+            : {};
+
+        data.staffSchedule.areaColors = Object.keys(legacyColors).map((name)=>({
+            name:name,
+            color:legacyColors[name]
+        }));
+    }
+
+    data.staffSchedule.areaColors = data.staffSchedule.areaColors
+    .filter((item)=>item && typeof item === "object")
+    .map((item)=>({
+        name:sanitizeText(item.name || ""),
+        color:/^#[0-9a-f]{6}$/i.test(String(item.color || "")) ? item.color : ""
+    }))
+    .filter((item)=>item.name && item.color);
+
+    data.staffSchedule.employees = data.staffSchedule.employees
+    .map((item)=>sanitizeText(item))
+    .filter(Boolean);
+
+    data.staffSchedule.rows = data.staffSchedule.rows
+    .map((item)=>sanitizeText(item))
+    .filter(Boolean);
+
+    data.staffSchedule.areas = data.staffSchedule.areas
+    .map((item)=>sanitizeText(item))
+    .filter(Boolean);
+
+    ["updatedAt", "updatedBy", "updatedByName", "sourceImageUpdatedAt", "sourceImageUpdatedBy", "sourceImageUpdatedByName"].forEach((key)=>{
+        if(typeof data.staffSchedule[key] !== "string"){
+            data.staffSchedule[key] = "";
+        }
+    });
+
+    data.staffSchedule.entries = data.staffSchedule.entries
+    .filter((entry)=>entry && typeof entry === "object")
+    .map((entry, index)=>{
+        if(typeof entry.id !== "string" || !entry.id){
+            entry.id = "shift_" + Date.now() + "_" + index;
+        }
+
+        ["employeeName", "start", "end", "area", "note"].forEach((key)=>{
+            if(typeof entry[key] !== "string"){
+                entry[key] = "";
+            }
+        });
+
+        return entry;
+    });
+
+    data.staffSchedule.entries.forEach((entry)=>{
+        if(entry.employeeName && !data.staffSchedule.employees.includes(entry.employeeName)){
+            data.staffSchedule.employees.push(entry.employeeName);
+        }
+
+        if(entry.employeeName && !data.staffSchedule.rows.includes(entry.employeeName)){
+            data.staffSchedule.rows.push(entry.employeeName);
+        }
+
+        if(entry.area && !data.staffSchedule.areas.includes(entry.area)){
+            data.staffSchedule.areas.push(entry.area);
+        }
+    });
+
+    if(data.staffSchedule.rows.length === 0){
+        data.staffSchedule.rows = [...data.staffSchedule.employees];
+    }
+
     data.genreGroups = data.genreGroups
     .filter((group)=>group && typeof group === "object")
     .map((group, index)=>{
@@ -5338,7 +6173,8 @@ function initializeData(){
                     adminMemoUpdatedBy:"",
                     adminMemoUpdatedByName:"",
                     evidencePhotos:[],
-                    adminEvidencePhotos:[]
+                    adminEvidencePhotos:[],
+                    timeline:[]
                 };
                 return;
             }
@@ -5399,6 +6235,58 @@ function initializeData(){
 
             machineData.evidencePhotos = normalizeEvidencePhotoList(machineData.evidencePhotos);
             machineData.adminEvidencePhotos = normalizeEvidencePhotoList(machineData.adminEvidencePhotos);
+
+            if(!Array.isArray(machineData.timeline)){
+                machineData.timeline = [];
+            }
+
+            machineData.timeline = machineData.timeline
+            .filter((entry)=>entry && typeof entry === "object" && !Array.isArray(entry))
+            .map((entry)=>{
+                if(typeof entry.id !== "string"){
+                    entry.id = createTimelineId();
+                }
+
+                if(typeof entry.photo !== "string"){
+                    entry.photo = "";
+                }
+
+                if(typeof entry.memo !== "string"){
+                    entry.memo = "";
+                }
+
+                if(typeof entry.adminMemo !== "string"){
+                    entry.adminMemo = "";
+                }
+
+                if(typeof entry.createdAt !== "string"){
+                    entry.createdAt = "";
+                }
+
+                ["photoUpdatedByName", "memoUpdatedByName", "adminMemoUpdatedByName"].forEach((key)=>{
+                    if(typeof entry[key] !== "string"){
+                        entry[key] = "";
+                    }
+                });
+
+                if(typeof entry.archivedAt !== "string"){
+                    entry.archivedAt = "";
+                }
+
+                if(typeof entry.createdBy !== "string"){
+                    entry.createdBy = "";
+                }
+
+                if(typeof entry.createdByName !== "string"){
+                    entry.createdByName = "";
+                }
+
+                if(typeof entry.reason !== "string"){
+                    entry.reason = "";
+                }
+
+                return entry;
+            });
         });
     });
 }
@@ -5682,7 +6570,7 @@ function hideLoading(interval){
     }, 250);
 }
 
-async function saveData(callback){
+async function saveData(callback, options = {}){
     if(callback){
         queuedCallbacks.push(callback);
     }
@@ -5693,7 +6581,8 @@ async function saveData(callback){
     }
 
     saving = true;
-    const interval = showLoading("💾 저장 중...");
+    const silent = options && options.silent === true;
+    const interval = silent ? null : showLoading("💾 저장 중...");
 
     try{
         syncCurrentStoreData();
@@ -5717,7 +6606,9 @@ async function saveData(callback){
             "저장 응답이 30초 이상 없습니다. 인터넷 연결, Firebase 권한, 데이터 용량을 확인하세요."
         );
 
-        hideLoading(interval);
+        if(!silent){
+            hideLoading(interval);
+        }
         updateStorageBadge();
 
         const callbacks = queuedCallbacks.splice(0);
@@ -5729,7 +6620,9 @@ async function saveData(callback){
             }
         });
     }catch(err){
-        hideLoading(interval);
+        if(!silent){
+            hideLoading(interval);
+        }
         console.error(err);
         alert("저장 실패: " + err.message);
     }finally{
@@ -6007,6 +6900,16 @@ function storageImagePath(kind){
             ".jpg";
     }
 
+    if(String(kind).startsWith("schedule_original")){
+        return "stores/" +
+            safeStorageSegment(currentStoreId) +
+            "/schedules/" +
+            kind +
+            "_" +
+            Date.now() + "_" +
+            random;
+    }
+
     return "stores/" +
         safeStorageSegment(currentStoreId) +
         "/dollCraneImages/" +
@@ -6046,6 +6949,32 @@ async function uploadDataUrlToStorage(dataUrl, path, options = {}){
 
     if(options.trackUsage !== false){
         addStorageUsage(blob.size);
+    }
+
+    return publicData.publicUrl;
+}
+
+async function uploadOriginalFileToStorage(file, path){
+    const { error } = await supabase
+    .storage
+    .from(supabaseBucket)
+    .upload(path, file, {
+        contentType:file.type || "application/octet-stream",
+        cacheControl:"31536000",
+        upsert:false
+    });
+
+    if(error){
+        throw error;
+    }
+
+    const { data:publicData } = supabase
+    .storage
+    .from(supabaseBucket)
+    .getPublicUrl(path);
+
+    if(!publicData || !publicData.publicUrl){
+        throw new Error("Storage URL 생성 실패");
     }
 
     return publicData.publicUrl;
@@ -6594,6 +7523,8 @@ function render(push = true){
             renderBoardCompose(root);
         }else if(currentView === "build"){
             renderBuild(root);
+        }else if(currentView === "schedule"){
+            renderSchedule(root);
         }else if(currentView === "help"){
             renderHelp(root);
         }else{
@@ -6615,6 +7546,1280 @@ function createButton(className, text, onClick){
 
 function createAdminButton(text, onClick){
     return createButton("btn-mini", text, onClick);
+}
+
+function createPhotoPlaceholder(extraClass = ""){
+    const placeholder = document.createElement("div");
+    placeholder.className = ("photo-empty " + extraClass).trim();
+    placeholder.innerText = "사진없음";
+    return placeholder;
+}
+
+function normalizeScheduleName(value){
+    return String(value || "")
+    .replace(/\s+/g, "")
+    .toLowerCase();
+}
+
+function parseScheduleTime(value){
+    const text = String(value || "").trim();
+
+    if(!text){
+        return null;
+    }
+
+    const match = text.match(/^(\d{1,2}):?(\d{2})$/);
+
+    if(!match){
+        return null;
+    }
+
+    const hour = Number(match[1]);
+    const minute = Number(match[2]);
+
+    if(hour === 24 && minute === 0){
+        return 1440;
+    }
+
+    if(hour < 0 || hour > 23 || minute < 0 || minute > 59){
+        return null;
+    }
+
+    return hour * 60 + minute;
+}
+
+function formatScheduleMinutes(minutes){
+    if(minutes === null || minutes === undefined || !Number.isFinite(minutes)){
+        return "";
+    }
+
+    if(minutes >= 1440){
+        return "24:00";
+    }
+
+    const hour = Math.floor(minutes / 60);
+    const minute = minutes % 60;
+    return String(hour).padStart(2, "0") + ":" + String(minute).padStart(2, "0");
+}
+
+function getScheduleHomeVisible(){
+    return getViewPreference(
+        "schedule",
+        "showOnHome",
+        "on",
+        "home"
+    ) !== "off";
+}
+
+function setScheduleHomeVisible(visible){
+    setViewPreference(
+        "schedule",
+        "showOnHome",
+        visible ? "on" : "off",
+        "home"
+    );
+}
+
+function isSameLocalDate(value, targetDate = new Date()){
+    const date = new Date(value || "");
+
+    if(!Number.isFinite(date.getTime())){
+        return false;
+    }
+
+    return date.getFullYear() === targetDate.getFullYear() &&
+        date.getMonth() === targetDate.getMonth() &&
+        date.getDate() === targetDate.getDate();
+}
+
+function isScheduleUpdatedToday(schedule = data.staffSchedule){
+    return Boolean(schedule && isSameLocalDate(schedule.updatedAt));
+}
+
+function getTodayScheduleForCurrentUser(){
+    const schedule = data.staffSchedule || {};
+    const loginName = getCurrentDisplayName();
+    const targetName = normalizeScheduleName(loginName);
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    if(!getLoginId()){
+        return {
+            loginName:"",
+            now,
+            nowMinutes,
+            entries:[],
+            previous:null,
+            current:null,
+            next:null,
+            reason:"login"
+        };
+    }
+
+    const entries = (schedule.entries || [])
+    .map((entry)=>({
+        ...entry,
+        startMinutes:parseScheduleTime(entry.start),
+        endMinutes:parseScheduleTime(entry.end)
+    }))
+    .filter((entry)=>
+        normalizeScheduleName(entry.employeeName) === targetName &&
+        entry.area &&
+        entry.startMinutes !== null &&
+        entry.endMinutes !== null
+    )
+    .sort((a,b)=>a.startMinutes - b.startMinutes);
+
+    if(entries.length === 0){
+        return {
+            loginName,
+            now,
+            nowMinutes,
+            entries,
+            previous:null,
+            current:null,
+            next:null,
+            reason:"empty"
+        };
+    }
+
+    let current = entries.find((entry)=>{
+        const end = entry.endMinutes <= entry.startMinutes
+            ? entry.endMinutes + 1440
+            : entry.endMinutes;
+        const adjustedNow = nowMinutes < entry.startMinutes && end > 1440
+            ? nowMinutes + 1440
+            : nowMinutes;
+
+        return adjustedNow >= entry.startMinutes && adjustedNow < end;
+    }) || null;
+
+    let currentIndex = current ? entries.indexOf(current) : -1;
+    let next = null;
+    let previous = null;
+
+    if(currentIndex >= 0){
+        previous = entries[currentIndex - 1] || null;
+        next = entries[currentIndex + 1] || null;
+    }else{
+        next = entries.find((entry)=>entry.startMinutes > nowMinutes) || null;
+        const nextIndex = next ? entries.indexOf(next) : entries.length;
+        previous = entries[nextIndex - 1] || entries[entries.length - 1] || null;
+    }
+
+    return {
+        loginName,
+        now,
+        nowMinutes,
+        entries,
+        previous,
+        current,
+        next,
+        reason:current ? "current" : "between"
+    };
+}
+
+function createScheduleStation(label, entry, active = false){
+    const station = document.createElement("div");
+    station.className = "schedule-station" + (active ? " active" : "");
+
+    const dot = document.createElement("div");
+    dot.className = "schedule-dot";
+
+    const labelEl = document.createElement("div");
+    labelEl.className = "schedule-label";
+    labelEl.innerText = label;
+
+    const area = document.createElement("div");
+    area.className = "schedule-area";
+    area.innerText = entry ? entry.area : "없음";
+
+    const time = document.createElement("div");
+    time.className = "schedule-time";
+    time.innerText = entry &&
+        Number.isFinite(entry.startMinutes) &&
+        Number.isFinite(entry.endMinutes)
+        ? formatScheduleMinutes(entry.startMinutes) + " ~ " + formatScheduleMinutes(entry.endMinutes)
+        : "";
+
+    station.appendChild(dot);
+    station.appendChild(labelEl);
+    station.appendChild(area);
+    station.appendChild(time);
+
+    return station;
+}
+
+function renderScheduleNowWidget(root){
+    if(currentView !== "genres"){
+        return;
+    }
+
+    if(!getScheduleHomeVisible()){
+        return;
+    }
+
+    if(!isScheduleUpdatedToday(data.staffSchedule)){
+        return;
+    }
+
+    const state = getTodayScheduleForCurrentUser();
+
+    if(state.reason === "login" || state.reason === "empty"){
+        return;
+    }
+
+    const card = document.createElement("div");
+    card.className = "schedule-now-card";
+
+    const head = document.createElement("div");
+    head.className = "schedule-now-head";
+    head.innerHTML =
+        "<b>오늘 담당구역</b><span>" +
+        formatScheduleMinutes(state.nowMinutes) +
+        " 기준</span>";
+    card.appendChild(head);
+
+    const route = document.createElement("div");
+    route.className = "schedule-route";
+    route.appendChild(createScheduleStation("이전", state.previous, false));
+    route.appendChild(createScheduleStation("현재", state.current || {
+        area:"담당 없음",
+        startMinutes:state.nowMinutes,
+        endMinutes:state.nowMinutes
+    }, true));
+    route.appendChild(createScheduleStation("다음", state.next, false));
+    card.appendChild(route);
+
+    root.appendChild(card);
+}
+
+function createScheduleEntry(){
+    return {
+        id:"shift_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7),
+        employeeName:"",
+        start:"",
+        end:"",
+        area:"",
+        note:""
+    };
+}
+
+async function uploadScheduleImage(input){
+    if(!requireScheduleEdit()){
+        return;
+    }
+
+    const file = input && input.files && input.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const interval = showLoading("시간표 이미지 저장 중...");
+
+    try{
+        const ext = file.type === "image/png"
+            ? ".png"
+            : file.type === "image/webp"
+                ? ".webp"
+                : ".jpg";
+        data.staffSchedule.sourceImage = await uploadOriginalFileToStorage(
+            file,
+            storageImagePath("schedule_original") + ext
+        );
+        applyAuditFields(data.staffSchedule, "sourceImageUpdated");
+        applyAuditFields(data.staffSchedule, "updated");
+        await saveData(()=>render(false));
+    }catch(err){
+        console.error(err);
+        alert("시간표 이미지 저장 실패: " + err.message);
+    }finally{
+        hideLoading(interval);
+    }
+}
+
+const DEFAULT_SCHEDULE_AREAS = [
+    "오픈",
+    "프라이즈",
+    "휴식",
+    "잼나/조플",
+    "코코짱",
+    "카니발 / VR",
+    "UFO",
+    "미니",
+    "마감"
+];
+
+const DEFAULT_SCHEDULE_COLORS = [
+    "#fff1b8",
+    "#ffd6d6",
+    "#d9e8ff",
+    "#d8f5df",
+    "#ffe0bd",
+    "#eadcff",
+    "#d7f4f2",
+    "#f2d9e6",
+    "#dddddd"
+];
+
+function getScheduleAreaColor(area){
+    const schedule = data.staffSchedule || {};
+    const colors = Array.isArray(schedule.areaColors) ? schedule.areaColors : [];
+    const saved = colors.find((item)=>item && item.name === area);
+
+    if(saved && saved.color){
+        return saved.color;
+    }
+
+    const areas = getScheduleAreas(schedule);
+    const index = Math.max(0, areas.indexOf(area));
+    return DEFAULT_SCHEDULE_COLORS[index % DEFAULT_SCHEDULE_COLORS.length];
+}
+
+function setScheduleAreaColor(area, color){
+    if(!data.staffSchedule){
+        return;
+    }
+
+    if(!Array.isArray(data.staffSchedule.areaColors)){
+        data.staffSchedule.areaColors = [];
+    }
+
+    const safeArea = sanitizeText(area || "");
+    const safeColor = /^#[0-9a-f]{6}$/i.test(String(color || "")) ? color : "";
+
+    if(!safeArea || !safeColor){
+        return;
+    }
+
+    const existing = data.staffSchedule.areaColors.find((item)=>item && item.name === safeArea);
+
+    if(existing){
+        existing.color = safeColor;
+    }else{
+        data.staffSchedule.areaColors.push({
+            name:safeArea,
+            color:safeColor
+        });
+    }
+}
+
+function removeScheduleAreaColor(area){
+    if(!data.staffSchedule || !Array.isArray(data.staffSchedule.areaColors)){
+        return;
+    }
+
+    data.staffSchedule.areaColors = data.staffSchedule.areaColors
+    .filter((item)=>item && item.name !== area);
+}
+
+function getScheduleTextColor(hex){
+    const value = String(hex || "").replace("#", "");
+
+    if(!/^[0-9a-f]{6}$/i.test(value)){
+        return "#222";
+    }
+
+    const r = parseInt(value.slice(0, 2), 16);
+    const g = parseInt(value.slice(2, 4), 16);
+    const b = parseInt(value.slice(4, 6), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 135 ? "#fff" : "#222";
+}
+
+function getScheduleSlots(){
+    const slots = [];
+    const start = 10 * 60;
+    const end = 24 * 60;
+    const step = 60;
+
+    for(let minutes = start; minutes < end; minutes += step){
+        slots.push({
+            start:minutes,
+            end:minutes + step,
+            label:formatScheduleMinutes(minutes) + "\n~ " + formatScheduleMinutes(minutes + step)
+        });
+    }
+
+    return slots;
+}
+
+function getScheduleHalfSlots(slots){
+    const halves = [];
+
+    slots.forEach((slot)=>{
+        halves.push({
+            start:slot.start,
+            end:slot.start + 30
+        });
+        halves.push({
+            start:slot.start + 30,
+            end:slot.end
+        });
+    });
+
+    return halves;
+}
+
+function getScheduleEmployees(schedule){
+    const names = Array.isArray(schedule.employees) ? [...schedule.employees] : [];
+
+    (schedule.entries || []).forEach((entry)=>{
+        if(entry.employeeName && !names.includes(entry.employeeName)){
+            names.push(entry.employeeName);
+        }
+    });
+
+    return names;
+}
+
+function getScheduleRows(schedule){
+    const rows = Array.isArray(schedule.rows) && schedule.rows.length
+        ? [...schedule.rows]
+        : getScheduleEmployees(schedule);
+
+    (schedule.entries || []).forEach((entry)=>{
+        if(entry.employeeName && !rows.includes(entry.employeeName)){
+            rows.push(entry.employeeName);
+        }
+    });
+
+    return rows;
+}
+
+function createEmptyScheduleRowName(rows){
+    let index = 1;
+    let name = "__empty_row_" + index;
+
+    while(rows.includes(name)){
+        index++;
+        name = "__empty_row_" + index;
+    }
+
+    return name;
+}
+
+function getScheduleRowDisplayName(rowName){
+    return String(rowName || "").startsWith("__empty_row_") ? "" : rowName;
+}
+
+function getScheduleAreas(schedule){
+    const areas = Array.isArray(schedule.areas) && schedule.areas.length
+        ? [...schedule.areas]
+        : [...DEFAULT_SCHEDULE_AREAS];
+
+    (schedule.entries || []).forEach((entry)=>{
+        if(entry.area && !areas.includes(entry.area)){
+            areas.push(entry.area);
+        }
+    });
+
+    return areas;
+}
+
+function createScheduleCellMap(schedule, slots){
+    const map = {};
+    const halves = getScheduleHalfSlots(slots);
+
+    (schedule.entries || []).forEach((entry)=>{
+        const start = parseScheduleTime(entry.start);
+        const end = parseScheduleTime(entry.end);
+
+        if(!entry.employeeName || !entry.area || start === null || end === null){
+            return;
+        }
+
+        const adjustedEnd = end <= start ? end + 1440 : end;
+
+        halves.forEach((half)=>{
+            if(half.start >= start && half.start < adjustedEnd){
+                map[entry.employeeName + "|" + half.start] = {
+                    area:entry.area,
+                    note:entry.note || ""
+                };
+            }
+        });
+    });
+
+    return map;
+}
+
+function getScheduleHalfValue(board, employee, halfStart){
+    const half = Array.from(
+        board.querySelectorAll(".schedule-half[data-employee][data-start]")
+    ).find((item)=>
+        item.dataset.employee === employee &&
+        item.dataset.start === String(halfStart)
+    );
+
+    return half ? half.dataset.area || "" : "";
+}
+
+function collectScheduleEntriesFromBoard(board, employees, slots){
+    const entries = [];
+    const halves = getScheduleHalfSlots(slots);
+
+    employees.forEach((employee)=>{
+        if(!getScheduleRowDisplayName(employee)){
+            return;
+        }
+
+        let activeArea = "";
+        let activeStart = null;
+
+        halves.forEach((half, index)=>{
+            const area = getScheduleHalfValue(board, employee, half.start);
+            const nextHalf = halves[index + 1];
+
+            if(area !== activeArea && activeArea){
+                entries.push({
+                    id:createScheduleEntry().id,
+                    employeeName:employee,
+                    start:formatScheduleMinutes(activeStart),
+                    end:formatScheduleMinutes(half.start),
+                    area:activeArea,
+                    note:""
+                });
+            }
+
+            if(area !== activeArea){
+                activeArea = area;
+                activeStart = area ? half.start : null;
+            }
+
+            if(area && !nextHalf){
+                entries.push({
+                    id:createScheduleEntry().id,
+                    employeeName:employee,
+                    start:formatScheduleMinutes(activeStart),
+                    end:formatScheduleMinutes(half.end),
+                    area:activeArea,
+                    note:""
+                });
+                activeArea = "";
+                activeStart = null;
+            }
+        });
+    });
+
+    return entries;
+}
+
+function setScheduleHalf(half, area){
+    if(!half){
+        return;
+    }
+
+    const value = sanitizeText(area || "");
+    half.dataset.area = value;
+    half.innerText = value || "";
+    half.classList.toggle("filled", !!value);
+    half.classList.toggle("rest", value === "휴식");
+
+    if(value){
+        const color = getScheduleAreaColor(value);
+        half.style.background = color;
+        half.style.color = getScheduleTextColor(color);
+    }else{
+        half.style.background = "";
+        half.style.color = "";
+    }
+
+    updateScheduleSlotVisual(half.closest(".schedule-board-cell.slot"));
+}
+
+function updateScheduleSlotVisual(slotCell){
+    if(!slotCell){
+        return;
+    }
+
+    const halves = Array.from(slotCell.querySelectorAll(".schedule-half"));
+    const firstArea = halves[0] ? halves[0].dataset.area || "" : "";
+    const secondArea = halves[1] ? halves[1].dataset.area || "" : "";
+
+    slotCell.classList.toggle(
+        "full-block",
+        !!firstArea && firstArea === secondArea
+    );
+}
+
+function setScheduleBlock(targetHalf, area, duration){
+    if(!targetHalf){
+        return;
+    }
+
+    const parent = targetHalf.closest(".schedule-board-cell.slot");
+
+    if(duration === "60" && parent){
+        parent.querySelectorAll(".schedule-half").forEach((half)=>{
+            setScheduleHalf(half, area);
+        });
+        return;
+    }
+
+    setScheduleHalf(targetHalf, area);
+}
+
+function clearScheduleBlock(targetHalf){
+    if(!targetHalf){
+        return;
+    }
+
+    const parent = targetHalf.closest(".schedule-board-cell.slot");
+
+    if(parent && parent.classList.contains("full-block")){
+        parent.querySelectorAll(".schedule-half").forEach((half)=>{
+            setScheduleHalf(half, "");
+        });
+        return;
+    }
+
+    setScheduleHalf(targetHalf, "");
+}
+
+function createScheduleChip(type, value, selectedState, selectedLabel){
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "schedule-chip";
+    chip.draggable = canEditSchedule();
+    chip.dataset.type = type;
+    chip.dataset.value = value;
+    chip.innerText = value;
+
+    const selectChip = ()=>{
+        if(!canEditSchedule()){
+            return;
+        }
+
+        selectedState.type = type;
+        selectedState.value = value;
+        selectedLabel.innerText = "선택됨: " + value;
+        document.querySelectorAll(".schedule-chip.selected").forEach((item)=>{
+            item.classList.remove("selected");
+        });
+        chip.classList.add("selected");
+    };
+
+    chip.onclick = selectChip;
+    chip.ondragstart = (event)=>{
+        if(!canEditSchedule()){
+            event.preventDefault();
+            return;
+        }
+
+        event.dataTransfer.setData("text/plain", JSON.stringify({
+            type,
+            value,
+            duration:selectedState.duration || "60"
+        }));
+        selectChip();
+    };
+
+    return chip;
+}
+
+function renderSchedulePalette(title, type, values, selectedState, selectedLabel, onDelete, onColorChange){
+    const palette = document.createElement("div");
+    palette.className = "schedule-palette";
+
+    const heading = document.createElement("h3");
+    heading.innerText = title;
+    palette.appendChild(heading);
+
+    const list = document.createElement("div");
+    list.className = "schedule-chip-list";
+
+    values.forEach((value)=>{
+        const wrap = document.createElement("div");
+        wrap.className = "schedule-chip-wrap";
+        wrap.appendChild(createScheduleChip(type, value, selectedState, selectedLabel));
+
+        if(canEditSchedule()){
+            if(type === "area"){
+                const colorInput = document.createElement("input");
+                colorInput.type = "color";
+                colorInput.className = "schedule-color-input";
+                colorInput.value = getScheduleAreaColor(value);
+                colorInput.title = value + " 색상";
+                colorInput.onchange = ()=>{
+                    onColorChange(value, colorInput.value);
+                };
+                wrap.appendChild(colorInput);
+            }
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "schedule-chip-delete";
+            deleteButton.innerText = "×";
+            deleteButton.onclick = ()=>{
+                onDelete(value);
+            };
+            wrap.appendChild(deleteButton);
+        }
+
+        list.appendChild(wrap);
+    });
+
+    palette.appendChild(list);
+    return palette;
+}
+
+function applyScheduleDropToCell(half, payload, selectedState){
+    if(!half || !payload || !canEditSchedule()){
+        return;
+    }
+
+    if(payload.type === "area"){
+        setScheduleBlock(
+            half,
+            payload.value,
+            payload.duration || (selectedState && selectedState.duration) || "60"
+        );
+    }
+}
+
+function renderSchedule(root){
+    const schedule = data.staffSchedule || {
+        sourceImage:"",
+        entries:[]
+    };
+    const scheduleEditable = canEditSchedule();
+
+    const header = document.createElement("div");
+    header.className = "header-row";
+
+    const title = document.createElement("h2");
+    title.innerText = "🕒 시간표 등록";
+
+    header.appendChild(title);
+    root.appendChild(header);
+
+    const editor = document.createElement("div");
+    editor.className = "schedule-editor";
+
+    {
+        const homeToggle = document.createElement("label");
+        homeToggle.className = "memo-expand-option";
+
+        const homeToggleInput = document.createElement("input");
+        homeToggleInput.type = "checkbox";
+        homeToggleInput.checked = getScheduleHomeVisible();
+        homeToggleInput.onchange = ()=>{
+            setScheduleHomeVisible(homeToggleInput.checked);
+            render(false);
+        };
+
+        homeToggle.appendChild(homeToggleInput);
+        homeToggle.appendChild(document.createTextNode("메인화면 시간표 표시"));
+        editor.appendChild(homeToggle);
+    }
+
+    const scheduleTime = createActionTimeBadge(
+        "시간표 마지막 수정",
+        schedule.updatedAt,
+        "memo-time",
+        schedule.updatedByName
+    );
+
+    if(scheduleTime){
+        editor.appendChild(scheduleTime);
+    }
+
+    if(schedule.sourceImage){
+        const image = document.createElement("img");
+        image.className = "schedule-image-preview";
+        image.src = schedule.sourceImage;
+        image.alt = "시간표 참고 이미지";
+        image.onclick = ()=>openModal(schedule.sourceImage);
+        editor.appendChild(image);
+
+        const imageTime = createActionTimeBadge(
+            "시간표 사진 등록",
+            schedule.sourceImageUpdatedAt,
+            "",
+            schedule.sourceImageUpdatedByName
+        );
+
+        if(imageTime){
+            editor.appendChild(imageTime);
+        }
+    }
+
+    if(canEditSchedule()){
+        const imageInput = document.createElement("input");
+        imageInput.type = "file";
+        imageInput.accept = "image/*";
+        imageInput.onchange = ()=>uploadScheduleImage(imageInput);
+        editor.appendChild(imageInput);
+    }
+
+    const slots = getScheduleSlots();
+    const employees = getScheduleEmployees(schedule);
+    const rows = getScheduleRows(schedule);
+    const areas = getScheduleAreas(schedule);
+    const selectedState = {
+        type:"",
+        value:"",
+        duration:"60",
+        deleteMode:false,
+        rowDeleteMode:false
+    };
+
+    const selectedLabel = document.createElement("div");
+    selectedLabel.className = "schedule-selected-tool";
+    selectedLabel.innerText = "칩을 누르거나 드래그해서 시간표 칸에 넣으세요.";
+    selectedLabel.style.display = scheduleEditable ? "" : "none";
+
+    const workspace = document.createElement("div");
+    workspace.className = "schedule-workspace";
+    workspace.appendChild(selectedLabel);
+
+    const sizeControl = document.createElement("div");
+    sizeControl.className = "schedule-block-size";
+    sizeControl.appendChild(document.createTextNode("블럭 크기"));
+
+    const sizeButtons = [];
+    [
+        ["60", "1시간 꽉찬 블럭"],
+        ["30", "30분 반블럭"]
+    ].forEach(([value, label])=>{
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "schedule-size-btn" + (value === selectedState.duration ? " active" : "");
+        button.innerText = label;
+        button.onclick = ()=>{
+            selectedState.duration = value;
+            sizeButtons.forEach((item)=>{
+                item.classList.toggle("active", item === button);
+            });
+        };
+        sizeButtons.push(button);
+        sizeControl.appendChild(button);
+    });
+
+    const deleteModeButton = document.createElement("button");
+    deleteModeButton.type = "button";
+    deleteModeButton.className = "schedule-size-btn";
+    deleteModeButton.innerText = "삭제 모드";
+    deleteModeButton.onclick = ()=>{
+        selectedState.deleteMode = !selectedState.deleteMode;
+        selectedState.rowDeleteMode = false;
+        deleteModeButton.classList.toggle("delete-active", selectedState.deleteMode);
+        rowDeleteModeButton.classList.remove("delete-active");
+        selectedLabel.innerText = selectedState.deleteMode
+            ? "삭제 모드: 이름칸은 이름만 지워지고, 담당구역 칸은 내용만 지워집니다."
+            : "칩을 누르거나 드래그해서 시간표 칸에 넣으세요.";
+    };
+    sizeControl.appendChild(deleteModeButton);
+
+    const rowDeleteModeButton = document.createElement("button");
+    rowDeleteModeButton.type = "button";
+    rowDeleteModeButton.className = "schedule-size-btn";
+    rowDeleteModeButton.innerText = "행 삭제";
+    rowDeleteModeButton.onclick = ()=>{
+        selectedState.rowDeleteMode = !selectedState.rowDeleteMode;
+        selectedState.deleteMode = false;
+        rowDeleteModeButton.classList.toggle("delete-active", selectedState.rowDeleteMode);
+        deleteModeButton.classList.remove("delete-active");
+        selectedLabel.innerText = selectedState.rowDeleteMode
+            ? "행 삭제 모드: 삭제할 행의 이름칸을 누르면 행 전체가 삭제됩니다."
+            : "칩을 누르거나 드래그해서 시간표 칸에 넣으세요.";
+    };
+    sizeControl.appendChild(rowDeleteModeButton);
+    workspace.appendChild(sizeControl);
+
+    if(!scheduleEditable){
+        sizeControl.style.display = "none";
+    }
+
+    const zoomControl = document.createElement("div");
+    zoomControl.className = "schedule-zoom-control";
+    const zoomLabel = document.createElement("span");
+    zoomLabel.innerText = "타일 크기 " + Math.round(schedule.zoom || 100) + "%";
+    const zoomInput = document.createElement("input");
+    zoomInput.type = "range";
+    zoomInput.min = "55";
+    zoomInput.max = "140";
+    zoomInput.step = "5";
+    zoomInput.value = String(schedule.zoom || 100);
+    zoomControl.appendChild(zoomLabel);
+    zoomControl.appendChild(zoomInput);
+    workspace.appendChild(zoomControl);
+
+    const tools = document.createElement("div");
+    tools.className = "schedule-board-tools";
+    tools.appendChild(renderSchedulePalette("직원 이름", "employee", employees, selectedState, selectedLabel, (name)=>{
+        if(!confirm(name + " 직원칩을 삭제할까요?\n시간표 행은 삭제되지 않습니다.")){
+            return;
+        }
+
+        data.staffSchedule.employees = employees.filter((item)=>item !== name);
+        applyAuditFields(data.staffSchedule, "updated");
+        saveData(()=>render(false));
+    }, null));
+    tools.appendChild(renderSchedulePalette("담당구역", "area", areas, selectedState, selectedLabel, (area)=>{
+        if(!confirm(area + " 담당구역을 삭제할까요?\n해당 담당구역이 들어간 칸도 같이 비워집니다.")){
+            return;
+        }
+
+        data.staffSchedule.areas = areas.filter((item)=>item !== area);
+        removeScheduleAreaColor(area);
+        data.staffSchedule.entries = data.staffSchedule.entries.filter((entry)=>entry.area !== area);
+        applyAuditFields(data.staffSchedule, "updated");
+        saveData(()=>render(false));
+    }, (area, color)=>{
+        setScheduleAreaColor(area, color);
+    }));
+    workspace.appendChild(tools);
+
+    if(!scheduleEditable){
+        tools.style.display = "none";
+    }
+
+    const guide = document.createElement("div");
+    guide.className = "schedule-board-guide";
+    guide.innerText = "담당구역 칩을 드래그해서 시간 칸에 넣거나, 칩을 한 번 누른 뒤 칸을 누르면 입력됩니다. 1시간 블럭은 한 칸 전체, 30분 블럭은 누른 반칸만 채워집니다. 반칸을 두 번 누르면 비워집니다.";
+    workspace.appendChild(guide);
+
+    if(!scheduleEditable){
+        guide.style.display = "none";
+    }
+
+    const boardWrap = document.createElement("div");
+    boardWrap.className = "schedule-board-wrap";
+
+    const board = document.createElement("div");
+    board.className = "schedule-board";
+    const applyScheduleZoom = ()=>{
+        const zoom = Number(zoomInput.value) || 100;
+        const nameWidth = Math.round(96 * zoom / 100);
+        const slotWidth = Math.round(76 * zoom / 100);
+        const slotHeight = Math.round(76 * zoom / 100);
+        const halfHeight = Math.max(22, Math.round(slotHeight / 2));
+        const viewportWidth =
+            boardWrap.clientWidth ||
+            (document.querySelector(".container") && document.querySelector(".container").clientWidth) ||
+            window.innerWidth ||
+            700;
+        const rightScrollSpace = Math.max(
+            slotWidth,
+            viewportWidth - nameWidth - slotWidth
+        );
+
+        board.style.gridTemplateColumns =
+            nameWidth + "px repeat(" + slots.length + ", " + slotWidth + "px)";
+        board.style.minWidth =
+            (nameWidth + (slots.length * slotWidth) + rightScrollSpace) + "px";
+        board.style.paddingRight = rightScrollSpace + "px";
+        board.style.fontSize = Math.max(10, Math.round(12 * zoom / 100)) + "px";
+        board.querySelectorAll(".schedule-board-cell.slot").forEach((cell)=>{
+            cell.style.minHeight = slotHeight + "px";
+        });
+        board.querySelectorAll(".schedule-half").forEach((half)=>{
+            half.style.minHeight = halfHeight + "px";
+        });
+        board.querySelectorAll(".schedule-board-cell.slot.full-block .schedule-half:first-child").forEach((half)=>{
+            half.style.minHeight = slotHeight + "px";
+        });
+        zoomLabel.innerText = "타일 크기 " + zoom + "%";
+        data.staffSchedule.zoom = zoom;
+    };
+
+    zoomInput.oninput = applyScheduleZoom;
+
+    const corner = document.createElement("div");
+    corner.className = "schedule-board-cell header employee";
+    corner.innerText = "이름";
+    board.appendChild(corner);
+
+    slots.forEach((slot)=>{
+        const head = document.createElement("div");
+        head.className = "schedule-board-cell header";
+        head.innerText = slot.label;
+        board.appendChild(head);
+    });
+
+    const cellMap = createScheduleCellMap(schedule, slots);
+
+    rows.forEach((employee, employeeIndex)=>{
+        const employeeCell = document.createElement("div");
+        employeeCell.className = "schedule-board-cell employee";
+        employeeCell.innerText = getScheduleRowDisplayName(employee);
+
+        const renameEmployeeRow = (name)=>{
+            const nextName = sanitizeText(name || "");
+
+            if(!nextName){
+                return;
+            }
+
+            const previousName = rows[employeeIndex];
+            rows[employeeIndex] = nextName;
+            employeeCell.innerText = nextName;
+
+            board.querySelectorAll(".schedule-half[data-employee]").forEach((cell)=>{
+                if(cell.dataset.employee !== previousName){
+                    return;
+                }
+
+                cell.dataset.employee = nextName;
+            });
+        };
+
+        const deleteScheduleRow = ()=>{
+            const rowLabel = getScheduleRowDisplayName(employee) || "빈 행";
+
+            if(!confirm(rowLabel + " 행을 삭제할까요?")){
+                return;
+            }
+
+            const nextRows = rows.filter((item, index)=>index !== employeeIndex);
+            data.staffSchedule.rows = nextRows;
+            data.staffSchedule.entries = collectScheduleEntriesFromBoard(
+                board,
+                rows,
+                slots
+            ).filter((entry)=>entry.employeeName !== employee);
+            applyAuditFields(data.staffSchedule, "updated");
+            saveData(()=>render(false));
+        };
+
+        employeeCell.ondragover = (event)=>{
+            event.preventDefault();
+            employeeCell.classList.add("drop-ready");
+        };
+
+        employeeCell.ondragleave = ()=>{
+            employeeCell.classList.remove("drop-ready");
+        };
+
+        employeeCell.ondrop = (event)=>{
+            event.preventDefault();
+            employeeCell.classList.remove("drop-ready");
+
+            if(!canEditSchedule()){
+                return;
+            }
+
+            try{
+                const payload = JSON.parse(event.dataTransfer.getData("text/plain"));
+
+                if(payload.type === "employee"){
+                    renameEmployeeRow(payload.value);
+                }
+            }catch(err){
+                if(selectedState.type === "employee"){
+                    renameEmployeeRow(selectedState.value);
+                }
+            }
+        };
+
+        employeeCell.onclick = ()=>{
+            if(!canEditSchedule()){
+                return;
+            }
+
+            if(selectedState.rowDeleteMode){
+                deleteScheduleRow();
+                return;
+            }
+
+            if(selectedState.rowDeleteMode){
+                if(!confirm(employee + " 직원 줄을 삭제할까요?")){
+                    return;
+                }
+
+                const nextRows = rows.filter((item, index)=>index !== employeeIndex);
+                data.staffSchedule.rows = nextRows;
+                data.staffSchedule.entries = collectScheduleEntriesFromBoard(
+                    board,
+                    rows,
+                    slots
+                ).filter((entry)=>entry.employeeName !== employee);
+                saveData(()=>render(false));
+                return;
+            }
+
+            if(selectedState.deleteMode){
+                const previousName = rows[employeeIndex];
+                rows[employeeIndex] = createEmptyScheduleRowName(rows);
+                employeeCell.innerText = "";
+                board.querySelectorAll(".schedule-half[data-employee]").forEach((cell)=>{
+                    if(cell.dataset.employee !== previousName){
+                        return;
+                    }
+
+                    cell.dataset.employee = rows[employeeIndex];
+                });
+                return;
+            }
+
+            if(selectedState.type === "employee" && selectedState.value){
+                renameEmployeeRow(selectedState.value);
+            }
+        };
+
+        board.appendChild(employeeCell);
+
+        slots.forEach((slot)=>{
+            const cell = document.createElement("div");
+            cell.className = "schedule-board-cell slot";
+            cell.dataset.start = String(slot.start);
+            cell.dataset.end = String(slot.end);
+
+            [slot.start, slot.start + 30].forEach((halfStart)=>{
+                const half = document.createElement("div");
+                const saved = cellMap[employee + "|" + halfStart];
+                half.className = "schedule-half";
+                half.dataset.employee = employee;
+                half.dataset.start = String(halfStart);
+                half.dataset.end = String(halfStart + 30);
+                half.title = formatScheduleMinutes(halfStart) + " ~ " + formatScheduleMinutes(halfStart + 30);
+                setScheduleHalf(half, saved ? saved.area : "");
+
+                half.ondragover = (event)=>{
+                    event.preventDefault();
+                    half.classList.add("drop-ready");
+                };
+
+                half.ondragleave = ()=>{
+                    half.classList.remove("drop-ready");
+                };
+
+                half.ondrop = (event)=>{
+                    event.preventDefault();
+                    half.classList.remove("drop-ready");
+
+                    if(selectedState.deleteMode || selectedState.rowDeleteMode){
+                        return;
+                    }
+
+                    try{
+                        applyScheduleDropToCell(
+                            half,
+                            JSON.parse(event.dataTransfer.getData("text/plain")),
+                            selectedState
+                        );
+                    }catch(err){
+                        applyScheduleDropToCell(half, selectedState, selectedState);
+                    }
+                };
+
+                half.onclick = ()=>{
+                    if(!canEditSchedule()){
+                        return;
+                    }
+
+                    if(selectedState.rowDeleteMode){
+                        deleteScheduleRow();
+                        return;
+                    }
+
+                    if(selectedState.deleteMode){
+                        clearScheduleBlock(half);
+                        return;
+                    }
+
+                    if(selectedState.type === "area" && selectedState.value){
+                        setScheduleBlock(half, selectedState.value, selectedState.duration);
+                    }
+                };
+
+                half.ondblclick = (event)=>{
+                    event.stopPropagation();
+
+                    if(!canEditSchedule()){
+                        return;
+                    }
+
+                    clearScheduleBlock(half);
+                };
+
+                cell.appendChild(half);
+            });
+
+            updateScheduleSlotVisual(cell);
+            board.appendChild(cell);
+        });
+    });
+
+    applyScheduleZoom();
+    boardWrap.appendChild(board);
+    workspace.appendChild(boardWrap);
+    editor.appendChild(workspace);
+
+    if(canEditSchedule()){
+        const actions = document.createElement("div");
+        actions.className = "folder-create-actions";
+
+        actions.appendChild(createButton("btn-add folder-create-btn", "+ 행 추가", ()=>{
+            const rowName = createEmptyScheduleRowName(rows);
+            rows.push(rowName);
+            data.staffSchedule.rows = rows.filter(Boolean);
+            applyAuditFields(data.staffSchedule, "updated");
+            saveData(()=>render(false));
+        }));
+
+        actions.appendChild(createButton("btn-add folder-create-btn", "+ 직원칩", ()=>{
+            const name = sanitizeText(prompt("직원 이름 입력") || "");
+
+            if(!name){
+                return;
+            }
+
+            if(!data.staffSchedule.employees.includes(name)){
+                data.staffSchedule.employees.push(name);
+            }
+
+            applyAuditFields(data.staffSchedule, "updated");
+            saveData(()=>render(false));
+        }));
+
+        actions.appendChild(createButton("btn-add folder-create-btn", "+ 담당구역", ()=>{
+            const area = sanitizeText(prompt("담당구역 입력") || "");
+
+            if(!area){
+                return;
+            }
+
+            if(!data.staffSchedule.areas.includes(area)){
+                data.staffSchedule.areas.push(area);
+            }
+
+            applyAuditFields(data.staffSchedule, "updated");
+            saveData(()=>render(false));
+        }));
+
+        actions.appendChild(createButton("btn-save folder-create-btn", "저장", ()=>{
+            data.staffSchedule.employees = employees.filter(Boolean);
+            data.staffSchedule.rows = rows.filter(Boolean);
+            data.staffSchedule.areas = areas.filter(Boolean);
+            data.staffSchedule.entries = collectScheduleEntriesFromBoard(
+                board,
+                rows,
+                slots
+            );
+            data.staffSchedule.zoom = Number(zoomInput.value) || 100;
+            applyAuditFields(data.staffSchedule, "updated");
+            saveData(()=>{
+                alert("시간표 저장 완료");
+                render(false);
+            });
+        }));
+
+        editor.appendChild(actions);
+    }
+
+    const backActions = document.createElement("div");
+    backActions.className = "folder-create-actions";
+    backActions.appendChild(createButton("btn-back folder-create-btn", "뒤로가기", ()=>{
+        currentView = "genres";
+        render();
+    }));
+    editor.appendChild(backActions);
+
+    root.appendChild(editor);
 }
 
 function formatActionTime(value){
@@ -7215,9 +9420,25 @@ function clearReorderDropMarkers(container){
     });
 }
 
-function attachSettingsReorderDrag(settings, wrap, options){
+function isCoarsePointer(){
+    return (
+        window.matchMedia &&
+        window.matchMedia("(pointer: coarse)").matches
+    );
+}
+
+function isReorderInteractiveTarget(target){
+    return !!(
+        target &&
+        target.closest(
+            ".settings-btn,.admin-menu,button,input,select,textarea,a,label"
+        )
+    );
+}
+
+function attachCardReorderDrag(trigger, wrap, options){
     if(
-        !settings ||
+        !trigger ||
         !wrap ||
         !options ||
         !options.container ||
@@ -7234,6 +9455,18 @@ function attachSettingsReorderDrag(settings, wrap, options){
     let ghost = null;
     let ghostOffsetX = 0;
     let ghostOffsetY = 0;
+    let activePointerId = null;
+    let longPressTimer = null;
+    let touchMode = false;
+
+    wrap.classList.add("reorder-enabled");
+
+    const clearLongPressTimer = ()=>{
+        if(longPressTimer){
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+        }
+    };
 
     const moveGhost = (event)=>{
         if(!ghost){
@@ -7255,25 +9488,65 @@ function attachSettingsReorderDrag(settings, wrap, options){
         }
     };
 
+    const beginDrag = (event)=>{
+        if(dragging){
+            return;
+        }
+
+        dragging = true;
+        wrap.classList.add("dragging");
+        options.container.classList.add("reorder-jiggle");
+
+        const rect = wrap.getBoundingClientRect();
+        ghostOffsetX = event.clientX - rect.left;
+        ghostOffsetY = event.clientY - rect.top;
+        ghost = wrap.cloneNode(true);
+        ghost.classList.remove("dragging", "drag-over-before", "drag-over-after");
+        ghost.classList.add("reorder-ghost");
+        ghost.style.width = rect.width + "px";
+        ghost.style.height = rect.height + "px";
+        document.body.appendChild(ghost);
+        moveGhost(event);
+        document.body.style.userSelect = "none";
+
+        if(trigger.setPointerCapture && activePointerId !== null){
+            try{
+                trigger.setPointerCapture(activePointerId);
+            }catch(err){
+                console.warn("pointer capture failed", err);
+            }
+        }
+    };
+
     const finish = (event)=>{
-        if(settings.hasPointerCapture && settings.hasPointerCapture(event.pointerId)){
-            settings.releasePointerCapture(event.pointerId);
+        clearLongPressTimer();
+
+        if(
+            trigger.hasPointerCapture &&
+            event &&
+            trigger.hasPointerCapture(event.pointerId)
+        ){
+            trigger.releasePointerCapture(event.pointerId);
         }
 
         document.body.style.userSelect = "";
+        options.container.classList.remove("reorder-jiggle");
         removeGhost();
 
         if(!dragging){
+            activePointerId = null;
             return;
         }
 
         dragging = false;
         wrap.classList.remove("dragging");
         clearReorderDropMarkers(options.container);
-        settings.dataset.dragMoved = "1";
+        trigger.dataset.dragMoved = "1";
+        wrap.dataset.reorderMoved = "1";
 
         setTimeout(()=>{
-            delete settings.dataset.dragMoved;
+            delete trigger.dataset.dragMoved;
+            delete wrap.dataset.reorderMoved;
         }, 0);
 
         if(dropTarget && dropTarget !== wrap && options.onDrop){
@@ -7290,50 +9563,11 @@ function attachSettingsReorderDrag(settings, wrap, options){
 
             options.onOrder(orderedKeys);
         }
+
+        activePointerId = null;
     };
 
-    settings.onpointerdown = (event)=>{
-        if(!canEditCurrentStore() || event.button !== 0){
-            return;
-        }
-
-        startX = event.clientX;
-        startY = event.clientY;
-        dragging = false;
-        dropTarget = null;
-        placeAfter = false;
-        settings.setPointerCapture(event.pointerId);
-    };
-
-    settings.onpointermove = (event)=>{
-        if(!settings.hasPointerCapture || !settings.hasPointerCapture(event.pointerId)){
-            return;
-        }
-
-        const moved = Math.hypot(event.clientX - startX, event.clientY - startY);
-
-        if(!dragging && moved < 7){
-            return;
-        }
-
-        if(!dragging){
-            dragging = true;
-            wrap.classList.add("dragging");
-            const rect = wrap.getBoundingClientRect();
-            ghostOffsetX = event.clientX - rect.left;
-            ghostOffsetY = event.clientY - rect.top;
-            ghost = wrap.cloneNode(true);
-            ghost.classList.remove("dragging", "drag-over-before", "drag-over-after");
-            ghost.classList.add("reorder-ghost");
-            ghost.style.width = rect.width + "px";
-            ghost.style.height = rect.height + "px";
-            document.body.appendChild(ghost);
-            moveGhost(event);
-            document.body.style.userSelect = "none";
-        }
-
-        event.preventDefault();
-        moveGhost(event);
+    const updateDropTarget = (event)=>{
         clearReorderDropMarkers(options.container);
 
         const underPointer = document.elementFromPoint(event.clientX, event.clientY);
@@ -7360,8 +9594,77 @@ function attachSettingsReorderDrag(settings, wrap, options){
         dropTarget = target;
     };
 
-    settings.onpointerup = finish;
-    settings.onpointercancel = finish;
+    trigger.onpointerdown = (event)=>{
+        if(
+            !canEditCurrentStore() ||
+            event.button !== 0 ||
+            isReorderInteractiveTarget(event.target)
+        ){
+            return;
+        }
+
+        startX = event.clientX;
+        startY = event.clientY;
+        dragging = false;
+        dropTarget = null;
+        placeAfter = false;
+        activePointerId = event.pointerId;
+        touchMode = isCoarsePointer() || event.pointerType === "touch";
+        clearLongPressTimer();
+
+        if(touchMode){
+            const startEvent = {
+                clientX:event.clientX,
+                clientY:event.clientY
+            };
+
+            longPressTimer = setTimeout(()=>{
+                beginDrag(startEvent);
+            }, 520);
+        }else if(trigger.setPointerCapture){
+            try{
+                trigger.setPointerCapture(event.pointerId);
+            }catch(err){
+                console.warn("pointer capture failed", err);
+            }
+        }
+    };
+
+    trigger.onpointermove = (event)=>{
+        if(activePointerId !== event.pointerId){
+            return;
+        }
+
+        const moved = Math.hypot(event.clientX - startX, event.clientY - startY);
+
+        if(!dragging){
+            if(touchMode){
+                if(moved > 10){
+                    clearLongPressTimer();
+                    activePointerId = null;
+                }
+                return;
+            }
+
+            if(moved < 7){
+                return;
+            }
+
+            beginDrag(event);
+        }
+
+        event.preventDefault();
+        moveGhost(event);
+        updateDropTarget(event);
+    };
+
+    trigger.onpointerup = finish;
+    trigger.onpointercancel = finish;
+    trigger.oncontextmenu = (event)=>{
+        if(canEditCurrentStore() && !isReorderInteractiveTarget(event.target)){
+            event.preventDefault();
+        }
+    };
 }
 
 function getOrderedMachinesForGenre(genre){
@@ -7644,6 +9947,10 @@ function renderGenres(root){
         return;
     }
 
+    if(!activeGroup){
+        renderScheduleNowWidget(root);
+    }
+
     const header = document.createElement("div");
     header.className = "header-row";
 
@@ -7681,6 +9988,13 @@ function renderGenres(root){
     const searchWrap = document.createElement("div");
     searchWrap.className = "folder-search-wrap";
 
+    const searchField = document.createElement("div");
+    searchField.className = "search-field";
+
+    const searchIcon = document.createElement("span");
+    searchIcon.className = "search-icon";
+    searchIcon.innerHTML = "&#128269;";
+
     const searchInput = document.createElement("input");
     searchInput.className = "folder-search";
     searchInput.type = "search";
@@ -7695,7 +10009,9 @@ function renderGenres(root){
         renderMachineSearchResults(searchResults, machineSearchQuery);
     };
 
-    searchWrap.appendChild(searchInput);
+    searchField.appendChild(searchIcon);
+    searchField.appendChild(searchInput);
+    searchWrap.appendChild(searchField);
     searchWrap.appendChild(searchResults);
     root.appendChild(searchWrap);
     renderMachineSearchResults(searchResults, machineSearchQuery);
@@ -7723,6 +10039,10 @@ function renderGenres(root){
             }
             applyFolderColor(item, group.color);
             item.onclick = ()=>{
+                if(wrap.dataset.reorderMoved === "1"){
+                    return;
+                }
+
                 if(adminOnlySelectMode === "genres"){
                     toggleAdminOnlyGroup(group);
                     return;
@@ -7750,13 +10070,13 @@ function renderGenres(root){
             settings.onclick = (event)=>{
                 event.stopPropagation();
 
-                if(settings.dataset.dragMoved === "1"){
+                if(settings.dataset.dragMoved === "1" || wrap.dataset.reorderMoved === "1"){
                     return;
                 }
 
                 admin.classList.toggle("active");
             };
-            attachSettingsReorderDrag(settings, wrap, {
+            attachCardReorderDrag(item, wrap, {
                 container:container,
                 type:"genre-group",
                 key:group.id,
@@ -7821,6 +10141,10 @@ function renderGenres(root){
         }
         applyFolderColor(item, data.genreColors[genre]);
         item.onclick = ()=>{
+            if(wrap.dataset.reorderMoved === "1"){
+                return;
+            }
+
             if(adminOnlySelectMode === "genres"){
                 toggleAdminOnlyGenre(genre);
                 return;
@@ -7844,13 +10168,13 @@ function renderGenres(root){
         settings.onclick = (event)=>{
             event.stopPropagation();
 
-            if(settings.dataset.dragMoved === "1"){
+            if(settings.dataset.dragMoved === "1" || wrap.dataset.reorderMoved === "1"){
                 return;
             }
 
             admin.classList.toggle("active");
         };
-        attachSettingsReorderDrag(settings, wrap, {
+        attachCardReorderDrag(item, wrap, {
             container:container,
             type:"genre",
             key:genre,
@@ -7975,16 +10299,24 @@ function renderGenres(root){
     root.appendChild(container);
 
     if(activeGroup){
-        root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+        const groupActions = document.createElement("div");
+        groupActions.className = "folder-create-actions";
+
+        groupActions.appendChild(createButton("btn-back folder-create-btn", "뒤로가기", ()=>{
             currentView = "genres";
             currentGenreGroup = null;
             render();
         }));
+
+        root.appendChild(groupActions);
         return;
     }
 
     if(canEditCurrentStore()){
-        root.appendChild(createButton("btn-add", "+ 폴더 추가", ()=>{
+        const folderCreateActions = document.createElement("div");
+        folderCreateActions.className = "folder-create-actions";
+
+        folderCreateActions.appendChild(createButton("btn-add folder-create-btn", "+ 폴더 추가", ()=>{
             if(!requireStoreEdit()){
                 return;
             }
@@ -8019,9 +10351,11 @@ function renderGenres(root){
             saveData(()=>render(false));
         }));
 
-        root.appendChild(createButton("btn-save", "+ 대폴더 추가", ()=>{
+        folderCreateActions.appendChild(createButton("btn-save folder-create-btn", "+ 대폴더 추가", ()=>{
             addGenreGroup();
         }));
+
+        root.appendChild(folderCreateActions);
     }
 }
 
@@ -8164,6 +10498,10 @@ function renderMachines(root){
             item.classList.add("admin-only-item");
         }
         item.onclick = ()=>{
+            if(wrap.dataset.reorderMoved === "1"){
+                return;
+            }
+
             if(adminOnlySelectMode === "machines"){
                 toggleAdminOnlyMachine(machine);
                 return;
@@ -8177,10 +10515,17 @@ function renderMachines(root){
         const thumbBox = document.createElement("div");
         thumbBox.className = "thumb-box";
 
-        const img = document.createElement("img");
-        img.src = machineData.photo || "";
-        img.alt = machine + "번 사진";
-        thumbBox.appendChild(img);
+        if(machineData.photo){
+            const img = document.createElement("img");
+            img.src = machineData.photo;
+            img.alt = machine + "번 사진";
+            img.onerror = ()=>{
+                img.replaceWith(createPhotoPlaceholder());
+            };
+            thumbBox.appendChild(img);
+        }else{
+            thumbBox.appendChild(createPhotoPlaceholder());
+        }
 
         const info = document.createElement("div");
         info.className = "info-box";
@@ -8211,13 +10556,13 @@ function renderMachines(root){
         settings.onclick = (event)=>{
             event.stopPropagation();
 
-            if(settings.dataset.dragMoved === "1"){
+            if(settings.dataset.dragMoved === "1" || wrap.dataset.reorderMoved === "1"){
                 return;
             }
 
             admin.classList.toggle("active");
         };
-        attachSettingsReorderDrag(settings, wrap, {
+        attachCardReorderDrag(item, wrap, {
             container:container,
             type:"machine",
             key:machine,
@@ -8237,7 +10582,7 @@ function renderMachines(root){
         admin.appendChild(createAdminButton("이름 수정", (event)=>{
             event.stopPropagation();
 
-            let newName = prompt("기계 번호 수정", machine);
+            let newName = prompt("제목 수정", machine);
 
             if(newName === null){
                 return;
@@ -8246,12 +10591,12 @@ function renderMachines(root){
             newName = sanitizeText(newName);
 
             if(!newName){
-                alert("기계 번호를 입력하세요.");
+                alert("제목을 입력하세요.");
                 return;
             }
 
             if(!isValidDataKey(newName)){
-                alert("기계 번호에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+                alert("제목에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
                 return;
             }
 
@@ -8312,8 +10657,11 @@ function renderMachines(root){
 
     root.appendChild(container);
 
+    const machineListActions = document.createElement("div");
+    machineListActions.className = "folder-create-actions";
+
     if(canEditCurrentStore()){
-        root.appendChild(createButton("btn-add", "+ 기계 추가", ()=>{
+        machineListActions.appendChild(createButton("btn-add folder-create-btn", "+ 정답지 추가", ()=>{
         if(!requireStoreEdit()){
             return;
         }
@@ -8322,7 +10670,7 @@ function renderMachines(root){
             data.machines[currentGenre] = {};
         }
 
-        let number = prompt("기계 번호 입력");
+        let number = prompt("제목 입력");
 
         if(number === null){
             return;
@@ -8331,12 +10679,12 @@ function renderMachines(root){
         number = sanitizeText(number);
 
         if(!number){
-            alert("기계 번호를 입력하세요.");
+            alert("제목을 입력하세요.");
             return;
         }
 
         if(!isValidDataKey(number)){
-            alert("기계 번호에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
+            alert("제목에는 . # $ / [ ] 문자를 사용할 수 없습니다.");
             return;
         }
 
@@ -8361,7 +10709,8 @@ function renderMachines(root){
             adminMemoUpdatedByName:"",
             adminOnly:false,
             evidencePhotos:[],
-            adminEvidencePhotos:[]
+            adminEvidencePhotos:[],
+            timeline:[]
         };
 
         if(!Array.isArray(data.machineOrder[currentGenre])){
@@ -8376,9 +10725,11 @@ function renderMachines(root){
         }));
     }
 
-    root.appendChild(createButton("btn-back", "뒤로가기", ()=>{
+    machineListActions.appendChild(createButton("btn-back folder-create-btn", "뒤로가기", ()=>{
         history.back();
     }));
+
+    root.appendChild(machineListActions);
 }
 
 function getEvidenceCollection(machine, collectionKey){
@@ -8395,6 +10746,126 @@ function getEvidenceCollection(machine, collectionKey){
     }
 
     return machine[safeKey];
+}
+
+function hasTimelineSnapshotContent(snapshot){
+    return Boolean(
+        snapshot &&
+        (
+            snapshot.photo ||
+            String(snapshot.memo || "").trim() ||
+            String(snapshot.adminMemo || "").trim()
+        )
+    );
+}
+
+function createMachineTimelineSnapshot(machine, reason = ""){
+    const auditUser = getCurrentAuditUser();
+
+    return {
+        id:createTimelineId(),
+        photo:machine.photo || "",
+        photoUpdatedAt:machine.photoUpdatedAt || "",
+        photoUpdatedByName:machine.photoUpdatedByName || "",
+        memo:machine.memo || "",
+        memoUpdatedAt:machine.memoUpdatedAt || "",
+        memoUpdatedByName:machine.memoUpdatedByName || "",
+        adminMemo:machine.adminMemo || "",
+        adminMemoUpdatedAt:machine.adminMemoUpdatedAt || "",
+        adminMemoUpdatedByName:machine.adminMemoUpdatedByName || "",
+        createdAt:getTimelineEntryPrimaryTime(machine) || new Date().toISOString(),
+        archivedAt:new Date().toISOString(),
+        createdBy:auditUser.id,
+        createdByName:auditUser.name,
+        reason:reason || "기록"
+    };
+}
+
+function getTimelineEntryPrimaryTime(entry){
+    const candidates = [
+        entry && entry.photoUpdatedAt,
+        entry && entry.memoUpdatedAt,
+        entry && entry.adminMemoUpdatedAt,
+        entry && entry.createdAt
+    ]
+    .map((value)=>new Date(value || "").getTime())
+    .filter((time)=>Number.isFinite(time));
+
+    if(candidates.length === 0){
+        return "";
+    }
+
+    return new Date(Math.max(...candidates)).toISOString();
+}
+
+function getTimelineEntryTimeText(entry){
+    const parts = [];
+
+    if(entry.photoUpdatedAt){
+        parts.push(
+            "사진: " +
+            formatActionTime(entry.photoUpdatedAt) +
+            (entry.photoUpdatedByName ? " / " + entry.photoUpdatedByName : "")
+        );
+    }
+
+    if(entry.memoUpdatedAt){
+        parts.push(
+            "메모: " +
+            formatActionTime(entry.memoUpdatedAt) +
+            (entry.memoUpdatedByName ? " / " + entry.memoUpdatedByName : "")
+        );
+    }
+
+    if(canViewAdminOnlyItems() && entry.adminMemoUpdatedAt){
+        parts.push(
+            "관리자 메모: " +
+            formatActionTime(entry.adminMemoUpdatedAt) +
+            (entry.adminMemoUpdatedByName ? " / " + entry.adminMemoUpdatedByName : "")
+        );
+    }
+
+    if(parts.length === 0){
+        parts.push(formatActionTime(entry.createdAt) || "시간 없음");
+    }
+
+    return parts.join("\n");
+}
+
+function isSameTimelineSnapshot(a, b){
+    return Boolean(
+        a &&
+        b &&
+        (a.photo || "") === (b.photo || "") &&
+        (a.memo || "") === (b.memo || "") &&
+        (a.adminMemo || "") === (b.adminMemo || "")
+    );
+}
+
+function addMachineTimelineSnapshot(machine, reason = ""){
+    if(!machine || typeof machine !== "object"){
+        return false;
+    }
+
+    if(!Array.isArray(machine.timeline)){
+        machine.timeline = [];
+    }
+
+    const snapshot = createMachineTimelineSnapshot(machine, reason);
+
+    if(!hasTimelineSnapshotContent(snapshot)){
+        return false;
+    }
+
+    const lastSnapshot = machine.timeline[0];
+
+    if(isSameTimelineSnapshot(lastSnapshot, snapshot)){
+        return false;
+    }
+
+    machine.timeline.unshift(snapshot);
+    machine.timeline = machine.timeline.slice(0, 80);
+    return true;
 }
 
 function getEvidenceViewTarget(collectionKey){
@@ -8593,6 +11064,146 @@ function createEvidenceSection(machine, options){
     return detailSection;
 }
 
+function createMachineTimelineSection(machine){
+    const section = document.createElement("div");
+    section.className = "timeline-section";
+
+    const title = document.createElement("span");
+    title.className = "section-title";
+    title.innerText = "타임라인";
+    section.appendChild(title);
+
+    if(canEditCurrentStore()){
+        const actions = document.createElement("div");
+        actions.className = "detail-action-grid";
+        actions.appendChild(createButton("btn-save", "현재 상태 기록", ()=>{
+            if(!addMachineTimelineSnapshot(machine, "수동 기록")){
+                alert("이미 같은 상태가 기록되어 있거나 기록할 내용이 없습니다.");
+                return;
+            }
+
+            saveData(()=>render(false));
+        }));
+        section.appendChild(actions);
+    }
+
+    const list = document.createElement("div");
+    list.className = "timeline-list";
+
+    const timeline = Array.isArray(machine.timeline) ? machine.timeline : [];
+
+    if(timeline.length === 0){
+        const empty = document.createElement("p");
+        empty.className = "schedule-empty";
+        empty.innerText = "아직 기록 없음";
+        list.appendChild(empty);
+    }else{
+        timeline
+        .slice()
+        .sort((a,b)=>{
+            const bTime = new Date(getTimelineEntryPrimaryTime(b) || 0).getTime();
+            const aTime = new Date(getTimelineEntryPrimaryTime(a) || 0).getTime();
+            return bTime - aTime;
+        })
+        .forEach((entry)=>{
+            const item = document.createElement("div");
+            item.className = "timeline-item";
+
+            const photo = document.createElement("div");
+            photo.className = "timeline-photo";
+
+            if(entry.photo){
+                const img = document.createElement("img");
+                img.src = entry.photo;
+                img.alt = "타임라인 사진";
+                img.onclick = ()=>openModal(entry.photo);
+                img.onerror = ()=>{
+                    photo.innerHTML = "";
+                    const emptyPhoto = document.createElement("div");
+                    emptyPhoto.className = "timeline-empty-photo";
+                    emptyPhoto.innerText = "사진 없음";
+                    photo.appendChild(emptyPhoto);
+                };
+                photo.appendChild(img);
+            }else{
+                const emptyPhoto = document.createElement("div");
+                emptyPhoto.className = "timeline-empty-photo";
+                emptyPhoto.innerText = "사진 없음";
+                photo.appendChild(emptyPhoto);
+            }
+
+            const content = document.createElement("div");
+            content.className = "timeline-content";
+
+            const time = document.createElement("div");
+            time.className = "timeline-time";
+            time.innerText = (entry.reason ? entry.reason + " · " : "") +
+                (formatActionTime(entry.createdAt) || "시간 없음") +
+                (entry.createdByName ? " / " + entry.createdByName : "");
+            time.innerText = getTimelineEntryTimeText(entry);
+            content.appendChild(time);
+
+            const memo = document.createElement("p");
+            memo.className = "timeline-memo";
+            memo.innerText = entry.memo || "공개 메모 없음";
+            content.appendChild(memo);
+
+            if(canViewAdminOnlyItems() && entry.adminMemo){
+                const adminMemo = document.createElement("p");
+                adminMemo.className = "timeline-memo timeline-admin-memo";
+                adminMemo.innerText = entry.adminMemo;
+                content.appendChild(adminMemo);
+            }
+
+            item.appendChild(photo);
+            item.appendChild(content);
+            list.appendChild(item);
+        });
+    }
+
+    section.appendChild(list);
+    return section;
+}
+
+function closeTimelineModal(){
+    const modal = document.getElementById("timeline-modal");
+
+    if(modal){
+        modal.remove();
+    }
+}
+
+function openMachineTimelineModal(machine){
+    closeTimelineModal();
+
+    const modal = document.createElement("div");
+    modal.id = "timeline-modal";
+    modal.className = "timeline-modal";
+    modal.onclick = (event)=>{
+        if(event.target === modal){
+            closeTimelineModal();
+        }
+    };
+
+    const dialog = document.createElement("div");
+    dialog.className = "timeline-dialog";
+
+    const header = document.createElement("div");
+    header.className = "timeline-header";
+
+    const title = document.createElement("b");
+    title.innerText = "타임라인";
+
+    const closeButton = createButton("timeline-close", "×", closeTimelineModal);
+
+    header.appendChild(title);
+    header.appendChild(closeButton);
+    dialog.appendChild(header);
+    dialog.appendChild(createMachineTimelineSection(machine));
+    modal.appendChild(dialog);
+    document.body.appendChild(modal);
+}
+
 function renderDetail(root){
     const machine = data.machines[currentGenre] && data.machines[currentGenre][currentMachine];
 
@@ -8619,15 +11230,21 @@ function renderDetail(root){
     const mainPhotoFrame = document.createElement("div");
     mainPhotoFrame.className = "main-photo-frame";
 
-    const mainImg = document.createElement("img");
-    mainImg.src = machine.photo || "";
-    mainImg.alt = currentMachine + "번 메인 사진";
-    mainImg.className = "main-img";
-    mainImg.onclick = ()=>{
-        openModal(machine.photo);
-    };
-
-    mainPhotoFrame.appendChild(mainImg);
+    if(machine.photo){
+        const mainImg = document.createElement("img");
+        mainImg.src = machine.photo;
+        mainImg.alt = currentMachine + "번 메인 사진";
+        mainImg.className = "main-img";
+        mainImg.onclick = ()=>{
+            openModal(machine.photo);
+        };
+        mainImg.onerror = ()=>{
+            mainImg.replaceWith(createPhotoPlaceholder("main-photo-empty"));
+        };
+        mainPhotoFrame.appendChild(mainImg);
+    }else{
+        mainPhotoFrame.appendChild(createPhotoPlaceholder("main-photo-empty"));
+    }
 
     const mainPhotoTime = createActionTimeBadge(
         "사진 수정",
@@ -8783,6 +11400,13 @@ function renderDetail(root){
         adminMemoSection.appendChild(adminMemoActions);
         root.appendChild(adminMemoSection);
     }
+
+    const timelineActions = document.createElement("div");
+    timelineActions.className = "detail-action-grid";
+    timelineActions.appendChild(createButton("btn-save", "타임라인", ()=>{
+        openMachineTimelineModal(machine);
+    }));
+    root.appendChild(timelineActions);
 
     root.appendChild(createEvidenceSection(machine, {
         collectionKey:"evidencePhotos",
@@ -8987,9 +11611,9 @@ function renderHelpLegacy(root){
 
         <div class="help-section">
             <h3>4. 정답지 번호 목록</h3>
-            <p>폴더 안에는 기계 번호별 정답지가 있습니다. 번호는 자연 정렬로 보이기 때문에 1_1, 2_1, 10_1 같은 번호도 순서가 보기 좋게 정리됩니다.</p>
+            <p>폴더 안에는 제목별 정답지가 있습니다. 제목은 자연 정렬로 보이기 때문에 1_1, 2_1, 10_1 같은 제목도 순서가 보기 좋게 정리됩니다.</p>
             <ul>
-                <li>기계 추가: 새 정답지 번호를 만듭니다.</li>
+                <li>정답지 추가: 새 정답지 제목을 만듭니다.</li>
                 <li>이름 수정: 번호를 바꿉니다.</li>
                 <li>삭제: 휴지통으로 보냅니다.</li>
                 <li>관리자만: 관리자 전용 모드를 켠 뒤 정답지를 누르면 일반 직원에게 숨길 수 있습니다.</li>
@@ -9132,7 +11756,7 @@ function renderHelp(root){
                 <li>썸네일 일렬/썸네일 타일: 사진을 보면서 정답지를 찾을 때 씁니다.</li>
                 <li>메모 일렬/메모 타일: 메모 내용으로 정답지를 찾을 때 씁니다.</li>
                 <li>메모 펼치기: 꺼져 있으면 공개 메모 2줄만 보이고, 켜면 전체공개만/관리자만/전체+관리자 중 골라 봅니다.</li>
-                <li>+ 기계 추가: 새 정답지 번호를 만듭니다.</li>
+                <li>+ 정답지 추가: 새 정답지 제목을 만듭니다.</li>
                 <li>⚙️ 설정: 해당 정답지의 관리 메뉴를 엽니다.</li>
                 <li>이름 수정: 정답지 번호를 바꿉니다. 예: 10_1, 10_2.</li>
                 <li>삭제: 정답지를 휴지통으로 보냅니다.</li>
@@ -9320,13 +11944,22 @@ function renderFigureCatalog(root){
     const toolbar = document.createElement("div");
     toolbar.className = "figure-toolbar";
 
+    const searchField = document.createElement("div");
+    searchField.className = "search-field";
+
+    const searchIcon = document.createElement("span");
+    searchIcon.className = "search-icon";
+    searchIcon.innerHTML = "&#128269;";
+
     const search = document.createElement("input");
     search.className = "figure-search";
     search.type = "search";
     search.placeholder = "피규어 이름, 박스 코드, N/W, G/W, C/No, 일본어 단서 검색";
     search.value = figureCatalogSearch;
 
-    toolbar.appendChild(search);
+    searchField.appendChild(searchIcon);
+    searchField.appendChild(search);
+    toolbar.appendChild(searchField);
 
     if(canEditCurrentStore()){
         toolbar.appendChild(createButton("btn-add", "+ 피규어 등록", ()=>{
@@ -14590,7 +17223,20 @@ function toggleMemoEdit(){
     }
 
     const machine = data.machines[currentGenre][currentMachine];
-    machine.memo = textarea.value;
+    const nextMemo = textarea.value;
+
+    if(machine.memo === nextMemo){
+        textarea.readOnly = true;
+        textarea.style.pointerEvents = "auto";
+        button.innerText = "✏️ 수정";
+        setMemoClearButtonVisible("memo-clear-btn", false);
+        memoEditMode = false;
+        render(false);
+        return;
+    }
+
+    addMachineTimelineSnapshot(machine, "공개 메모 변경 전");
+    machine.memo = nextMemo;
     applyAuditFields(machine, "memoUpdated");
 
     saveData(()=>{
@@ -14622,6 +17268,7 @@ function updateAdminMemo(memo){
         return;
     }
 
+    addMachineTimelineSnapshot(machine, "관리자 메모 변경 전");
     machine.adminMemo = nextMemo;
     applyAuditFields(machine, "adminMemoUpdated");
     saveData(()=>render(false));
@@ -15306,6 +17953,7 @@ async function saveDrawnMainPhoto(){
             photoItem.photoDrawData = createPhotoDrawData(target.basePhoto || photoItem.photo, canvas);
             applyAuditFields(photoItem, "photoUpdated");
         }else{
+            addMachineTimelineSnapshot(machine, "그림판 저장 전");
             machine.photo = await uploadDataUrlToStorage(dataUrl, storageImagePath("main_draw"));
             machine.photoDrawData = createPhotoDrawData(target.basePhoto || machine.photo, canvas);
             applyAuditFields(machine, "photoUpdated");
@@ -15454,7 +18102,8 @@ function restoreTrashEntry(index, showAlerts = true){
             adminMemoUpdatedBy:"",
             adminMemoUpdatedByName:"",
             evidencePhotos:[],
-            adminEvidencePhotos:[]
+            adminEvidencePhotos:[],
+            timeline:[]
         };
     }else if(item.type === "photo"){
         if(!data.machines[item.genre] || !data.machines[item.genre][item.machine]){
@@ -15668,6 +18317,7 @@ function uploadPhoto(type, sourceMode = "library"){
 
         try{
             if(type === 0){
+                addMachineTimelineSnapshot(machine, "메인 사진 변경 전");
                 machine.photo = await compressAndUploadImage(files[0], "main");
                 machine.photoDrawData = null;
                 applyAuditFields(machine, "photoUpdated");
@@ -15856,6 +18506,16 @@ document.getElementById("admin-menu-toggle").onclick = ()=>{
 
 document.getElementById("board-menu").onclick = ()=>{
     currentView = "board";
+    currentGenre = null;
+    currentGenreGroup = null;
+    currentMachine = null;
+    currentBoardPostId = null;
+    render();
+    toggleMenu(false);
+};
+
+document.getElementById("schedule-menu").onclick = ()=>{
+    currentView = "schedule";
     currentGenre = null;
     currentGenreGroup = null;
     currentMachine = null;
@@ -16080,7 +18740,14 @@ document.addEventListener("pointerdown", (event)=>{
 }, true);
 
 setInterval(()=>{
-    if(currentView === "trash"){
+    const activeTag = document.activeElement
+        ? document.activeElement.tagName
+        : "";
+
+    if(
+        (currentView === "trash" || currentView === "genres") &&
+        !["INPUT", "TEXTAREA", "SELECT"].includes(activeTag)
+    ){
         render(false);
     }
 }, 60000);
