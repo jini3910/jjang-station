@@ -1384,6 +1384,13 @@ textarea.scroll-mode{
     gap:10px;
 }
 
+.timeline-guide{
+    margin:0 0 10px;
+    color:#777;
+    font-size:12px;
+    line-height:1.45;
+}
+
 .timeline-item{
     display:grid;
     grid-template-columns:minmax(86px, 120px) minmax(0, 1fr);
@@ -1452,6 +1459,24 @@ textarea.scroll-mode{
     border:1px dashed rgba(33,150,243,0.45);
     border-radius:8px;
     background:rgba(33,150,243,0.05);
+}
+
+.timeline-item-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:8px;
+}
+
+.timeline-delete{
+    width:auto;
+    margin:0;
+    padding:6px 10px;
+    border:1px solid #ef9a9a;
+    border-radius:8px;
+    background:#fff5f5;
+    color:#b71c1c;
+    font-size:11px;
+    font-weight:800;
 }
 
 @media(max-width:520px){
@@ -3942,7 +3967,6 @@ textarea.scroll-mode{
     <button class="btn-back" id="logout-submit">로그아웃</button>
     </div>
     <div class="menu-item" id="board-menu">📌 게시판</div>
-    <div class="menu-item" id="build-menu">🧱 빌드</div>
     <div class="menu-item" id="figure-catalog-menu">🎁 피규어 도감</div>
     <div class="menu-item" id="admin-menu-toggle">⚙️ 관리</div>
     <div class="submenu" id="admin-submenu">
@@ -4102,6 +4126,7 @@ const TRASH_LIMIT_MS = 30 * 24 * 60 * 60 * 1000;
 const SDK_WRITE_LIMIT_BYTES = 16 * 1024 * 1024;
 const SAFE_WRITE_LIMIT_BYTES = 15 * 1024 * 1024;
 const SAVE_TIMEOUT_MS = 30000;
+const TIMELINE_LIMIT = 20;
 const DEFAULT_COMPRESSION_SETTINGS = {
     maxWidth:1200,
     jpegQuality:0.62
@@ -7499,7 +7524,7 @@ function render(push = true){
         const root = document.getElementById("content");
         const container = document.querySelector(".container");
         if(container){
-            container.classList.toggle("build-container", currentView === "build");
+            container.classList.remove("build-container");
         }
         root.innerHTML = "";
 
@@ -7521,8 +7546,6 @@ function render(push = true){
             renderBoardDetail(root);
         }else if(currentView === "boardCompose"){
             renderBoardCompose(root);
-        }else if(currentView === "build"){
-            renderBuild(root);
         }else if(currentView === "schedule"){
             renderSchedule(root);
         }else if(currentView === "help"){
@@ -10864,8 +10887,37 @@ function addMachineTimelineSnapshot(machine, reason = ""){
     }
 
     machine.timeline.unshift(snapshot);
-    machine.timeline = machine.timeline.slice(0, 80);
+    machine.timeline = machine.timeline.slice(0, TIMELINE_LIMIT);
     return true;
+}
+
+function deleteMachineTimelineEntry(machine, entryId){
+    if(!requireStoreEdit()){
+        return;
+    }
+
+    if(!machine || !Array.isArray(machine.timeline)){
+        return;
+    }
+
+    if(!confirm("이 타임라인 기록을 삭제할까요?")){
+        return;
+    }
+
+    machine.timeline = machine.timeline.filter((entry)=>entry && entry.id !== entryId);
+
+    saveData(()=>{
+        closeTimelineModal();
+        render(false);
+
+        const latestMachine =
+            data.machines[currentGenre] &&
+            data.machines[currentGenre][currentMachine];
+
+        if(latestMachine){
+            openMachineTimelineModal(latestMachine);
+        }
+    });
 }
 
 function getEvidenceViewTarget(collectionKey){
@@ -11087,6 +11139,11 @@ function createMachineTimelineSection(machine){
         section.appendChild(actions);
     }
 
+    const guide = document.createElement("p");
+    guide.className = "timeline-guide";
+    guide.innerText = "삭제하지 않으면 기간 제한 없이 보관되며, 정답지마다 최근 " + TIMELINE_LIMIT + "개까지 유지됩니다.";
+    section.appendChild(guide);
+
     const list = document.createElement("div");
     list.className = "timeline-list";
 
@@ -11153,6 +11210,18 @@ function createMachineTimelineSection(machine){
                 adminMemo.className = "timeline-memo timeline-admin-memo";
                 adminMemo.innerText = entry.adminMemo;
                 content.appendChild(adminMemo);
+            }
+
+            if(canEditCurrentStore()){
+                const actions = document.createElement("div");
+                actions.className = "timeline-item-actions";
+
+                const deleteButton = createButton("timeline-delete", "삭제", ()=>{
+                    deleteMachineTimelineEntry(machine, entry.id);
+                });
+
+                actions.appendChild(deleteButton);
+                content.appendChild(actions);
             }
 
             item.appendChild(photo);
@@ -18485,17 +18554,6 @@ document.getElementById("figure-catalog-menu").onclick = ()=>{
     currentGenre = null;
     currentGenreGroup = null;
     currentMachine = null;
-    render();
-    toggleMenu(false);
-};
-
-document.getElementById("build-menu").onclick = ()=>{
-    currentView = "build";
-    currentGenre = null;
-    currentGenreGroup = null;
-    currentMachine = null;
-    currentBoardPostId = null;
-    buildViewReady = false;
     render();
     toggleMenu(false);
 };
