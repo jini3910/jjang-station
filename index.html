@@ -11,6 +11,13 @@
     -webkit-tap-highlight-color:transparent;
 }
 
+body.reorder-touch-lock,
+body.reorder-touch-lock *{
+    user-select:none !important;
+    -webkit-user-select:none !important;
+    -webkit-touch-callout:none !important;
+}
+
 body{
     margin:0;
     padding:15px;
@@ -666,6 +673,9 @@ select{
 
 .item-wrapper{
     position:relative;
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
 }
 
 .item{
@@ -678,6 +688,26 @@ select{
     display:flex;
     flex-direction:column;
     transition:0.15s;
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+    -webkit-user-drag:none;
+    touch-action:manipulation;
+}
+
+.item *,
+.settings-btn,
+.admin-menu,
+.btn-mini,
+.folder-create-btn,
+.thumb-box,
+.info-box,
+.machine-card,
+.reorder-ghost{
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+    -webkit-user-drag:none;
 }
 
 .item:active{
@@ -3948,8 +3978,8 @@ textarea.scroll-mode{
 <div id="side-menu">
     <div class="menu-header">메뉴</div>
     <div class="login-status" id="login-status">보기 전용</div>
-    <div class="menu-item" id="home-menu">🏠 홈</div>
     <div class="menu-item" id="login-menu">로그인</div>
+    <div class="menu-item" id="home-menu">🏠 홈</div>
     <div class="login-panel" id="login-panel">
         <input type="text" id="login-id" placeholder="아이디">
         <input type="password" id="login-password" placeholder="비밀번호">
@@ -9511,12 +9541,27 @@ function attachCardReorderDrag(trigger, wrap, options){
         }
     };
 
+    const lockTouchSelection = ()=>{
+        document.body.classList.add("reorder-touch-lock");
+        document.body.style.userSelect = "none";
+        document.body.style.webkitUserSelect = "none";
+        document.body.style.webkitTouchCallout = "none";
+    };
+
+    const unlockTouchSelection = ()=>{
+        document.body.classList.remove("reorder-touch-lock");
+        document.body.style.userSelect = "";
+        document.body.style.webkitUserSelect = "";
+        document.body.style.webkitTouchCallout = "";
+    };
+
     const beginDrag = (event)=>{
         if(dragging){
             return;
         }
 
         dragging = true;
+        lockTouchSelection();
         wrap.classList.add("dragging");
         options.container.classList.add("reorder-jiggle");
 
@@ -9530,7 +9575,6 @@ function attachCardReorderDrag(trigger, wrap, options){
         ghost.style.height = rect.height + "px";
         document.body.appendChild(ghost);
         moveGhost(event);
-        document.body.style.userSelect = "none";
 
         if(trigger.setPointerCapture && activePointerId !== null){
             try{
@@ -9552,12 +9596,13 @@ function attachCardReorderDrag(trigger, wrap, options){
             trigger.releasePointerCapture(event.pointerId);
         }
 
-        document.body.style.userSelect = "";
+        unlockTouchSelection();
         options.container.classList.remove("reorder-jiggle");
         removeGhost();
 
         if(!dragging){
             activePointerId = null;
+            unlockTouchSelection();
             return;
         }
 
@@ -9636,6 +9681,7 @@ function attachCardReorderDrag(trigger, wrap, options){
         clearLongPressTimer();
 
         if(touchMode){
+            lockTouchSelection();
             const startEvent = {
                 clientX:event.clientX,
                 clientY:event.clientY
@@ -9664,6 +9710,7 @@ function attachCardReorderDrag(trigger, wrap, options){
             if(touchMode){
                 if(moved > 10){
                     clearLongPressTimer();
+                    unlockTouchSelection();
                     activePointerId = null;
                 }
                 return;
